@@ -1,0 +1,2 @@
+# FitCoachAI
+Personlized traning assistant
