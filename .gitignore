@@ -1,0 +1,4 @@
+# Node / NestJS
+node_modules/
+dist/
+.env
