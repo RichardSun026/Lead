@@ -26,6 +26,8 @@ Responses will be streamed **token‑by‑token** to the client (Server‑Sent E
 
 ## 0 Set up .env (OPENAI_API_KEY, REDIS_URL)
 
-## 1 Redis + Minimal chat
+## 1 Redis 
+- send curl with UUID
+- store JSON in Redis and timeStamps
 
 ## 2 function_calling ("Fine tunnign")
