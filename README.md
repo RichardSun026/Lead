@@ -8,7 +8,7 @@
 ### Reasons
 
 1. **NestJS** - scalable Node framework
-2. **BullMQ + Redis for background jobs** – shown to “handle background jobs efficiently” in a NestJS app, keeping the HTTP path fast.&#x20;
+2. **BullMQ + Redis for background jobs** – shown to “handle background jobs efficiently” in a NestJS app, keeping the HTTP path fast.
 3. **Redis as conversation memory** – Redis Cloud persists “user chat sessions (threads)… for a multi-tenant agent architecture,” proving it’s a fit for GenAI session state.
 4. **OpenAI** - rects the final project 
 

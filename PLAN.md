@@ -9,14 +9,23 @@ Responses will be streamed **token‑by‑token** to the client (Server‑Sent E
 
 
 ## 2 Key Requirements
+### FR
 - Generate a *7‑day plan* adapted to the user’s goal, equipment, and schedule.
 - Each day’s plan comprises: **training regimen**, **supplement stack**.
 - Act as an **agent** that can chain multiple function calls in one reply (e.g., `getUserPlan`, `search`, `storePlan`).
 - Invoke a **secondary LLM** dedicated to web search.
-
-- Optionally integrate **RAG + vector DB** if time permits.
+### NFR
+- Use Redis database server side.
 - Must create **≥ 3 automated tests**
 
 ## 3 Minimal UI
-- on terminal have a small chat window that streams assistant text in real‑time, and shows the .
-- maybe use a Sqlite db on client side or continue with current stack realy unsure.
+- On terminal have a small chat window that streams assistant text in real‑time, and shows the .
+
+
+# Plan
+
+## 0 Set up .env (OPENAI_API_KEY, REDIS_URL)
+
+## 1 Redis + Minimal chat
+
+## 2 function_calling ("Fine tunnign")
