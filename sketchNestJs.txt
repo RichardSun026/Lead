@@ -1,5 +1,5 @@
 AppModule 👀 main.ts
-    \_> starts them
+                \_> starts them
 
           /-> imports: other feature modules
 AppModule __> controllers: HTTP route

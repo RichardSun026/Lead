@@ -38,6 +38,7 @@ class ConversationController {
 }
 ```
 ### service
+<br>[IMP](https://stackoverflow.com/questions/79258937/how-to-setup-service-by-injecting-ioredis-client-instance-using-module-provide)
 ```ts
 @Injectable()
 class ConversationService {
@@ -50,7 +51,7 @@ class ConversationService {
 valkey-cli keys *
 valkey-cli LRANGE <enter list name> 0 -1
 ```
-([Source](https://dev.to/aws/maintain-chat-history-in-generative-ai-apps-with-valkey-13p8))
+[Source](https://dev.to/aws/maintain-chat-history-in-generative-ai-apps-with-valkey-13p8)
 ```python
 parsed = []
 for s in items:
@@ -60,8 +61,10 @@ return parsed
 ```
 **outcome:** this should return the entier conversation to the user
 
-## **src/message/***
+## **src/messages/***
 **Explanation:**<br>this is responsible for reciving storing and responding the user
+
+
 ```ts
 import OpenAI from "openai";
 
@@ -71,7 +74,7 @@ class OpenAiService {
 
     chat(messages: JSON): string {
         const completion = await client.chat.completions.create({
-            model: "gpt-4.1",
+            model: "gpt-4.1-mini",
             messages: messages,
         });
 
@@ -81,7 +84,8 @@ class OpenAiService {
     }
 }
 ```
-
+use async just as in swift<br>
+[Imp](https://stackoverflow.com/questions/76308716/how-to-set-up-a-redisservice-using-redis-from-ioredis)
 ```python
 # controler first recives the request
 @app.post("/receive")
@@ -104,4 +108,12 @@ def receive_whatsapp_message():
     replay(reply, ???)
     return Response(status=200)
 ```
+High level explanation:
+1) store user message
+2) load history → OpenAI format
+3) call OpenAI
+4) store assistant reply
+5) return assistant text
+
+<br>[Source](https://github.com/a23petny/emotionalChatbot/blob/main/serve.py)<br>
 **outcome:** this should return a message to the user created by the chatbot.
