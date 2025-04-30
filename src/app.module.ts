@@ -8,7 +8,7 @@ import { MessageController } from './message/message.controller';
 import { AppService } from './app.service';
 import { ConversationService } from './conversation/conversation.service';
 import { MessageService } from './message/message.service';
-import { OpenAiService } from './openai/openai.service';
+import { OpenAiService } from './agent/openai.service';
 
 @Module({
   imports: [

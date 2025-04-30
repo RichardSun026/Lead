@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ConversationService } from '../conversation/conversation.service';
-import { OpenAiService } from '../openai/openai.service';
+import { PromptService } from '../agent/prompt.service';
+import { OpenAiService } from '../agent/openai.service';
 import OpenAI from 'openai';
 
 @Injectable()
 export class MessageService {
   constructor(
     private readonly conversation: ConversationService,
+    private readonly prompt: PromptService,
     private readonly openai: OpenAiService,
   ) {}
 
@@ -22,7 +24,7 @@ export class MessageService {
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
     messages.push({
       role: 'system',
-      content: 'You are FitCoachAI, a helpful fitness coach.',
+      content: this.prompt.systemMessage(),
     });
 
     for (const msg of history) {
@@ -32,12 +34,26 @@ export class MessageService {
       });
     }
 
-    // 4) call GPT
-    const assistant = await this.openai.chat(messages);
+    // 4) call agent
+    const reply = await this.agentLoop(messages);
 
     // 5) assistant reply --> Redis
-    await this.conversation.store(userId, assistant, true);
+    await this.conversation.store(userId, reply, true);
 
-    return assistant;
+    return reply;
+  }
+
+  async agentLoop(
+    messages: OpenAI.Chat.ChatCompletionMessageParam[],
+  ): Promise<string> {
+    const builder: string = '';
+
+    while (true) {
+      const reply = await this.openai.chat(messages);
+
+      if (!reply.tool_calls || reply.tool_calls.length === 0) {
+        return builder;
+      }
+    }
   }
 }
