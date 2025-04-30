@@ -96,3 +96,39 @@ You must reason over the user’s context (equipment, constraints, health notes)
       content: this.prompts.system_message(),
     });
 ```
+
+```js
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const response = await openai.chat.completions.create({
+  model: "gpt-4o-search-preview",
+  messages: [
+    {
+      "role": "system",
+      "content": [
+        {
+          "type": "text",
+          "text": "You are ONLY allowed to return youtube videos."
+        }
+      ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "find me a youtube video link explaning how to do Glute bridge. please return also the youtube chanel that posted the video."
+        }
+      ]
+    }
+  ],
+  response_format: {
+    "type": "text"
+  },
+  store: false
+});
+```

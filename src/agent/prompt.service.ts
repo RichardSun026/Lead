@@ -4,7 +4,7 @@ import OpenAI from 'openai';
 @Injectable()
 export class PromptService {
   systemMessage(): string {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     const today = new Date();
     const weekday = days[today.getDay()];
     return `### Who you are  

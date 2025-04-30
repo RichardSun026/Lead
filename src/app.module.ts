@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { RedisModule } from '@nestjs-modules/ioredis';
 
 import { AppController } from './app.controller';
-import { ConversationController } from './conversation/conversation.controller';
+import { ConversationController } from './clientRedis/conversation.controller';
 import { MessageController } from './message/message.controller';
 
 import { AppService } from './app.service';
-import { ConversationService } from './conversation/conversation.service';
+import { ConversationService } from './clientRedis/conversation.service';
 import { MessageService } from './message/message.service';
 import { OpenAiService } from './agent/openai.service';
 
