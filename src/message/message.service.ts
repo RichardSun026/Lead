@@ -65,7 +65,7 @@ export class MessageService {
 
         if (name === 'set_user_plan') {
           const { week_day, plan } = args;
-          result = await this.conversation.setPlanDay(userId, week_day, plan);
+          await this.conversation.setPlanDay(userId, week_day, plan);
         } else if (name === 'get_user_plan') {
           const { week_day } = args;
           result = await this.conversation.getPlanDay(userId, week_day);

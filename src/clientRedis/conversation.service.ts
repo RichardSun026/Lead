@@ -52,20 +52,19 @@ export class ConversationService {
     }
   }
 
-  async setPlanDay(
-    userId: string,
-    day: WeekDay,
-    content: string,
-  ): Promise<string> {
+  async setPlanDay(userId: string, day: WeekDay, content: string) {
     await this.ensurePlan(userId);
     const key = `user:${userId}:plan`;
     const raw = await this.client.get(key);
+    let plan: WeekPlan;
     if (raw) {
-      
+      plan = JSON.parse(raw) as WeekPlan;
+      plan[day] = content;
+      await this.client.set(key, JSON.stringify(plan));
+    } else {
+      plan = EMPTY_WEEK;
+      plan[day] = content;
+      await this.client.set(key, JSON.stringify(plan));
     }
-    const plan = JSON.parse(await this.client.get(key));
-    plan[day] = content;
-    await this.client.set(key, JSON.stringify(plan));
-    return plan[day];
   }
 }
