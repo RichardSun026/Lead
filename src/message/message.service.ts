@@ -80,7 +80,7 @@ export class MessageService {
         messages.push({
           role: 'tool', //or 'function'
           tool_call_id: call.id,
-          name: name,
+          // name: name,
           content: typeof result === 'string' ? result : JSON.stringify(result),
         });
       }

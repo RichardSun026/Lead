@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Redis } from 'ioredis';
-import { StoredMessage } from './conversation.types';
+import { StoredMessage, WeekDay, WeekPlan } from './conversation.types';
 
-const EMPTY_WEEK = {
+const EMPTY_WEEK: WeekPlan = {
   mon: 'no workout today',
   tue: 'no workout today',
   wed: 'no workout today',
@@ -11,7 +11,7 @@ const EMPTY_WEEK = {
   fri: 'no workout today',
   sat: 'no workout today',
   sun: 'no workout today',
-} as const;
+};
 
 @Injectable()
 export class ConversationService {
@@ -40,19 +40,29 @@ export class ConversationService {
     if (!exists) await this.client.set(key, JSON.stringify(EMPTY_WEEK));
   }
 
-  async getPlanDay(userId: string, day: string): Promise<string> {
+  async getPlanDay(userId: string, day: WeekDay): Promise<string> {
     await this.ensurePlan(userId);
-    const plan = JSON.parse(await this.client.get(`user:${userId}:plan`));
-    return plan[day];
+    const raw = await this.client.get(`user:${userId}:plan`);
+    let plan: WeekPlan;
+    if (raw) {
+      plan = JSON.parse(raw) as WeekPlan;
+      return plan[day];
+    } else {
+      return 'no workout today';
+    }
   }
 
   async setPlanDay(
     userId: string,
-    day: string,
+    day: WeekDay,
     content: string,
   ): Promise<string> {
     await this.ensurePlan(userId);
     const key = `user:${userId}:plan`;
+    const raw = await this.client.get(key);
+    if (raw) {
+      
+    }
     const plan = JSON.parse(await this.client.get(key));
     plan[day] = content;
     await this.client.set(key, JSON.stringify(plan));
