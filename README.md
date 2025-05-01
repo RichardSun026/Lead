@@ -57,3 +57,23 @@ curl -X POST http://localhost:3000/message \
 
 - Redis: https://medium.com/@kumarasinghe.it/scaling-nestjs-applications-with-bullmq-and-redis-a-deep-dive-into-background-job-processing-ce6b6fb5017f
 - Redis sessions for chatbots: https://redis.com/blog/powering-langchain-opengpts-with-redis-cloud/
+
+
+## Handling restrictions:
+### - How will it avoid recommending supplements to minors?
+*It has gotten strict restrictions on not recommending supplements*
+<br>TODO: Store user's age and adjust system_message accordingly
+```md
+...
+3. **Supplements**  
+   - Whenever you mention a supplement, append:  
+     > *Consult a qualified healthcare professional first — I am **not** a doctor.*  
+   - You are NOT alwoed to supplements to minors
+4. Stay within normal-risk fitness advice
+...
+```
+### - How will it ensure that suggested videos are technically correct?
+After the Agent has recived the video and the video source from the secondary search LLM, it will immediately calls the same tool to check that sources credibility. The tools desc makes this mandatory:
+```md
+If you get a video and a source, you MUST call this function again to verify the source's credibility and warn the user about it.
+```
