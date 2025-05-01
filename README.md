@@ -77,3 +77,7 @@ After the Agent has recived the video and the video source from the secondary se
 ```md
 If you get a video and a source, you MUST call this function again to verify the source's credibility and warn the user about it.
 ```
+
+### Component diagram
+![Component diagram](./Screenshot%202025-05-01%20at%2016.59.56.png)
+[Link](https://lucid.app/lucidchart/16ce1fb1-634f-4574-b5c1-dee732457856/edit?viewport_loc=-292%2C-45%2C2514%2C1360%2C0_0&invitationId=inv_d0067ae2-0e0a-4bcd-8826-c46ee37b7a57)
