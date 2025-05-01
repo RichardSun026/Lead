@@ -34,20 +34,20 @@ export class MessageService {
       });
     }
     // 4) call agent
-    const { reply, debug } = await this.agentLoop(messages, userId);
+    const reply = await this.agentLoop(messages, userId);
 
     // 5) assistant reply --> Redis
     await this.conversation.store(userId, reply, true);
 
-    return debug;
+    return reply;
   }
 
   async agentLoop(
     messages: OpenAI.Chat.ChatCompletionMessageParam[],
     userId: string,
-  ): Promise<{ reply: string; debug: string }> {
-    const debug: string[] = [];
+  ): Promise<string> {
     let turn: number = 0;
+    console.log('\n-\n-\n-\n-');
     while (true) {
       turn += 1;
       const reply = await this.openai.chat(messages);
@@ -61,19 +61,10 @@ export class MessageService {
       console.log(
         ` - assistant turn ${turn}> \n`,
         JSON.stringify(reply, null, 2),
-        '\n:\n:',
-        messages,
-        '\n:\n:',
-      );
-      debug.push(
-        ` - assistant turn ${turn}> \n`,
-        JSON.stringify(reply, null, 2),
-        '\n:\n:',
-        // messages,
-        '\n:\n:',
+        '\n:\n:\n:\n:',
       );
       if (!reply.tool_calls) {
-        return { reply: reply.content ?? '', debug: debug.join('\n') };
+        return reply.content ?? '';
       }
 
       for (const call of reply.tool_calls) {
@@ -86,17 +77,25 @@ export class MessageService {
             week_day: WeekDay;
             plan: string;
           };
+          console.log('set_user_plan', week_day);
           await this.conversation.setPlanDay(userId, week_day, plan);
           result = 'ok';
         } else if (name == 'get_user_plan') {
           const { week_day } = args as { week_day: WeekDay };
+          console.log('get_user_plan', week_day);
           result = await this.conversation.getPlanDay(userId, week_day);
+        } else if (name == 'search_web') {
+          const { query } = args as { query: string };
+          console.log('search_web', query);
+          result = await this.openai.search(query);
         } else {
           result = { error: `Tool ${name} not implemented` };
         }
 
-        debug.push(
-          `${name}(${JSON.stringify(args)}) --> ${JSON.stringify(result)}`,
+        console.log(
+          '\nrole: tool',
+          `\ntool_call_id: ${call.id}`,
+          `\ncontent: ${typeof result === 'string' ? result : JSON.stringify(result)}`,
         );
 
         messages.push({

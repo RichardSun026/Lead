@@ -13,7 +13,9 @@ Your job is to generate **personalised 7-day training + supplementation plans** 
 You must reason over the user’s context (equipment, constraints, health notes) and may call multiple tools *inside a single response*.
 Today is **${weekday}**.
 
-### Safety & screening rules (MUST-FOLLOW)  
+### Safety & screening rules (MUST-FOLLOW) 
+0. **Users Goal** 
+   - Always ask the user what their goal is.
 1. **Before planning**  
    - Ask whether the user has any medical conditions, injuries, or supplement restrictions.  
    - Ask what equipment they have access to.
@@ -25,10 +27,12 @@ Today is **${weekday}**.
      > *Consult a qualified healthcare professional first — I am **not** a doctor.*  
 4. Stay within normal-risk fitness advice; refuse or refer out if advice would be unsafe or requires professional diagnosis.
 
-### Response style  
+### Response  
+- ALWAYS when using the search_web function follow the following query format: 'find me a video and the source that created the video about how to do X exercises.'
+- ALWAYS write out the provided link after reciving the search_web answer.
+- ALWAYS use the get_user_plan function to get the current day plan.
 - Write in clear, encouraging language; keep paragraphs short.  
-- When giving plans, show **Day headings (Mon – Sun)** followed by bullet lists of *Exercises* and *Supplements*.  
-- Cite credible sources (scientific guidelines, established coaching references) briefly when useful.  
+- When giving plans, show **Day headings (mon – sun)** followed by bullet lists of *Exercises* and *Supplements*.  
 - End every plan with a quick recap of safety cues.`;
   }
   tools(): OpenAI.Chat.ChatCompletionCreateParams['tools'] {
@@ -38,7 +42,7 @@ Today is **${weekday}**.
         function: {
           name: 'set_user_plan',
           description:
-            "Store (or replace) one day of the 7-day training + supplement plan. If you want to clear a day, pass 'no workout today' into the 'plan'.",
+            "Store (or replace) one day of the 7-day training + supplement plan. If you want to clear a day, pass 'no workout today' into the 'plan'. MUST be only used to modify or to create the plan, not to read it.",
           parameters: {
             type: 'object',
             properties: {
@@ -60,7 +64,8 @@ Today is **${weekday}**.
         type: 'function',
         function: {
           name: 'get_user_plan',
-          description: 'Return the stored plan text for a given day.',
+          description:
+            'Return the stored plan text for a given day. Should be used to get the plan for the current day.',
           parameters: {
             type: 'object',
             properties: {
@@ -73,25 +78,25 @@ Today is **${weekday}**.
           },
         },
       },
-      // {
-      //   type: 'function',
-      //   function: {
-      //     name: 'search_web',
-      //     description:
-      //       "Call on another agent to search the web. You should primarily and freely use this function to find YouTube videos that show the user how to complete a certain exercise. You should always request a YouTube video and its corresponding channel. If you get a video and a channel, you MUST call this function again to verify the channel's credibility and warn the user about it.",
-      //     parameters: {
-      //       type: 'object',
-      //       properties: {
-      //         query: {
-      //           type: 'string',
-      //           description:
-      //             "e.g. 'Find many YouTube videos about proper deadlift form. Please return each YouTube video's link and the corresponding channels.' or 'Please check the validity of this YouTube channel: X'",
-      //         },
-      //       },
-      //       required: ['query'],
-      //     },
-      //   },
-      // },
+      {
+        type: 'function',
+        function: {
+          name: 'search_web',
+          description:
+            "Call on another agent to search the web. You should primarily and freely use this function to find Videos that show the user how to complete a certain exercise. You should always request a video and its corresponding source/creator. If you get a video and a channel, you MUST call this function again to verify the channel's credibility and warn the user about it.",
+          parameters: {
+            type: 'object',
+            properties: {
+              query: {
+                type: 'string',
+                description:
+                  "e.g. 'Find many videos about proper deadlift form. Please return each video's link and the corresponding channels.' or 'Please check the validity of this source: X'",
+              },
+            },
+            required: ['query'],
+          },
+        },
+      },
     ];
   }
 }

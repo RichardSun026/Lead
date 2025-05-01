@@ -11,13 +11,29 @@ export class OpenAiService {
 
   async chat(
     messages: OpenAI.Chat.ChatCompletionMessageParam[],
-    model: string = 'gpt-4.1-mini',
   ): Promise<OpenAI.Chat.ChatCompletionMessage> {
     const res = await this.client.chat.completions.create({
-      model: model,
+      model: 'gpt-4.1-mini',
       messages,
       tools: this.prompt.tools(),
     });
     return res.choices[0].message;
+  }
+
+  async search(query: string): Promise<string> {
+    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [];
+    messages.push({
+      role: 'system',
+      content: 'ALWAYS return video link and the source/creator of that video.',
+    });
+    messages.push({
+      role: 'user',
+      content: query,
+    });
+    const res = await this.client.chat.completions.create({
+      model: 'gpt-4o-search-preview',
+      messages,
+    });
+    return res.choices[0].message.content ?? '';
   }
 }

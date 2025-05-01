@@ -18,10 +18,8 @@ export class WeekPlanController {
       sat: '',
       sun: '',
     };
-    console.log(`HERE`);
     for (const day of days) {
       plan[day] = await this.conversation.getPlanDay(userId, day);
-      console.log(`Day: ${day}, Plan: ${plan[day]}`);
     }
     return plan;
   }
