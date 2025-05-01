@@ -3,8 +3,7 @@ npm install
 export REDIS_URL='redis://redisURL:redisPort' e.g; 'redis://127.0.0.1:6379'
 export OPENAI_API_KEY='sk-proj-...'
 
-npm run build
-npm run start:prod
+npm run build && npm run start:prod
 
 
 ### Stack

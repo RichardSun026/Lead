@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConversationService } from '../clientRedis/conversation.service';
+import { WeekDay } from '../clientRedis/conversation.types';
 import { PromptService } from '../agent/prompt.service';
 import { OpenAiService } from '../agent/openai.service';
 import OpenAI from 'openai';
@@ -32,7 +33,6 @@ export class MessageService {
         content: msg.message,
       });
     }
-
     // 4) call agent
     const { reply, debug } = await this.agentLoop(messages, userId);
 
@@ -51,8 +51,26 @@ export class MessageService {
     while (true) {
       turn += 1;
       const reply = await this.openai.chat(messages);
+
+      messages.push({
+        role: 'assistant',
+        content: reply.content ?? '',
+        tool_calls: reply.tool_calls,
+      });
+
+      console.log(
+        ` - assistant turn ${turn}> \n`,
+        JSON.stringify(reply, null, 2),
+        '\n:\n:',
+        messages,
+        '\n:\n:',
+      );
       debug.push(
-        ` - assistant turn ${turn}> ` + JSON.stringify(reply, null, 2),
+        ` - assistant turn ${turn}> \n`,
+        JSON.stringify(reply, null, 2),
+        '\n:\n:',
+        // messages,
+        '\n:\n:',
       );
       if (!reply.tool_calls) {
         return { reply: reply.content ?? '', debug: debug.join('\n') };
@@ -60,14 +78,18 @@ export class MessageService {
 
       for (const call of reply.tool_calls) {
         const { name } = call.function;
-        const args = JSON.parse(call.function.arguments);
+        const args: unknown = JSON.parse(call.function.arguments);
         let result: unknown;
 
-        if (name === 'set_user_plan') {
-          const { week_day, plan } = args;
+        if (name == 'set_user_plan') {
+          const { week_day, plan } = args as {
+            week_day: WeekDay;
+            plan: string;
+          };
           await this.conversation.setPlanDay(userId, week_day, plan);
-        } else if (name === 'get_user_plan') {
-          const { week_day } = args;
+          result = 'ok';
+        } else if (name == 'get_user_plan') {
+          const { week_day } = args as { week_day: WeekDay };
           result = await this.conversation.getPlanDay(userId, week_day);
         } else {
           result = { error: `Tool ${name} not implemented` };
@@ -78,9 +100,8 @@ export class MessageService {
         );
 
         messages.push({
-          role: 'tool', //or 'function'
+          role: 'tool',
           tool_call_id: call.id,
-          // name: name,
           content: typeof result === 'string' ? result : JSON.stringify(result),
         });
       }

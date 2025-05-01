@@ -73,25 +73,25 @@ Today is **${weekday}**.
           },
         },
       },
-      {
-        type: 'function',
-        function: {
-          name: 'search_web',
-          description:
-            "Call on another agent to search the web. You should primarily and freely use this function to find YouTube videos that show the user how to complete a certain exercise. You should always request a YouTube video and its corresponding channel. If you get a video and a channel, you MUST call this function again to verify the channel's credibility and warn the user about it.",
-          parameters: {
-            type: 'object',
-            properties: {
-              query: {
-                type: 'string',
-                description:
-                  "e.g. 'Find many YouTube videos about proper deadlift form. Please return each YouTube video's link and the corresponding channels.' or 'Please check the validity of this YouTube channel: X'",
-              },
-            },
-            required: ['query'],
-          },
-        },
-      },
+      // {
+      //   type: 'function',
+      //   function: {
+      //     name: 'search_web',
+      //     description:
+      //       "Call on another agent to search the web. You should primarily and freely use this function to find YouTube videos that show the user how to complete a certain exercise. You should always request a YouTube video and its corresponding channel. If you get a video and a channel, you MUST call this function again to verify the channel's credibility and warn the user about it.",
+      //     parameters: {
+      //       type: 'object',
+      //       properties: {
+      //         query: {
+      //           type: 'string',
+      //           description:
+      //             "e.g. 'Find many YouTube videos about proper deadlift form. Please return each YouTube video's link and the corresponding channels.' or 'Please check the validity of this YouTube channel: X'",
+      //         },
+      //       },
+      //       required: ['query'],
+      //     },
+      //   },
+      // },
     ];
   }
 }
