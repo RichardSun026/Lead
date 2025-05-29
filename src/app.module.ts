@@ -5,7 +5,6 @@ import { AppController } from './app.controller';
 import { ConversationController } from './agent/clientRedis/conversation.controller';
 import { AgentController } from './agent/agentLogic/agent.controller';
 
-
 import { AppService } from './app.service';
 import { ConversationService } from './agent/clientRedis/conversation.service';
 import { AgentService } from './agent/agentLogic/agent.service';
@@ -19,11 +18,7 @@ import { PromptService } from './agent/agentHelp/prompt.service';
       type: 'single',
     }),
   ],
-  controllers: [
-    AppController,
-    ConversationController,
-    AgentController,
-  ],
+  controllers: [AppController, ConversationController, AgentController],
   providers: [
     AppService,
     ConversationService,

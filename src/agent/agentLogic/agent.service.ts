@@ -13,7 +13,11 @@ export class AgentService {
     private readonly openai: OpenAiService,
   ) {}
 
-  async send(phone: string, userMsg: string, model = 'gpt-4o-mini'): Promise<string> {
+  async send(
+    phone: string,
+    userMsg: string,
+    model = 'gpt-4o-mini',
+  ): Promise<string> {
     await this.conversation.store(phone, { role: 'user', content: userMsg });
     return this.agentLoop(phone, model);
   }

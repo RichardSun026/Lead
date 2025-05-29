@@ -1,17 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import OpenAI from 'openai';
 
-interface ChatCompletionTool {
-  type: 'function';
-  function: {
-    name: string;
-    description: string;
-    parameters: {
-      type: 'object';
-      properties: Record<string, unknown>;
-      required: string[];
-    };
-  };
-}
+type ChatCompletionTool = NonNullable<
+  OpenAI.Chat.ChatCompletionCreateParams['tools']
+>[number];
 
 @Injectable()
 export class PromptService {
@@ -26,7 +18,6 @@ export class PromptService {
   tools(): ChatCompletionTool[] {
     return [this.search_web_tool()];
   }
-
 
   /* ----------  WEB SEARCH  ---------- */
   search_web_tool(): ChatCompletionTool {

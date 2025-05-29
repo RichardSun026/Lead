@@ -1,8 +1,8 @@
 // conversation.service.ts
-import { Injectable } from "@nestjs/common";
-import { InjectRedis } from "@nestjs-modules/ioredis";
-import { Redis } from "ioredis";
-import OpenAI from "openai";
+import { Injectable } from '@nestjs/common';
+import { InjectRedis } from '@nestjs-modules/ioredis';
+import { Redis } from 'ioredis';
+import OpenAI from 'openai';
 
 const LIST = (phone: string) => `phone:${phone}:json`;
 
