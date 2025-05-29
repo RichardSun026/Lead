@@ -86,4 +86,18 @@ if __name__ == "__main__":
 '''
 
 I have also cloned the old dir, so that you can take inspiration form my previous atemtpt.
-when done write all of the 
+when done write all of the
+
+## Monorepo Structure
+
+The project is organised as a Yarn workspaces monorepo. The NestJS backend is in
+the repository root while two React applications live in `apps/`:
+
+```
+apps/
+  site/         - landing page with calendar video and booking
+  user-report/  - admin tool for viewing user reports
+```
+
+Bookings and lead data are stored in Supabase while message history is kept in
+Redis.
