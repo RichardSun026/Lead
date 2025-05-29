@@ -1,11 +1,12 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ConversationService } from './conversation.service';
+import { Controller, Get, Param } from "@nestjs/common";
+import { ConversationService } from "./conversation.service";
 
-@Controller('conversation')
+@Controller("conversation")
 export class ConversationController {
+  //TODO: add validation
   constructor(private readonly conversation: ConversationService) {}
-  @Get(':userId')
-  getAll(@Param('userId') userId: string) {
-    return this.conversation.fetchAll(userId);
+  @Get(":phone")
+  getAll(@Param("phone") phone: string) {
+    return this.conversation.fetchAll(phone);
   }
 }

@@ -1,5 +1,7 @@
 # Node / NestJS
 node_modules/
 dist/
+SECRET.txt
 .env
 .trunk
+.DS_Store

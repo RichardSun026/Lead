@@ -3,14 +3,14 @@ import { RedisModule } from '@nestjs-modules/ioredis';
 
 import { AppController } from './app.controller';
 import { ConversationController } from './clientRedis/conversation.controller';
-import { MessageController } from './message/message.controller';
-import { WeekPlanController } from './clientRedis/weekplan.controller';
+import { AgentController } from './agent/agent.controller';
+
 
 import { AppService } from './app.service';
 import { ConversationService } from './clientRedis/conversation.service';
-import { MessageService } from './message/message.service';
-import { OpenAiService } from './agent/openai.service';
-import { PromptService } from './agent/prompt.service';
+import { AgentService } from './agent/agent.service';
+import { OpenAiService } from './agentHelp/openai.service';
+import { PromptService } from './agentHelp/prompt.service';
 
 @Module({
   imports: [
@@ -22,13 +22,12 @@ import { PromptService } from './agent/prompt.service';
   controllers: [
     AppController,
     ConversationController,
-    MessageController,
-    WeekPlanController,
+    AgentController,
   ],
   providers: [
     AppService,
     ConversationService,
-    MessageService,
+    AgentService,
     OpenAiService,
     PromptService,
   ],

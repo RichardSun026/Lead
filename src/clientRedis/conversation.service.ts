@@ -1,70 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRedis } from '@nestjs-modules/ioredis';
-import { Redis } from 'ioredis';
-import { StoredMessage, WeekDay, WeekPlan } from './conversation.types';
+// conversation.service.ts
+import { Injectable } from "@nestjs/common";
+import { InjectRedis } from "@nestjs-modules/ioredis";
+import { Redis } from "ioredis";
+import OpenAI from "openai";
 
-const EMPTY_WEEK: WeekPlan = {
-  mon: 'no workout today',
-  tue: 'no workout today',
-  wed: 'no workout today',
-  thu: 'no workout today',
-  fri: 'no workout today',
-  sat: 'no workout today',
-  sun: 'no workout today',
-};
+const LIST = (phone: string) => `phone:${phone}:json`;
 
 @Injectable()
 export class ConversationService {
-  constructor(@InjectRedis() private readonly client: Redis) {}
+  constructor(@InjectRedis() private readonly redis: Redis) {}
 
-  async store(userId: string, message: string, isAssistant = false) {
-    const payload = { message, isAssistant };
-    await this.client.rpush(`user:${userId}:messages`, JSON.stringify(payload));
-    return payload;
+  /*---------------  STORE  ----------------*/
+  async store(
+    phone: string,
+    payload: OpenAI.Chat.ChatCompletionMessageParam,
+  ): Promise<void> {
+    await this.redis.rpush(LIST(phone), JSON.stringify(payload));
   }
 
-  async fetchAll(userId: string) {
-    const items = await this.client.lrange(`user:${userId}:messages`, 0, -1);
-    const parsed: StoredMessage[] = [];
+  /*---------------  FETCH (latest N)  ----------------*/
+  async fetchAll(
+    phone: string,
+  ): Promise<OpenAI.Chat.ChatCompletionMessageParam[]> {
+    // newest item is at -1; grab up to <limit> going backwards
+    const raw: string[] = await this.redis.lrange(LIST(phone), 0, -1);
 
-    for (let i = 0; i < items.length; i++) {
-      const msg = JSON.parse(items[i]) as StoredMessage;
-      parsed.push(msg);
-    }
-    return parsed;
-  }
-
-  private async ensurePlan(userId: string) {
-    const key = `user:${userId}:plan`;
-    const exists = await this.client.exists(key);
-    if (!exists) await this.client.set(key, JSON.stringify(EMPTY_WEEK));
-  }
-
-  async getPlanDay(userId: string, day: WeekDay): Promise<string> {
-    await this.ensurePlan(userId);
-    const raw = await this.client.get(`user:${userId}:plan`);
-    let plan: WeekPlan;
-    if (raw) {
-      plan = JSON.parse(raw) as WeekPlan;
-      return plan[day];
-    } else {
-      return 'no workout today';
-    }
-  }
-
-  async setPlanDay(userId: string, day: WeekDay, content: string) {
-    await this.ensurePlan(userId);
-    const key = `user:${userId}:plan`;
-    const raw = await this.client.get(key);
-    let plan: WeekPlan;
-    if (raw) {
-      plan = JSON.parse(raw) as WeekPlan;
-      plan[day] = content;
-      await this.client.set(key, JSON.stringify(plan));
-    } else {
-      plan = EMPTY_WEEK;
-      plan[day] = content;
-      await this.client.set(key, JSON.stringify(plan));
-    }
+    return raw
+      .map((row) => {
+        try {
+          return JSON.parse(row) as OpenAI.Chat.ChatCompletionMessageParam;
+        } catch {
+          return undefined; // skip bad JSON silently
+        }
+      })
+      .filter(
+        (m): m is OpenAI.Chat.ChatCompletionMessageParam => m !== undefined,
+      );
   }
 }
