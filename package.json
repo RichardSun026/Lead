@@ -5,22 +5,22 @@
   "author": "",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "frontend/*"
   ],
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build -c nest/lead-nest/nest-cli.json -p nest/lead-nest/tsconfig.build.json",
-    "format": "prettier --write \"nest/lead-nest/src/**/*.ts\" \"nest/lead-nest/test/**/*.ts\"",
-    "start": "nest start -c nest/lead-nest/nest-cli.json -p nest/lead-nest/tsconfig.build.json",
-    "start:dev": "nest start --watch -c nest/lead-nest/nest-cli.json -p nest/lead-nest/tsconfig.build.json",
-    "start:debug": "nest start --debug --watch -c nest/lead-nest/nest-cli.json -p nest/lead-nest/tsconfig.build.json",
-    "start:prod": "node nest/lead-nest/dist/main",
-    "lint": "eslint \"{nest/lead-nest/src,apps,libs,nest/lead-nest/test}/**/*.ts\" --fix",
+    "build": "nest build -c backend/nest-cli.json -p backend/tsconfig.build.json",
+    "format": "prettier --write \"backend/src/**/*.ts\" \"backend/test/**/*.ts\"",
+    "start": "nest start -c backend/nest-cli.json -p backend/tsconfig.build.json",
+    "start:dev": "nest start --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
+    "start:debug": "nest start --debug --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
+    "start:prod": "node backend/dist/main",
+    "lint": "eslint \"{backend/src,frontend,libs,backend/test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config nest/lead-nest/test/jest-e2e.json"
+    "test:e2e": "jest --config backend/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs-modules/ioredis": "^2.0.2",
@@ -68,7 +68,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "nest/lead-nest/src",
+    "rootDir": "backend/src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
