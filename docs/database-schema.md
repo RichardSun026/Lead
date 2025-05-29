@@ -67,6 +67,20 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `sent_at`
 - `status`
 
+### google_credentials
+- `realtor_id` – references `Realtor`
+- `access_token`, `refresh_token`
+- `token_expires`
+- `created_at`
+
+### google_calendar_events
+- `id` – primary key
+- `realtor_id` – references `Realtor`
+- `google_event_id` – unique Google event identifier
+- `summary`, `description`
+- `start_time`, `end_time`
+- `created_at`
+
 ## Example Data
 The seed script inserts two sample leads and a booked appointment:
 ```sql

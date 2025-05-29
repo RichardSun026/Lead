@@ -43,4 +43,8 @@ in the URL.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
+### Calendar Sync
+The backend exposes `/calendar/:realtorId/events` to create and `/calendar/:realtorId/events/:eventId` to delete Google Calendar events.
+Events are mirrored in Supabase tables `google_credentials` and `google_calendar_events`.
+
 Planned improvements can be found in [TODO.md](TODO.md).
