@@ -7,12 +7,6 @@ This page summarises the variables defined in `.env.example` and what they are u
 - `SUPABASE_ANON_KEY` – public API key allowing anonymous access to Supabase.
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations in Supabase.
 
-## MySQL
-- `MYSQL_ROOT_PASSWORD` – password for the MySQL `root` user when running the database container.
-- `DB_USER` – application database user.
-- `DB_PASSWORD` – password for `DB_USER`.
-- `DB_NAME` – name of the MySQL database (defaults to `lead_db`).
-
 ## Twilio
 - `TWILIO_ACCOUNT_SID` – account identifier for sending SMS via Twilio.
 - `TWILIO_AUTH_TOKEN` – authentication token used with the SID.
