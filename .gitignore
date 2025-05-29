@@ -5,3 +5,7 @@ SECRET.txt
 .env
 .trunk
 .DS_Store
+
+# OLD_Lead
+obj/
+bin/
