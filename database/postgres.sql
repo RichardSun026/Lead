@@ -100,3 +100,24 @@ CREATE INDEX ON scheduled_messages(phone);
 CREATE INDEX ON scheduled_messages(scheduled_time);
 CREATE INDEX ON scheduled_messages(message_status);
 
+-- OAuth credentials for Google Calendar
+CREATE TABLE google_credentials (
+    realtor_id INT PRIMARY KEY REFERENCES Realtor(realtor_id),
+    access_token TEXT NOT NULL,
+    refresh_token TEXT NOT NULL,
+    token_expires TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Cached Google Calendar events
+CREATE TABLE google_calendar_events (
+    id SERIAL PRIMARY KEY,
+    realtor_id INT NOT NULL REFERENCES Realtor(realtor_id),
+    google_event_id TEXT NOT NULL UNIQUE,
+    summary TEXT,
+    description TEXT,
+    start_time TIMESTAMPTZ,
+    end_time TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX ON google_calendar_events(realtor_id);
