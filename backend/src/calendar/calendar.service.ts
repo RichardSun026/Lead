@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { SupabaseService } from '../supabase/supabase.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
 
 export interface EventInput {
   summary: string;
@@ -7,11 +8,15 @@ export interface EventInput {
   start: string; // ISO string
   end: string; // ISO string
   calendarId: string;
+  phone: string; // lead phone number for follow-up texts
 }
 
 @Injectable()
 export class CalendarService {
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(
+    private readonly supabase: SupabaseService,
+    private readonly scheduler: SchedulerService,
+  ) {}
 
   private async refreshAccessToken(realtorId: number, refreshToken: string) {
     const params = new URLSearchParams({
@@ -64,8 +69,9 @@ export class CalendarService {
     await this.supabase.upsertEvent(
       realtorId,
       data.id,
-      input as Record<string, unknown>,
+      input as unknown as Record<string, unknown>,
     );
+    await this.scheduler.scheduleFollowUps(input.phone, input.start);
     return data;
   }
 
