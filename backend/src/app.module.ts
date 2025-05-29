@@ -15,6 +15,9 @@ import { AgentService } from './agentLogic/agent.service';
 import { CalendarService } from './calendar/calendar.service';
 import { SupabaseService } from './supabase/supabase.service';
 import { SchedulerService } from './scheduler/scheduler.service';
+import { MessengerService } from './messenger/messenger.service';
+import { BookingService } from './booking/booking.service';
+import { BookingController } from './booking/booking.controller';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -37,7 +40,7 @@ import { PromptService } from './agentHelp/prompt.service';
     AgentController,
     CalendarController,
     SchedulerController,
-
+    BookingController,
   ],
   providers: [
     AppService,
@@ -48,6 +51,8 @@ import { PromptService } from './agentHelp/prompt.service';
     PromptService,
     CalendarService,
     SupabaseService,
+    MessengerService,
+    BookingService,
   ],
 })
 export class AppModule {}

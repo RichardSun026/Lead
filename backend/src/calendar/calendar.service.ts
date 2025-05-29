@@ -64,7 +64,7 @@ export class CalendarService {
     await this.supabase.upsertEvent(
       realtorId,
       data.id,
-      input as Record<string, unknown>,
+      input as unknown as Record<string, unknown>,
     );
     return data;
   }
