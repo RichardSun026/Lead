@@ -48,3 +48,123 @@ The backend exposes `/calendar/:realtorId/events` to create and `/calendar/:real
 Events are mirrored in Supabase tables `google_credentials` and `google_calendar_events`.
 
 Planned improvements can be found in [TODO.md](TODO.md).
+
+
+
+
+
+
+APPEND THIS:
+
+````markdown
+# Lead Project Architecture & Code Interrelationships
+
+## Core Architecture Components
+
+### 1. Front-End Services (Web Apps)
+
+| Service        | Purpose                                                                 |
+|----------------|-------------------------------------------------------------------------|
+| **Site**       | Customer-facing landing page where users book appointments with realtors; features a video player and calendar integration. |
+| **UserDataSite** | Retrieves user information via phone-number lookup. |
+
+---
+
+### 2. Back-End Logic Services (Micro-services)
+
+| Service      | Key Responsibilities                                       |
+|--------------|------------------------------------------------------------|
+| **Messenger**  | Handles SMS via Twilio: send/receive messages and store logs. |
+| **Scheduler**  | Manages follow-up SMS timing and automated message triggers. |
+| **Calendar**   | Creates and manages appointment events via Google Calendar API. |
+| **Intermediary** | Acts as a bridge between internal services and external APIs. |
+
+---
+
+### 3. Data Layer
+
+**Supabase (PostgreSQL) schema**
+
+| Table                | Purpose                                       |
+|----------------------|-----------------------------------------------|
+| `Realtor`            | Realtor profiles and contact info.            |
+| `Leads`              | Captured lead details.                        |
+| `Booked`             | Appointment-booking records.                  |
+| `Messages`           | Message history and logs.                     |
+| `scheduled_messages` | Queue of messages slated for future delivery. |
+
+---
+
+## Service Interrelationships
+
+### Lead-Capture Flow
+
+```mermaid
+graph TD
+  Site -->|store lead| DB[(Supabase)]
+  Site -->|book| Calendar
+  DB -->|trigger| Scheduler
+````
+
+### Communication Flow
+
+```mermaid
+graph TD
+  Scheduler -->|deliver| Messenger
+  Messenger -->|log| DB[(Supabase)]
+  Messenger -->|invoke| Intermediary
+  Intermediary -->|call| ExternalAPIs[(Twilio / OpenAI)]
+```
+
+---
+
+### Integration Dependencies
+
+* **Twilio** – SMS messaging
+* **Google Calendar** – appointment scheduling
+* **OpenAI** – message generation / processing
+* **Facebook Forms** – lead-source ingestion
+
+### Environment Configuration
+
+All services share environment variables for:
+
+* Database URLs and credentials
+* API keys (Twilio, Google, OpenAI, etc.)
+* Internal service endpoints
+
+### Service-to-Service Communication
+
+* **Microservice pattern**: each service owns a specific slice of business logic.
+* Shared state lives in a **single Supabase database**.
+* **Intermediary** functions as an API gateway for external integrations.
+* Front-end services manage UI + direct DB access; back-end services handle automation and third-party calls.
+
+---
+
+**Bottom line:** This architecture delivers a full lead-management pipeline—from initial capture through booking and automated follow-ups—while cleanly separating user interfaces, business logic, and data storage.
+
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
