@@ -1,5 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import OpenAI from 'openai';
+
+interface ChatCompletionTool {
+  type: 'function';
+  function: {
+    name: string;
+    description: string;
+    parameters: {
+      type: 'object';
+      properties: Record<string, unknown>;
+      required: string[];
+    };
+  };
+}
 
 @Injectable()
 export class PromptService {

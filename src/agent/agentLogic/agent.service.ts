@@ -70,5 +70,10 @@ export class AgentService {
 }
 
 function isSearchArgs(args: unknown): args is { query: string } {
-  return typeof args === 'object' && args !== null && typeof (args as any).query === 'string';
+  return (
+    typeof args === 'object' &&
+    args !== null &&
+    'query' in args &&
+    typeof (args as { query: unknown }).query === 'string'
+  );
 }
