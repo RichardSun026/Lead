@@ -6,6 +6,16 @@
   gap: 2rem;
   padding: 1rem;
 }
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 250px;
+}
+.form input,
+.form button {
+  padding: 0.5rem;
+}
 .video iframe {
   width: 560px;
   height: 315px;

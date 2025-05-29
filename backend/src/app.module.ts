@@ -7,6 +7,7 @@ import { ConversationController } from './clientRedis/conversation.controller';
 import { AgentController } from './agentLogic/agent.controller';
 import { CalendarController } from './calendar/calendar.controller';
 import { SchedulerController } from './scheduler/scheduler.controller';
+import { LeadsController } from './leads/leads.controller';
 
 import { AppService } from './app.service';
 import { ConversationService } from './clientRedis/conversation.service';
@@ -15,6 +16,7 @@ import { AgentService } from './agentLogic/agent.service';
 import { CalendarService } from './calendar/calendar.service';
 import { SupabaseService } from './supabase/supabase.service';
 import { SchedulerService } from './scheduler/scheduler.service';
+import { LeadsService } from './leads/leads.service';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -37,7 +39,7 @@ import { PromptService } from './agentHelp/prompt.service';
     AgentController,
     CalendarController,
     SchedulerController,
-
+    LeadsController,
   ],
   providers: [
     AppService,
@@ -48,6 +50,7 @@ import { PromptService } from './agentHelp/prompt.service';
     PromptService,
     CalendarService,
     SupabaseService,
+    LeadsService,
   ],
 })
 export class AppModule {}
