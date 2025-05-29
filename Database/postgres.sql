@@ -86,12 +86,6 @@ CREATE TABLE Booked (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Message threads for each lead
-CREATE TABLE Messages (
-    phone VARCHAR(50) NOT NULL REFERENCES Leads(phone),
-    messages_conversation JSONB
-);
-
 -- Messages scheduled to be sent later
 CREATE TABLE scheduled_messages (
     id SERIAL PRIMARY KEY,
@@ -105,15 +99,4 @@ CREATE TABLE scheduled_messages (
 CREATE INDEX ON scheduled_messages(phone);
 CREATE INDEX ON scheduled_messages(scheduled_time);
 CREATE INDEX ON scheduled_messages(message_status);
-
--- Log of sent messages
-CREATE TABLE message_logs (
-    id SERIAL PRIMARY KEY,
-    phone VARCHAR(50) NOT NULL,
-    message_type VARCHAR(50) NOT NULL,
-    message_text TEXT,
-    sent_at TIMESTAMPTZ DEFAULT NOW(),
-    status VARCHAR(50) DEFAULT 'sent'
-);
-CREATE INDEX ON message_logs(phone);
 
