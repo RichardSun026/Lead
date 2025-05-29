@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1rem;
+}
+.video iframe {
+  width: 560px;
+  height: 315px;
+  max-width: 100%;
+}
+.calendar iframe {
+  border: 0;
+  width: 800px;
+  height: 600px;
+}
