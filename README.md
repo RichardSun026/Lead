@@ -20,8 +20,21 @@ This repository hosts a monorepo used to experiment with lead generation and boo
    ```
 2. Start the backend in development mode:
    ```bash
-   npm run start:dev
-   ```
+npm run start:dev
+```
+
+To develop or build the front ends:
+
+```bash
+# Example for the landing page app
+cd frontend/site
+npm install        # first-time setup only
+npm run dev        # runs Vite dev server (view at http://localhost:5173)
+
+# Build for production
+npm run build
+npm run preview    # optional: serve the built files locally
+```
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
