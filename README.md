@@ -1,4 +1,4 @@
-instruction for what to do, keep in mind that this is the primary truth, you might find contradicting infroamtion, then use this as the truth.
+instruction for what to do, keep in mind that this is the primary truth, you might find contradicting infroamtion, then use this as the truth. look at the Screenshot 2025-05-29 at 13.30.14.png,
 
 this project will contain 2 pages
  * the main page with the callender video.
