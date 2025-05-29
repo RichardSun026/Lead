@@ -43,17 +43,11 @@ This document outlines the Node.js services found in the `Logic` folder. For eac
   - Reads lead details from the `Leads` table when preparing AI responses
 
 ## Scheduler
-- **Location**: `Logic/Scheduler`
-- **Startup script**: `node Scheduler.js`
-- **Key environment variables**:
-  - `PORT` – port to listen on (default `3001`)
-  - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` – MySQL connection details
-  - `OPENAI_API_KEY` – used to generate follow-up messages
+This functionality is now implemented inside the Nest backend.
+- **Location**: `backend/src/scheduler`
+- **Cron script**: `backend/src/scheduler/cron.ts`
 - **API endpoints**:
-  - `POST /schedule` – schedule a predefined SMS
-  - `POST /schedule-ai-followup` – schedule an AI‑generated follow‑up
-  - `POST /cancel` – cancel pending messages for a phone number
-- **MySQL**:
-  - Stores pending messages in the `scheduled_messages` table
-  - Cron job checks this table every minute and sends due messages using the Messenger service
-  - Updates `Leads.sent_schedule_reminder` when reminders are sent
+  - `POST /schedule` – schedule an SMS with `phone`, `time` and `content` in the body
+  - `POST /schedule/cancel/:phone` – cancel pending messages for a phone number
+- **Database**: uses the `scheduled_messages` table in Supabase
+- A cron job runs the `cron.ts` script to send due messages via Twilio
