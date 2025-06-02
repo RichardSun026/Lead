@@ -16,6 +16,7 @@ export default function App() {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
     console.debug('Parsed path parts', parts);
+
     if (parts.length < 1) {
       setError('Missing realtor id');
       setLoading(false);
