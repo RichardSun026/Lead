@@ -41,8 +41,8 @@ npm run preview    # optional: serve the built files locally
 ```
 
 When running the landing page, navigate to `http://localhost:5173/<realtorUUID>`.
-The development server proxies requests starting with `/api` to the Nest backend on port `3000` so
-both servers can be started independently.
+The user marker portion of the URL is optional and no longer required. The page fetches the
+realtor's video and calendar using the UUID provided in the URL.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
