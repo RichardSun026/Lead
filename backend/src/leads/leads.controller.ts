@@ -10,11 +10,11 @@ import {
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 
-@Controller('leads')
+@Controller()
 export class LeadsController {
   constructor(private readonly leads: LeadsService) {}
 
-  @Post()
+  @Post('leads')
   @HttpCode(201)
   async create(
     @Body('name') name: string,
