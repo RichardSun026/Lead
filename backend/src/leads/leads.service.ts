@@ -21,7 +21,7 @@ export class LeadsService {
 
   async createLead(input: LeadInput): Promise<void> {
     const { data } = await this.client
-      .from('Realtor')
+      .from('realtor')
       .select('realtor_id')
       .eq('uuid', input.realtorUuid)
       .maybeSingle();
@@ -34,7 +34,7 @@ export class LeadsService {
     const [firstName, ...rest] = input.name.trim().split(' ');
     const lastName = rest.join(' ');
 
-    await this.client.from('Leads').upsert({
+    await this.client.from('leads').upsert({
       phone: input.phone,
       realtor_id: realtorId,
       first_name: firstName,
@@ -46,7 +46,7 @@ export class LeadsService {
 
   async findByTracking(tracking: string) {
     const { data } = await this.client
-      .from('Leads')
+      .from('leads')
       .select('first_name,last_name,phone')
       .ilike('tracking_parameters', `%${tracking}%`)
       .order('created_at', { ascending: false })
@@ -62,7 +62,7 @@ export class LeadsService {
   async findRealtor(uuid: string) {
     console.debug('[LeadsService] fetching realtor', uuid);
     const { data, error } = await this.client
-      .from('Realtor')
+      .from('realtor')
       .select('realtor_id,f_name,e_name,video_url,website_url')
       .eq('uuid', uuid)
       .maybeSingle();
