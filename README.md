@@ -40,10 +40,9 @@ npm run build
 npm run preview    # optional: serve the built files locally
 ```
 
-When running the landing page, navigate to `http://localhost:5173/<realtorUUID>/<userMarker>`.
-The `userMarker` value can be generated using the `FinishFacebookInstantForm` script in
-`docs/facebook-form.md`. The page fetches the realtor's video and calendar using the UUID provided
-in the URL.
+When running the landing page, navigate to `http://localhost:5173/<realtorUUID>`.
+The development server proxies requests starting with `/api` to the Nest backend on port `3000` so
+both servers can be started independently.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 

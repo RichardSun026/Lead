@@ -15,8 +15,8 @@ export default function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
-    if (parts.length < 2) {
-      setError('Missing realtor id or user marker');
+    if (parts.length < 1) {
+      setError('Missing realtor id');
       setLoading(false);
       return;
     }
