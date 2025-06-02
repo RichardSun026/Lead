@@ -60,12 +60,21 @@ export class LeadsService {
   }
 
   async findRealtor(uuid: string) {
-    const { data } = await this.client
+    console.debug('[LeadsService] fetching realtor', uuid);
+    const { data, error } = await this.client
       .from('Realtor')
       .select('realtor_id,f_name,e_name,video_url,website_url')
       .eq('uuid', uuid)
       .maybeSingle();
-    if (!data) return null;
+    if (error) {
+      console.error('[LeadsService] Supabase error', error);
+      throw error;
+    }
+    if (!data) {
+      console.debug('[LeadsService] no realtor found for', uuid);
+      return null;
+    }
+    console.debug('[LeadsService] found realtor id', data.realtor_id);
     return {
       realtorId: data.realtor_id,
       name: `${data.f_name} ${data.e_name}`.trim(),

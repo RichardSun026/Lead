@@ -15,18 +15,29 @@ export default function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
-    if (parts.length < 2) {
-      setError('Missing realtor id or user marker');
+    console.debug('Parsed path parts', parts);
+    if (parts.length < 1) {
+      setError('Missing realtor id');
       setLoading(false);
       return;
     }
     const uuid = parts[0];
+    console.debug('Detected realtor uuid', uuid);
     setRealtorUuid(uuid);
 
     fetch(`/api/realtor?uuid=${uuid}`)
-      .then((r) => r.json())
-      .then(setRealtor)
-      .catch(() => setError('Failed to load realtor'))
+      .then((r) => {
+        console.debug('Realtor fetch status', r.status);
+        return r.json();
+      })
+      .then((data) => {
+        console.debug('Realtor fetch response', data);
+        setRealtor(data);
+      })
+      .catch((err) => {
+        console.error('Failed to load realtor', err);
+        setError('Failed to load realtor');
+      })
       .finally(() => setLoading(false));
 
     const tracking = url.searchParams.get('utm_source');
