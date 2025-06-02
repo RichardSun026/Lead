@@ -53,6 +53,11 @@ export class LeadsController {
 
   @Get('realtor')
   async getRealtor(@Query('uuid') uuid: string) {
-    return this.leads.findRealtor(uuid);
+    console.log('[GET /realtor] uuid:', uuid);
+    const realtor = await this.leads.findRealtor(uuid);
+    if (!realtor) {
+      console.warn('[GET /realtor] realtor not found');
+    }
+    return realtor;
   }
 }

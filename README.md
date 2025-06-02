@@ -40,10 +40,9 @@ npm run build
 npm run preview    # optional: serve the built files locally
 ```
 
-When running the landing page, navigate to `http://localhost:5173/<realtorUUID>/<userMarker>`.
-The `userMarker` value can be generated using the `FinishFacebookInstantForm` script in
-`docs/facebook-form.md`. The page fetches the realtor's video and calendar using the UUID provided
-in the URL.
+When running the landing page, navigate to `http://localhost:5173/<realtorUUID>`.
+The user marker portion of the URL is optional and no longer required. The page fetches the
+realtor's video and calendar using the UUID provided in the URL.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
