@@ -1,4 +1,22 @@
 -- ─────────────────────────────────────────────────────────────
+-- drop any old objects that get in the way
+--    (tables first, then ENUMs; CASCADE blows away dependents)
+-- ─────────────────────────────────────────────────────────────
+drop table if exists public.booked    cascade;
+drop table if exists public.leads     cascade;
+drop table if exists public.realtor  cascade;
+
+drop type  if exists lead_state_t      cascade;
+drop type  if exists home_type_t       cascade;
+drop type  if exists home_built_t      cascade;
+drop type  if exists home_worth_t      cascade;
+drop type  if exists sell_time_t       cascade;
+drop type  if exists home_condition_t  cascade;
+drop type  if exists yes_no_t          cascade;
+
+
+
+-- ─────────────────────────────────────────────────────────────
 -- 0. Enable required extensions (uuid generator)
 -- ─────────────────────────────────────────────────────────────
 create extension if not exists "pgcrypto";   -- for gen_random_uuid()
@@ -22,7 +40,7 @@ create type yes_no_t            as enum ('No','Yes');
 -- ─────────────────────────────────────────────────────────────
 
 /* 2-a  Realtors */
-create table public.realtors (
+create table public.realtor (
     realtor_id   bigserial primary key,
     uuid         uuid       not null unique default gen_random_uuid(),
     phone        varchar(50)  not null,
@@ -31,16 +49,16 @@ create table public.realtors (
     video_url    varchar(600),
     email        varchar(255),
     website_url  varchar(600),
-    time_zone 
+    -- time_zone 
     created_at   timestamptz default now()
 );
 
-create index on public.realtors(uuid);
+create index on public.realtor(uuid);
 
 /* 2-b  Leads */
 create table public.leads (
     phone                varchar(50) primary key,
-    realtor_id           bigint      not null references public.realtors(realtor_id) on delete cascade,
+    realtor_id           bigint      not null references public.realtor(realtor_id) on delete cascade,
     first_name           varchar(127),
     last_name            varchar(127),
     address              varchar(255),
@@ -65,7 +83,7 @@ create table public.booked (
     booked_date  date,
     booked_time  time,
     time_zone    varchar(100),
-    realtor_id   bigint not null references public.realtors(realtor_id) on delete cascade,
+    realtor_id   bigint not null references public.realtor(realtor_id) on delete cascade,
     created_at   timestamptz default now()
 );
 
@@ -73,7 +91,7 @@ create table public.booked (
 -- 3. Seed data – four realtors
 --    (HTML in video_url is quoted with $$ to avoid escaping hell)
 -- ─────────────────────────────────────────────────────────────
-insert into public.realtors
+insert into public.realtor
     (uuid, phone, f_name, e_name, video_url, email, website_url)
 values
     ('a1b2c3d4-e5f6-4321-8765-1a2b3c4d5e6f',
