@@ -2,9 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CalendarService, EventInput } from './calendar.service';
 
@@ -26,5 +28,13 @@ export class CalendarController {
     @Body('calendarId') calendarId: string,
   ) {
     return this.calendar.removeEvent(realtorId, calendarId, eventId);
+  }
+
+  @Get(':realtorId/booked')
+  getBooked(
+    @Param('realtorId') realtorId: number,
+    @Query('date') date: string,
+  ) {
+    return this.calendar.getBookedSlots(realtorId, date);
   }
 }

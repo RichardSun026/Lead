@@ -12,7 +12,7 @@ export class SupabaseService {
   private readonly baseUrl = `${process.env.SUPABASE_URL}/rest/v1`;
   private readonly key = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
 
-  private get headers() {
+  get headers() {
     return {
       apikey: this.key,
       Authorization: `Bearer ${this.key}`,
@@ -73,5 +73,12 @@ export class SupabaseService {
       `${this.baseUrl}/google_calendar_events?google_event_id=eq.${googleEventId}`,
       { method: 'DELETE', headers: this.headers },
     );
+  }
+
+  async query(path: string): Promise<unknown> {
+    const res = await fetch(`${this.baseUrl}/${path}`, {
+      headers: this.headers,
+    });
+    return res.json();
   }
 }

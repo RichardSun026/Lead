@@ -43,4 +43,34 @@ export class LeadsService {
       tracking_parameters: input.tracking,
     });
   }
+
+  async findByTracking(tracking: string) {
+    const { data } = await this.client
+      .from('Leads')
+      .select('first_name,last_name,phone')
+      .ilike('tracking_parameters', `%${tracking}%`)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      full_name: `${data.first_name} ${data.last_name}`.trim(),
+      phone: data.phone,
+    };
+  }
+
+  async findRealtor(uuid: string) {
+    const { data } = await this.client
+      .from('Realtor')
+      .select('realtor_id,f_name,e_name,video_url,website_url')
+      .eq('uuid', uuid)
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      realtorId: data.realtor_id,
+      name: `${data.f_name} ${data.e_name}`.trim(),
+      video_url: data.video_url,
+      website_url: data.website_url,
+    };
+  }
 }
