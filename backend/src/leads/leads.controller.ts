@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
   Post,
+  Query,
 } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 
@@ -42,5 +44,15 @@ export class LeadsController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @Get('user')
+  async getUser(@Query('tracking') tracking: string) {
+    return this.leads.findByTracking(tracking);
+  }
+
+  @Get('realtor')
+  async getRealtor(@Query('uuid') uuid: string) {
+    return this.leads.findRealtor(uuid);
   }
 }

@@ -22,8 +22,22 @@ export class BookingService {
     );
   }
 
-  async createBooking(input: BookingInput): Promise<void> {
-    await this.supabase.from('Booked').insert({
+  async getExisting(phone: string) {
+    const { data } = await this.supabase
+      .from('Booked')
+      .select('booked_date, booked_time')
+      .eq('phone', phone)
+      .maybeSingle();
+    if (!data) return null;
+    return {
+      date: data.booked_date as string,
+      time: data.booked_time as string,
+    };
+  }
+
+  async createOrUpdate(input: BookingInput) {
+    const existing = await this.getExisting(input.phone);
+    await this.supabase.from('Booked').upsert({
       phone: input.phone,
       full_name: input.full_name,
       booked_date: input.booked_date,
@@ -34,5 +48,6 @@ export class BookingService {
 
     const msg = `Thanks ${input.full_name}, your appointment is confirmed for ${input.booked_date} at ${input.booked_time} ${input.time_zone}.`;
     await this.messenger.sendSms(input.phone, msg);
+    return { wasRebooking: !!existing };
   }
 }

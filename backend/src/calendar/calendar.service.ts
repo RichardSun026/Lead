@@ -86,4 +86,11 @@ export class CalendarService {
     );
     await this.supabase.removeEvent(eventId);
   }
+
+  async getBookedSlots(realtorId: number, date: string) {
+    const data = (await this.supabase.query(
+      `booked?realtor_id=eq.${realtorId}&booked_date=eq.${date}&select=booked_time`,
+    )) as { booked_time: string }[];
+    return { booked: data.map((r) => r.booked_time) };
+  }
 }
