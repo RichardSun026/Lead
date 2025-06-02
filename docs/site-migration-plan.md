@@ -77,7 +77,7 @@ These endpoints should use Supabase and interact with the Calendar and Scheduler
    cd frontend/site
    npm run dev
    ```
-4. Access the page at `http://localhost:5173/<realtorUuid>/<userMarker>`.
+4. Access the page at `http://localhost:5173/<realtorUuid>`.
 
 Use `npm run master-switch` to start all services together when needed.
 
