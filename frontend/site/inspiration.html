@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Generation - Watch Video</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: #1e1e1e;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: #1a1a1a;
+            padding: 30px 25px 20px;
+            text-align: center;
+            border-bottom: 2px solid #333;
+        }
+
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .header p {
+            font-size: 16px;
+            font-weight: 500;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .video-section {
+            background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #9333EA 100%);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 20px solid white;
+            border-top: 12px solid transparent;
+            border-bottom: 12px solid transparent;
+            margin-left: 4px;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-section {
+            padding: 30px 25px 20px;
+            text-align: center;
+            background: #1a1a1a;
+        }
+
+        .contact-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        .skip-text {
+            font-size: 14px;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+        }
+
+        .calendar-section {
+            background: #1e1e1e;
+            padding: 30px 25px;
+            border-top: 2px solid #333;
+        }
+
+        .calendar-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a0a0a0;
+            padding: 8px;
+            text-transform: uppercase;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+            background: #2a2a2a;
+        }
+
+        .calendar-day:hover {
+            background: #8B5CF6;
+            transform: scale(1.05);
+        }
+
+        .calendar-day.selected {
+            background: #A855F7;
+            color: white;
+            border-color: #8B5CF6;
+        }
+
+        .calendar-day.disabled {
+            color: #555;
+            cursor: not-allowed;
+            background: #1a1a1a;
+        }
+
+        .calendar-day.disabled:hover {
+            transform: none;
+            background: #1a1a1a;
+        }
+
+        .time-slots {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .time-slots.active {
+            display: grid;
+        }
+
+        .time-slot {
+            padding: 12px 16px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .time-slot:hover {
+            background: #8B5CF6;
+            border-color: #A855F7;
+            color: white;
+        }
+
+        .time-slot.selected {
+            background: #A855F7;
+            border-color: #8B5CF6;
+            color: white;
+        }
+
+        .booking-form {
+            display: none;
+            background: #2a2a2a;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .booking-form.active {
+            display: block;
+        }
+
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .btn-book {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .selected-info {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 18px 30px;
+            border-radius: 15px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-calendar {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-calendar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .btn-testimonials {
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-testimonials:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #ffffff 0%, #f1f3f4 100%);
+        }
+
+        .btn-website {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(255, 216, 155, 0.3);
+        }
+
+        .btn-website:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 216, 155, 0.4);
+            background: linear-gradient(135deg, #ffdc9e 0%, #1a5a80 100%);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #a0a0a0;
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #333;
+            border-top: 3px solid #8B5CF6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 25px 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .video-section {
+                padding: 35px 25px;
+            }
+            
+            .contact-section {
+                padding: 25px 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Thank you for filling out the survey!</h1>
+            <p>IMPORTANT!<br>PLEASE WATCH THIS SHORT 1 MINUTE VIDEO</p>
+        </div>
+
+        <div class="video-section">
+            <div class="play-button" onclick="playVideo()">
+                <div class="play-icon"></div>
+            </div>
+            <div class="video-placeholder" id="videoPlaceholder">
+                📹 Video Loading...
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <div class="contact-text">MY TEAM WILL BE IN CONTACT SHORTLY</div>
+            <div class="skip-text">OR Skip the line and schedule a call with me NOW</div>
+
+            <div class="buttons" id="buttons">
+                <button class="btn btn-testimonials" onclick="showTestimonials()">
+                    ⭐ Customer Testimonials
+                </button>
+                
+                <a href="#" class="btn btn-website" onclick="visitWebsite()">
+                    🌐 Visit My Website!
+                </a>
+            </div>
+        </div>
+
+        <div class="calendar-section">
+            <div class="calendar-title">📅 Schedule Your Call</div>
+            
+            <div class="calendar-grid" id="calendar">
+                <div class="calendar-header">Sun</div>
+                <div class="calendar-header">Mon</div>
+                <div class="calendar-header">Tue</div>
+                <div class="calendar-header">Wed</div>
+                <div class="calendar-header">Thu</div>
+                <div class="calendar-header">Fri</div>
+                <div class="calendar-header">Sat</div>
+            </div>
+
+            <div class="time-slots" id="timeSlots">
+                <!-- Time slots will be generated by JavaScript -->
+            </div>
+
+            <div class="booking-form" id="bookingForm">
+                <div class="form-title">Complete Your Booking</div>
+                <div class="selected-info" id="selectedInfo"></div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="firstName">First Name *</label>
+                    <input type="text" id="firstName" class="form-input" placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" class="form-input" placeholder="Enter your last name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="(555) 123-4567" required>
+                </div>
+                
+                <button class="btn-book" onclick="confirmBooking()">
+                    📞 Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let videoPlayed = false;
+        let selectedDate = null;
+        let selectedTime = null;
+
+        // Generate calendar for current month
+        function generateCalendar() {
+            const calendar = document.getElementById('calendar');
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+            
+            // Clear calendar (keep headers)
+            const existingDays = calendar.querySelectorAll('.calendar-day');
+            existingDays.forEach(day => day.remove());
+            
+            // Add empty cells for days before the first day of the month
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day disabled';
+                calendar.appendChild(emptyDay);
+            }
+            
+            // Add days of the month
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                const dayDate = new Date(currentYear, currentMonth, day);
+                
+                // Disable past dates and weekends for this demo
+                if (dayDate < today || dayDate.getDay() === 0 || dayDate.getDay() === 6) {
+                    dayElement.className += ' disabled';
+                } else {
+                    dayElement.onclick = () => selectDate(dayDate, dayElement);
+                }
+                
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        function selectDate(date, element) {
+            // Remove previous selection
+            document.querySelectorAll('.calendar-day.selected').forEach(day => {
+                day.classList.remove('selected');
+            });
+            
+            // Select new date
+            element.classList.add('selected');
+            selectedDate = date;
+            
+            // Generate time slots
+            generateTimeSlots();
+        }
+
+        function generateTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            timeSlotsContainer.classList.add('active');
+            
+            // Generate 15-minute intervals from 9 AM to 6 PM
+            const startHour = 9;
+            const endHour = 18;
+            const intervals = [];
+            
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minute = 0; minute < 60; minute += 15) {
+                    const time = new Date();
+                    time.setHours(hour, minute, 0, 0);
+                    
+                    const timeString = time.toLocaleTimeString('en-US', {
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                    
+                    intervals.push({ time: timeString, value: `${hour}:${minute.toString().padStart(2, '0')}` });
+                }
+            }
+            
+            intervals.forEach(interval => {
+                const timeSlot = document.createElement('div');
+                timeSlot.className = 'time-slot';
+                timeSlot.textContent = interval.time;
+                timeSlot.onclick = () => selectTime(interval.time, interval.value, timeSlot);
+                timeSlotsContainer.appendChild(timeSlot);
+            });
+        }
+
+        function selectTime(timeString, timeValue, element) {
+            // Remove previous time selection
+            document.querySelectorAll('.time-slot.selected').forEach(slot => {
+                slot.classList.remove('selected');
+            });
+            
+            // Select new time
+            element.classList.add('selected');
+            selectedTime = { display: timeString, value: timeValue };
+            
+            // Show booking form
+            showBookingForm();
+        }
+
+        function showBookingForm() {
+            const bookingForm = document.getElementById('bookingForm');
+            const selectedInfo = document.getElementById('selectedInfo');
+            
+            const dateString = selectedDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            selectedInfo.innerHTML = `
+                <strong>📅 ${dateString}</strong><br>
+                <strong>🕐 ${selectedTime.display}</strong>
+            `;
+            
+            bookingForm.classList.add('active');
+            bookingForm.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function confirmBooking() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!firstName || !lastName || !phone) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Here you would integrate with your backend API
+            const bookingData = {
+                date: selectedDate.toISOString().split('T')[0],
+                time: selectedTime.value,
+                firstName: firstName,
+                lastName: lastName,
+                phone: phone,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Booking data:', bookingData);
+            
+            // Simulate API call
+            alert(`Thank you ${firstName}! Your appointment is confirmed for ${selectedDate.toLocaleDateString()} at ${selectedTime.display}. We'll send you a confirmation shortly.`);
+            
+            // Reset form
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('bookingForm').classList.remove('active');
+            document.getElementById('timeSlots').classList.remove('active');
+            
+            // Clear selections
+            document.querySelectorAll('.calendar-day.selected, .time-slot.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+        }
+
+        function playVideo() {
+            const playButton = document.querySelector('.play-button');
+            const videoPlaceholder = document.getElementById('videoPlaceholder');
+            
+            // Hide play button and show video placeholder
+            playButton.style.display = 'none';
+            videoPlaceholder.style.display = 'flex';
+            
+            // Simulate video loading and playing
+            setTimeout(() => {
+                videoPlaceholder.innerHTML = '▶️ Video Playing...';
+                videoPlayed = true;
+                
+                // After video "ends", show completion message
+                setTimeout(() => {
+                    videoPlaceholder.innerHTML = '✅ Video Complete - Thank you for watching!';
+                }, 60000); // 1 minute
+            }, 1000);
+        }
+
+        function showTestimonials() {
+            alert('Customer testimonials would be displayed here!\nYou can create a modal or redirect to a testimonials page.');
+        }
+
+        function visitWebsite() {
+            window.open('https://your-website.com', '_blank');
+        }
+
+        // Initialize calendar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            generateCalendar();
+            
+            // Animate buttons on load
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach((btn, index) => {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    btn.style.transition = 'all 0.5s ease';
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, 300 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>
