@@ -88,9 +88,25 @@ export class CalendarService {
   }
 
   async getBookedSlots(realtorId: number, date: string) {
-    const data = (await this.supabase.query(
+    const booked = (await this.supabase.query(
       `booked?realtor_id=eq.${realtorId}&booked_date=eq.${date}&select=booked_time`,
     )) as { booked_time: string }[];
-    return { booked: data.map((r) => r.booked_time) };
+
+    const start = `${date}T00:00:00`;
+    const end = `${date}T23:59:59`;
+    const events = (await this.supabase.query(
+      `google_calendar_events?realtor_id=eq.${realtorId}&start_time=lte.${end}&end_time=gte.${start}&select=start_time,end_time`,
+    )) as { start_time: string; end_time: string }[];
+
+    const times = new Set(booked.map((b) => b.booked_time));
+    for (const e of events) {
+      const s = new Date(e.start_time);
+      const en = new Date(e.end_time);
+      for (let t = new Date(s); t < en; t.setMinutes(t.getMinutes() + 30)) {
+        times.add(t.toISOString().substring(11, 16));
+      }
+    }
+
+    return { booked: Array.from(times) };
   }
 }

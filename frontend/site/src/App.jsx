@@ -55,17 +55,58 @@ export default function App() {
 
   return (
     <div className="container">
-      <VideoPlayer html={realtor.video_url} />
-      <AppointmentCalendar
-        realtorId={realtor.realtorId}
-        onSelect={(sel) => setSelection({ ...sel, realtorId: realtor.realtorId })}
-      />
-      <BookingForm
-        details={selection}
-        realtorUuid={realtorUuid}
-        onBooked={() => setSelection(null)}
-        user={user}
-      />
+      <header className="header">
+        <h1>Thank you for filling out the survey!</h1>
+        <p>
+          IMPORTANT!
+          <br />
+          PLEASE WATCH THIS SHORT 1 MINUTE VIDEO
+        </p>
+      </header>
+
+      <div className="video-section">
+        <VideoPlayer html={realtor.video_url} />
+      </div>
+
+      <div className="contact-section">
+        <div className="contact-text">MY TEAM WILL BE IN CONTACT SHORTLY</div>
+        <div className="skip-text">
+          OR Skip the line and schedule a call with me NOW
+        </div>
+        <div className="buttons">
+          <button
+            className="btn btn-testimonials"
+            onClick={() => alert('Coming soon!')}
+          >
+            ⭐ Customer Testimonials
+          </button>
+          {realtor.website_url && (
+            <a
+              href={realtor.website_url}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-website"
+            >
+              🌐 Visit My Website!
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="calendar-section">
+        <AppointmentCalendar
+          realtorId={realtor.realtorId}
+          onSelect={(sel) =>
+            setSelection({ ...sel, realtorId: realtor.realtorId })
+          }
+        />
+        <BookingForm
+          details={selection}
+          realtorUuid={realtorUuid}
+          onBooked={() => setSelection(null)}
+          user={user}
+        />
+      </div>
     </div>
   );
 }
