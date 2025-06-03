@@ -1,6 +1,26 @@
 import React from 'react';
 
+/**
+ * Render the provided iframe HTML inside a responsive container. The
+ * HTML coming from the backend includes inline styles that force the
+ * iframe to absolute position itself and fill the page. We strip those
+ * styles so the video stays inside the purple placeholder.
+ */
 export default function VideoPlayer({ html }) {
-  if (!html) return null;
-  return <div className="video" dangerouslySetInnerHTML={{ __html: html }} />;
+  if (!html) return <div className="video" />;
+
+  let sanitized = html;
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const iframe = doc.querySelector('iframe');
+    if (iframe) {
+      iframe.removeAttribute('style');
+      sanitized = iframe.outerHTML;
+    }
+  } catch (err) {
+    console.error('Failed to sanitize video HTML', err);
+  }
+
+  return <div className="video" dangerouslySetInnerHTML={{ __html: sanitized }} />;
 }
