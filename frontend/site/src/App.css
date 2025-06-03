@@ -116,9 +116,10 @@ body {
 }
 
 .calendar-section {
-  background: #1e1e1e;
+  /* Match the surrounding section background and remove the top border */
+  background: inherit;
   padding: 30px 25px;
-  border-top: 2px solid #333;
+  border-top: none;
 }
 
 
