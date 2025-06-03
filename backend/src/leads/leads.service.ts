@@ -52,10 +52,15 @@ export class LeadsService {
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (!data) return null;
+    const typed = data as {
+      first_name: string;
+      last_name: string;
+      phone: string;
+    } | null;
+    if (!typed) return null;
     return {
-      full_name: `${data.first_name} ${data.last_name}`.trim(),
-      phone: data.phone,
+      full_name: `${typed.first_name} ${typed.last_name}`.trim(),
+      phone: typed.phone,
     };
   }
 
@@ -70,16 +75,23 @@ export class LeadsService {
       console.error('[LeadsService] Supabase error', error);
       throw error;
     }
-    if (!data) {
+    const typed = data as {
+      realtor_id: number;
+      f_name: string;
+      e_name: string;
+      video_url: string | null;
+      website_url: string | null;
+    } | null;
+    if (!typed) {
       console.debug('[LeadsService] no realtor found for', uuid);
       return null;
     }
-    console.debug('[LeadsService] found realtor id', data.realtor_id);
+    console.debug('[LeadsService] found realtor id', typed.realtor_id);
     return {
-      realtorId: data.realtor_id,
-      name: `${data.f_name} ${data.e_name}`.trim(),
-      video_url: data.video_url,
-      website_url: data.website_url,
+      realtorId: typed.realtor_id,
+      name: `${typed.f_name} ${typed.e_name}`.trim(),
+      video_url: typed.video_url,
+      website_url: typed.website_url,
     };
   }
 }
