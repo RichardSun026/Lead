@@ -11,14 +11,22 @@ export default function VideoPlayer({ html }) {
 
   let sanitized = html;
   try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const iframe = doc.querySelector('iframe');
-    if (iframe) {
-      iframe.removeAttribute('style');
-      iframe.removeAttribute('width');
-      iframe.removeAttribute('height');
-      sanitized = iframe.outerHTML;
+    if (typeof window !== 'undefined' && typeof DOMParser !== 'undefined') {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const iframe = doc.querySelector('iframe');
+      if (iframe) {
+        iframe.removeAttribute('style');
+        iframe.removeAttribute('width');
+        iframe.removeAttribute('height');
+        sanitized = iframe.outerHTML;
+      }
+    } else {
+      // Fallback for environments without DOMParser
+      sanitized = html
+        .replace(/style="[^"]*"/g, '')
+        .replace(/\swidth="[^"]*"/g, '')
+        .replace(/\sheight="[^"]*"/g, '');
     }
   } catch (err) {
     console.error('Failed to sanitize video HTML', err);
