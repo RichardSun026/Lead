@@ -103,15 +103,6 @@ export default function Callender({ realtorId, onSelect }) {
     });
   }
 
-  const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const dateStr = selectedDate
-    ? selectedDate.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })
-    : '';
 
   return (
     <div className="calendar">
@@ -135,11 +126,6 @@ export default function Callender({ realtorId, onSelect }) {
         {renderDays()}
       </div>
       {selectedDate && (
-        <>
-          <div className="selected-date-display">
-            <div className="selected-date-text">Selected Date</div>
-            <div className="selected-date-value">{dateStr}</div>
-          </div>
           <div className="time-slots">
             {slots.map((t) => (
               <button
@@ -160,7 +146,6 @@ export default function Callender({ realtorId, onSelect }) {
               </button>
             ))}
           </div>
-        </>
       )}
     </div>
   );
