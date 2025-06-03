@@ -260,9 +260,10 @@ body {
 }
 
 .calendar-day.selected {
-  background: #007AFF;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+  border: 2px solid #007AFF;
+  background: transparent;
+  color: #007AFF;
+  border-radius: 50%;
 }
 
 .calendar-day.other-month {
@@ -277,27 +278,9 @@ body {
 }
 
 .calendar-day.today.selected {
-  background: #007AFF;
-  color: white;
-}
-
-.selected-date-display {
-  margin-top: 20px;
-  padding: 16px;
-  background: #1a1a1a;
-  border-radius: 8px;
-  text-align: center;
-  border: 1px solid #404040;
-}
-
-.selected-date-text {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.selected-date-value {
-  font-size: 18px;
-  font-weight: 600;
+  border: 2px solid #007AFF;
+  background: transparent;
   color: #007AFF;
+  border-radius: 50%;
 }
+
