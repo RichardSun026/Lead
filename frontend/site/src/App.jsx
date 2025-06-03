@@ -73,6 +73,20 @@ export default function App() {
         <div className="skip-text">
           OR Skip the line and schedule a call with me NOW
         </div>
+        <div className="calendar-section">
+          <AppointmentCalendar
+            realtorId={realtor.realtorId}
+            onSelect={(sel) =>
+              setSelection({ ...sel, realtorId: realtor.realtorId })
+            }
+          />
+          <BookingForm
+            details={selection}
+            realtorUuid={realtorUuid}
+            onBooked={() => setSelection(null)}
+            user={user}
+          />
+        </div>
         <div className="buttons">
           <button
             className="btn btn-testimonials"
@@ -92,21 +106,6 @@ export default function App() {
           )}
         </div>
       </div>
-
-      <div className="calendar-section">
-        <AppointmentCalendar
-          realtorId={realtor.realtorId}
-          onSelect={(sel) =>
-            setSelection({ ...sel, realtorId: realtor.realtorId })
-          }
-        />
-        <BookingForm
-          details={selection}
-          realtorUuid={realtorUuid}
-          onBooked={() => setSelection(null)}
-          user={user}
-        />
-      </div>
-    </>
+    </div>
   );
 }
