@@ -16,6 +16,8 @@ export default function VideoPlayer({ html }) {
     const iframe = doc.querySelector('iframe');
     if (iframe) {
       iframe.removeAttribute('style');
+      iframe.removeAttribute('width');
+      iframe.removeAttribute('height');
       sanitized = iframe.outerHTML;
     }
   } catch (err) {
