@@ -6,35 +6,11 @@ drop table if exists public.booked    cascade;
 drop table if exists public.leads     cascade;
 drop table if exists public.realtor  cascade;
 
-drop type  if exists lead_state_t      cascade;
-drop type  if exists home_type_t       cascade;
-drop type  if exists home_built_t      cascade;
-drop type  if exists home_worth_t      cascade;
-drop type  if exists sell_time_t       cascade;
-drop type  if exists home_condition_t  cascade;
-drop type  if exists yes_no_t          cascade;
 
 
 
--- ─────────────────────────────────────────────────────────────
--- 0. Enable required extensions (uuid generator)
 -- ─────────────────────────────────────────────────────────────
 create extension if not exists "pgcrypto";   -- for gen_random_uuid()
-
--- ─────────────────────────────────────────────────────────────
--- 1. ENUM types
---    (one type per logical field; reuse across tables)
--- ─────────────────────────────────────────────────────────────
-create type lead_state_t        as enum ('Booked','Hot','Warm','Cold');
-create type home_type_t         as enum ('Single Family','Condo','Townhouse','Mobile Home','Land');
-create type home_built_t        as enum ('2000 or later','1990s','1980s','1970s','1960s','Before 1960');
-create type home_worth_t        as enum ('$300K or less','$300K - $600K','$600K - $900K',
-                                         '$900K - $1.2M','$1.2M or more');
-create type sell_time_t         as enum ('ASAP','1-3 months','3-6 months','6-12 months','12+ months');
-create type home_condition_t    as enum ('Needs nothing','Needs a little work',
-                                         'Needs significant work','Tear down');
-create type yes_no_t            as enum ('No','Yes');
-
 -- ─────────────────────────────────────────────────────────────
 -- 2. Core tables
 -- ─────────────────────────────────────────────────────────────
@@ -62,17 +38,17 @@ create table public.leads (
     first_name           varchar(127),
     last_name            varchar(127),
     address              varchar(255),
-    lead_state           lead_state_t,
-    home_type            home_type_t,
-    home_built           home_built_t,
-    home_worth           home_worth_t,
-    sell_time            sell_time_t,
-    home_condition       home_condition_t,
-    working_with_agent   yes_no_t,
-    looking_to_buy       yes_no_t,
+    lead_state           varchar(20),
+    home_type            varchar(50),
+    home_built           varchar(50),
+    home_worth           varchar(50),
+    sell_time            varchar(50),
+    home_condition       varchar(50),
+    working_with_agent   boolean,
+    looking_to_buy       boolean,
     ad_id                varchar(50),
     tracking_parameters  varchar(255),
-    sent_schedule_reminder yes_no_t default 'No',
+    sent_schedule_reminder boolean default false,
     created_at           timestamptz default now()
 );
 
