@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import VideoPlayer from './components/VideoPlayer';
-import AppointmentCalendar from './components/AppointmentCalendar';
+import Callender from './components/Callender';
 import BookingForm from './components/BookingForm';
 
 export default function App() {
@@ -74,7 +74,7 @@ export default function App() {
           OR Skip the line and schedule a call with me NOW
         </div>
         <div className="calendar-section">
-          <AppointmentCalendar
+          <Callender
             realtorId={realtor.realtorId}
             onSelect={(sel) =>
               setSelection({ ...sel, realtorId: realtor.realtorId })
