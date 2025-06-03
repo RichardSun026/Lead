@@ -25,18 +25,30 @@ export default function AppointmentCalendar({ realtorId, onSelect }) {
       .catch(() => setBooked([]));
   }, [date, realtorId]);
 
+  const format = (t) =>
+    new Date(`1970-01-01T${t}:00`).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+    });
+
   return (
-    <div>
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+    <div className="calendar">
+      <input
+        className="date-input"
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+      />
       {date && (
-        <div className="slots">
+        <div className="time-slots">
           {slots.map((t) => (
             <button
               key={t}
+              className="time-slot"
               disabled={booked.includes(t)}
               onClick={() => onSelect({ date, time: t })}
             >
-              {t}
+              {format(t)}
             </button>
           ))}
         </div>

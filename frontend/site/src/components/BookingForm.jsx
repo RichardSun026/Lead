@@ -39,11 +39,39 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
   if (!details) return null;
 
   return (
-    <form onSubmit={submit} className="form">
-      <input name="name" value={form.name} onChange={handle} placeholder="Name" />
-      <input name="phone" value={form.phone} onChange={handle} placeholder="Phone" />
-      <input name="email" value={form.email} onChange={handle} placeholder="Email" />
-      <button type="submit">Book {details.date} {details.time}</button>
+    <form onSubmit={submit} className="booking-form">
+      <div className="form-group">
+        <input
+          className="form-input"
+          name="name"
+          value={form.name}
+          onChange={handle}
+          placeholder="Name"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          className="form-input"
+          name="phone"
+          value={form.phone}
+          onChange={handle}
+          placeholder="Phone"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <input
+          className="form-input"
+          name="email"
+          value={form.email}
+          onChange={handle}
+          placeholder="Email"
+        />
+      </div>
+      <button type="submit" className="btn-book">
+        Confirm {details.date} {details.time}
+      </button>
       {status && <p>{status}</p>}
     </form>
   );
