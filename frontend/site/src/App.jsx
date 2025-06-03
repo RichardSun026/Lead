@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import VideoPlayer from './components/VideoPlayer';
-import AppointmentCalendar from './components/AppointmentCalendar';
+import Callender from './components/Callender';
 import BookingForm from './components/BookingForm';
 
 export default function App() {
@@ -54,7 +54,7 @@ export default function App() {
   if (!realtor) return <p>No realtor found</p>;
 
   return (
-    <div className="container">
+    <>
       <header className="header">
         <h1>Thank you for filling out the survey!</h1>
         <p>
@@ -72,6 +72,20 @@ export default function App() {
         <div className="contact-text">MY TEAM WILL BE IN CONTACT SHORTLY</div>
         <div className="skip-text">
           OR Skip the line and schedule a call with me NOW
+        </div>
+        <div className="calendar-section">
+          <Callender
+            realtorId={realtor.realtorId}
+            onSelect={(sel) =>
+              setSelection({ ...sel, realtorId: realtor.realtorId })
+            }
+          />
+          <BookingForm
+            details={selection}
+            realtorUuid={realtorUuid}
+            onBooked={() => setSelection(null)}
+            user={user}
+          />
         </div>
         <div className="buttons">
           <button
@@ -92,21 +106,6 @@ export default function App() {
           )}
         </div>
       </div>
-
-      <div className="calendar-section">
-        <AppointmentCalendar
-          realtorId={realtor.realtorId}
-          onSelect={(sel) =>
-            setSelection({ ...sel, realtorId: realtor.realtorId })
-          }
-        />
-        <BookingForm
-          details={selection}
-          realtorUuid={realtorUuid}
-          onBooked={() => setSelection(null)}
-          user={user}
-        />
-      </div>
-    </div>
+      </>
   );
 }
