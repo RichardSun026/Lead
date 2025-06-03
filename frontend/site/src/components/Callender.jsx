@@ -97,7 +97,7 @@ export default function Callender({ realtorId, onSelect }) {
           key={idx}
           className={`calendar-day${c.other ? ' other-month' : ''}$
             {isToday ? ' today' : ''}${selected ? ' selected' : ''}`}
-          onClick={() => selectDate(c.year, c.month, c.day)}
+          onClick={!c.other ? () => selectDate(c.year, c.month, c.day) : undefined}
         >
           {c.day}
         </div>
