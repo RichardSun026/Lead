@@ -18,6 +18,8 @@ export default function Callender({ realtorId, onSelect }) {
   const [booked, setBooked] = useState([]);
   const slots = generateSlots();
 
+  const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
   useEffect(() => {
     if (!selectedDate || !realtorId) return;
     const dateStr = selectedDate.toISOString().split('T')[0];
