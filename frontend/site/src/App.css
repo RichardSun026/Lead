@@ -116,15 +116,6 @@ body {
   border-top: 2px solid #333;
 }
 
-.date-input {
-  width: 100%;
-  padding: 12px 15px;
-  background: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #333;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
 
 .time-slots {
   display: grid;
@@ -185,3 +176,123 @@ body {
   cursor: pointer;
 }
 
+
+.calendar {
+  background: #2a2a2a;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid #404040;
+  max-width: 350px;
+  width: 100%;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.calendar-nav {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.calendar-nav:hover {
+  background: #404040;
+}
+
+.calendar-month {
+  font-weight: 600;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  padding: 8px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+}
+
+.calendar-day:hover {
+  background: #404040;
+  transform: scale(1.05);
+}
+
+.calendar-day.selected {
+  background: #007AFF;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+}
+
+.calendar-day.other-month {
+  color: #555;
+}
+
+.calendar-day.today {
+  background: rgba(0, 122, 255, 0.15);
+  border: 1px solid #007AFF;
+  color: #007AFF;
+  font-weight: 600;
+}
+
+.calendar-day.today.selected {
+  background: #007AFF;
+  color: white;
+}
+
+.selected-date-display {
+  margin-top: 20px;
+  padding: 16px;
+  background: #1a1a1a;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #404040;
+}
+
+.selected-date-text {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.selected-date-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #007AFF;
+}
