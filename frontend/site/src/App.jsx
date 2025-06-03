@@ -54,7 +54,7 @@ export default function App() {
   if (!realtor) return <p>No realtor found</p>;
 
   return (
-    <div className="container">
+    <>
       <header className="header">
         <h1>Thank you for filling out the survey!</h1>
         <p>
@@ -107,6 +107,6 @@ export default function App() {
           user={user}
         />
       </div>
-    </div>
+    </>
   );
 }

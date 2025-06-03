@@ -10,20 +10,9 @@ body {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   color: white;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  padding: 0;
 }
 
-.container {
-  max-width: 400px;
-  width: 100%;
-  background: #1e1e1e;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-}
 
 .header {
   background: #1a1a1a;
@@ -196,9 +185,3 @@ body {
   cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .container {
-    margin: 10px;
-    border-radius: 15px;
-  }
-}
