@@ -58,18 +58,14 @@ body {
  and does not take over the whole page when it loads.
 */
 .video {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
+  width: 100%;
 }
 
 .video iframe {
-  position: absolute !important;
-  top: 0;
-  left: 0;
   width: 100% !important;
-  height: 100% !important;
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  display: block;
   border: none;
 }
 
