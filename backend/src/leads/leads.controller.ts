@@ -21,9 +21,18 @@ export class LeadsController {
     @Body('phone') phone: string,
     @Body('email') email: string,
     @Body('realtorUuid') realtorUuid: string,
-    @Body('tracking') tracking: string,
+    @Body('zipcode') zipcode: string,
+    @Body('homeType') homeType: string,
+    @Body('bedrooms') bedrooms: string,
+    @Body('bathrooms') bathrooms: string,
+    @Body('sqft') sqft: string,
+    @Body('yearBuilt') yearBuilt: string,
+    @Body('occupancy') occupancy: string,
+    @Body('timeframe') timeframe: string,
+    @Body('professional') professional: string,
+    @Body('expert') expert: string,
   ) {
-    if (!name || !phone || !email) {
+    if (!name || !phone) {
       throw new HttpException(
         'Missing required fields',
         HttpStatus.BAD_REQUEST,
@@ -35,7 +44,16 @@ export class LeadsController {
         phone,
         email,
         realtorUuid,
-        tracking,
+        zipcode,
+        homeType,
+        bedrooms,
+        bathrooms,
+        sqft,
+        yearBuilt,
+        occupancy,
+        timeframe,
+        professional,
+        expert,
       });
       return { status: 'ok' };
     } catch {
@@ -47,8 +65,8 @@ export class LeadsController {
   }
 
   @Get('user')
-  async getUser(@Query('tracking') tracking: string) {
-    return this.leads.findByTracking(tracking);
+  async getUser(@Query('phone') phone: string) {
+    return this.leads.findByPhone(phone);
   }
 
   @Get('realtor')
