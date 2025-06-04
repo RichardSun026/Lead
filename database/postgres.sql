@@ -35,8 +35,8 @@ create index on public.realtor(uuid);
 create table public.leads (
     phone                varchar(50) primary key,
     realtor_id           bigint      not null references public.realtor(realtor_id) on delete cascade,
-    first_name           varchar(127),
-    last_name            varchar(127),
+    name            varchar(127),
+    email            varchar(127),
     address              varchar(255),
     lead_state           varchar(20),
     home_type            varchar(50),
@@ -54,7 +54,7 @@ create table public.leads (
 /* 2-c  Booked calls / appointments */
 create table public.booked (
     phone        varchar(50) primary key references public.leads(phone) on delete cascade,
-    full_name    varchar(255) not null,
+    name    varchar(255) not null,
     booked_date  date,
     booked_time  time,
     time_zone    varchar(100),
