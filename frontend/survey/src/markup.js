@@ -276,8 +276,8 @@ export const surveyMarkup = `
 
             <div class="navigation-buttons">
                 <button type="button" class="nav-btn next-btn" id="nextBtn">Next</button>
-                <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>Previous</button>
                 <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">Get My Free Estimate</button>
+                <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>Previous</button>
             </div>
 
             <div id="successMessage" class="success-message" style="display: none;"></div>

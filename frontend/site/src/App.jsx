@@ -3,7 +3,6 @@ import './App.css';
 import VideoPlayer from './components/VideoPlayer';
 import Callender from './components/Callender';
 import BookingForm from './components/BookingForm';
-import CustomerTestimonials from './components/CustomerTestimonials';
 
 export default function App() {
   const [realtor, setRealtor] = useState(null);
@@ -89,6 +88,12 @@ export default function App() {
           />
         </div>
         <div className="buttons">
+          <button
+            className="btn btn-testimonials"
+            onClick={() => alert('Coming soon!')}
+          >
+            ⭐ Customer Testimonials
+          </button>
           {realtor.website_url && (
             <a
               href={realtor.website_url}
@@ -101,7 +106,6 @@ export default function App() {
           )}
         </div>
       </div>
-      <CustomerTestimonials />
       </>
   );
 }
