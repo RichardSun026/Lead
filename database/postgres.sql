@@ -47,7 +47,6 @@ create table public.leads (
     working_with_agent   boolean,
     looking_to_buy       boolean,
     ad_id                varchar(50),
-    tracking_parameters  varchar(255),
     sent_schedule_reminder boolean default false,
     created_at           timestamptz default now()
 );

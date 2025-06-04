@@ -207,7 +207,7 @@ export default function App() {
       }
 
       window.location.href =
-        `http://192.168.68.82:5173/${realtorUuid}/${encodeURIComponent(
+        `${process.env.SITE_URL}/${realtorUuid}/${encodeURIComponent(
           phone
         )}`;
     });
