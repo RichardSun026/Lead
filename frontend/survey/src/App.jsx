@@ -4,6 +4,11 @@ import './App.css';
 
 export default function App() {
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const parts = url.pathname.split('/').filter(Boolean);
+    const realtorUuid = parts[0] || '';
+    const tracking = url.searchParams.get('utm_source') || '';
+
     const form = document.getElementById('surveyForm');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -170,36 +175,41 @@ export default function App() {
       });
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!canProceed()) {
         alert('Please fill in all required fields.');
         return;
       }
 
-      const successMessage = document.getElementById('successMessage');
       submitBtn.innerHTML = 'Processing...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        if (shouldRedirectToRealtor) {
-          successMessage.innerHTML = `
-                        <strong>Thank you!</strong> Redirecting you to speak with a trusted local expert...
-                        <br><br>
-                        <em>In a real application, you would be redirected to the realtor website now.</em>
-                    `;
-          successMessage.style.display = 'block';
-        } else {
-          successMessage.innerHTML = `
-                        <strong>Thank you!</strong> An agent may contact you shortly to help provide a more accurate estimate based on your property.
-                    `;
-          successMessage.style.display = 'block';
-        }
+      const formData = new FormData(form);
+      const name = formData.get('fullName');
+      const phone = formData.get('phone');
+      const email = formData.get('email') || '';
 
-        submitBtn.innerHTML = 'Get My Free Estimate';
-        submitBtn.disabled = false;
-        document.querySelector('.navigation-buttons').style.display = 'none';
-      }, 1500);
+      try {
+        await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            phone,
+            email,
+            realtorUuid,
+            tracking,
+          }),
+        });
+      } catch (err) {
+        console.error('Failed to create lead', err);
+      }
+
+      window.location.href =
+        `http://192.168.68.82:5173/${realtorUuid}/${encodeURIComponent(
+          phone
+        )}`;
     });
 
     showQuestion(1);
