@@ -7,7 +7,6 @@ export default function App() {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
     const realtorUuid = parts[0] || '';
-    const tracking = url.searchParams.get('utm_source') || '';
 
     const form = document.getElementById('surveyForm');
     const prevBtn = document.getElementById('prevBtn');
@@ -189,6 +188,16 @@ export default function App() {
       const name = formData.get('fullName');
       const phone = formData.get('phone');
       const email = formData.get('email') || '';
+      const zipcode = formData.get('zipcode') || '';
+      const homeType = formData.get('homeType') || '';
+      const bedrooms = formData.get('bedrooms') || '';
+      const bathrooms = formData.get('bathrooms') || '';
+      const sqft = formData.get('sqft') || '';
+      const yearBuilt = formData.get('yearBuilt') || '';
+      const occupancy = formData.get('occupancy') || '';
+      const timeframe = formData.get('timeframe') || '';
+      const professional = formData.get('professional') || '';
+      const expert = formData.get('expert') || '';
 
       try {
         await fetch('/api/leads', {
@@ -199,7 +208,16 @@ export default function App() {
             phone,
             email,
             realtorUuid,
-            tracking,
+            zipcode,
+            homeType,
+            bedrooms,
+            bathrooms,
+            sqft,
+            yearBuilt,
+            occupancy,
+            timeframe,
+            professional,
+            expert,
           }),
         });
       } catch (err) {

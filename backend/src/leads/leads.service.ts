@@ -6,7 +6,16 @@ interface LeadInput {
   phone: string;
   email: string;
   realtorUuid: string;
-  tracking: string;
+  zipcode?: string;
+  homeType?: string;
+  bedrooms?: string;
+  bathrooms?: string;
+  sqft?: string;
+  yearBuilt?: string;
+  occupancy?: string;
+  timeframe?: string;
+  professional?: string;
+  expert?: string;
 }
 
 @Injectable()
@@ -40,17 +49,26 @@ export class LeadsService {
       first_name: firstName,
       last_name: lastName,
       email: input.email,
-      tracking_parameters: input.tracking,
+      address: input.zipcode,
+      lead_state: 'cold',
+      home_type: input.homeType,
+      home_built: input.yearBuilt,
+      bedrooms: input.bedrooms,
+      bathrooms: input.bathrooms,
+      sqft: input.sqft,
+      occupancy: input.occupancy,
+      sell_time: input.timeframe,
+      working_with_agent:
+        input.professional?.toLowerCase() === 'yes' ? true : false,
+      looking_to_buy: input.expert?.toLowerCase() === 'yes' ? true : false,
     });
   }
 
-  async findByTracking(tracking: string) {
+  async findByPhone(phone: string) {
     const { data } = await this.client
       .from('leads')
       .select('first_name,last_name,phone')
-      .ilike('tracking_parameters', `%${tracking}%`)
-      .order('created_at', { ascending: false })
-      .limit(1)
+      .eq('phone', phone)
       .maybeSingle();
     const lead = data as {
       first_name: string;
