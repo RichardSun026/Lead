@@ -18,7 +18,8 @@ drop type if exists public.changes_enum cascade;
 drop type if exists public.timeframe_enum cascade;
 drop type if exists public.professional_enum cascade;
 drop type if exists public.expert_enum cascade;
-
+drop type if exists public.working_with_agent_enum cascade;
+drop type if exists public.looking_to_buy_enum cascade;
 
 
 
@@ -60,8 +61,8 @@ create type public.timeframe_enum as enum (
     'year-plus',
     'not-sure'
 );
-create type public.professional_enum as enum ('yes','no');
-create type public.expert_enum as enum ('yes','no');
+create type public.working_with_agent_enum as enum ('yes','no');
+create type public.looking_to_buy_enum as enum ('yes','no');
 -- ─────────────────────────────────────────────────────────────
 -- 2. Core tables
 -- ─────────────────────────────────────────────────────────────
@@ -99,10 +100,8 @@ create table public.leads (
     occupancy            public.occupancy_enum,
     willing_to_sell      public.changes_enum,
     sell_time            public.timeframe_enum,
-    professional         public.professional_enum,
-    expert               public.expert_enum,
-    working_with_agent   boolean,
-    looking_to_buy       boolean,
+    working_with_agent   public.working_with_agent_enum,
+    looking_to_buy       public.looking_to_buy_enum,
     ad_id                varchar(50),
     sent_schedule_reminder boolean default false,
     created_at           timestamptz default now()

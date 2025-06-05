@@ -260,7 +260,7 @@ export default function App() {
       }
 
       if (true) { // Replace with actual condition to check if redirect is needed
-        const siteUrl = import.meta.env.SITE_URL || "http://169.254.229.17:5174";
+        const siteUrl = import.meta.env.SITE_URL || "http://localhost:5174";
         window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
       } else {
         document.getElementById('successMessage').textContent =
