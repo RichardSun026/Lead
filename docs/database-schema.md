@@ -22,17 +22,21 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `realtor_id` – references `Realtor`
 - `first_name`
 - `last_name`
-- `address`
+- `address` – typically ZIP code
 - `lead_state` – booked/hot/warm/cold
-- `home_type` – e.g. single family, condo
-- `home_built`
-- `home_worth`
-- `sell_time`
-- `home_condition`
+- `home_type` – `home_type_enum`
+- `bedrooms` – `bedrooms_enum`
+- `bathrooms` – `bathrooms_enum`
+- `sqft` – `sqft_enum`
+- `home_built` – `year_built_enum`
+- `occupancy` – `occupancy_enum`
+- `willing_to_sell` – `changes_enum`
+- `sell_time` – `timeframe_enum`
+- `professional` – `professional_enum`
+- `expert` – `expert_enum`
 - `working_with_agent`
 - `looking_to_buy`
 - `ad_id`
-- `tracking_parameters`
 - `sent_schedule_reminder`
 - `created_at`
 

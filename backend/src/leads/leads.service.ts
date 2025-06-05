@@ -113,15 +113,10 @@ export class LeadsService {
     };
   }
 
-  async getInfoForAgent(
-    phone: string,
-  ): Promise<
-    | {
-        realtorName: string;
-        answers: { question: string; answer: string }[];
-      }
-    | null
-  > {
+  async getInfoForAgent(phone: string): Promise<{
+    realtorName: string;
+    answers: { question: string; answer: string }[];
+  } | null> {
     const { data } = await this.client
       .from('leads')
       .select(
@@ -149,7 +144,8 @@ export class LeadsService {
       ? `${lead.realtor.f_name ?? ''} ${lead.realtor.e_name ?? ''}`.trim()
       : 'the realtor';
 
-    const bool = (v?: boolean) => (v === true ? 'Yes' : v === false ? 'No' : '');
+    const bool = (v?: boolean) =>
+      v === true ? 'Yes' : v === false ? 'No' : '';
 
     const answers = [
       { question: 'ZIP code', answer: lead.address ?? '' },
