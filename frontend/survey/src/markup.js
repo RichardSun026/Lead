@@ -12,7 +12,15 @@ export const surveyMarkup = `
             <!-- Question 1 -->
             <div class="question-group" id="q1">
                 <label class="question-label">What is your ZIP code? <span class="required">*</span></label>
-                <input type="text" name="zipcode" required placeholder="Enter ZIP code">
+                <input
+                    type="text"
+                    name="zipcode"
+                    required
+                    placeholder="Enter ZIP code"
+                    inputmode="numeric"
+                    pattern="\\d{5}(-\\d{4})?"
+                    maxlength="10"
+                >
             </div>
 
             <!-- Question 2 -->
@@ -265,7 +273,15 @@ export const surveyMarkup = `
                     </div>
                     <div class="contact-field">
                         <label>Phone Number <span class="required">*</span></label>
-                        <input type="text" name="phone" required placeholder="(555) 123-4567">
+                        <input
+                            type="text"
+                            name="phone"
+                            required
+                            placeholder="(555) 123-4567"
+                            inputmode="tel"
+                            pattern="\(\\d{3}\) \\d{3}-\\d{4}"
+                            maxlength="14"
+                        >
                     </div>
                     <div class="contact-field">
                         <label>Email Address (optional)</label>
