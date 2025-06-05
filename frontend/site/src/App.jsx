@@ -11,6 +11,7 @@ export default function App() {
   const [selection, setSelection] = useState(null);
   const [user, setUser] = useState(null);
   const [realtorUuid, setRealtorUuid] = useState('');
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -24,6 +25,22 @@ export default function App() {
     const uuid = parts[0];
     console.debug('Detected realtor uuid', uuid);
     setRealtorUuid(uuid);
+
+    if (parts.length >= 2) {
+      const phone = decodeURIComponent(parts[1]);
+      fetch(`/api/user?phone=${phone}`)
+        .then((r) => r.json())
+        .then(setUser)
+        .catch(() => {});
+    } else {
+      const tracking = url.searchParams.get('utm_source');
+      if (tracking) {
+        fetch(`/api/user?tracking=${tracking}`)
+          .then((r) => r.json())
+          .then(setUser)
+          .catch(() => {});
+      }
+    }
 
     fetch(`/api/realtor?uuid=${uuid}`)
       .then((r) => {
@@ -39,15 +56,27 @@ export default function App() {
         setError('Failed to load realtor');
       })
       .finally(() => setLoading(false));
-
-    const tracking = url.searchParams.get('utm_source');
-    if (tracking) {
-      fetch(`/api/user?tracking=${tracking}`)
-        .then((r) => r.json())
-        .then(setUser)
-        .catch(() => {});
-    }
   }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(
+      () => {
+        if (!bookingConfirmed && user?.phone) {
+          fetch('/api/schedule', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: user.phone,
+              time: new Date().toISOString(),
+              content: 'Need help booking? Reply BOOK to schedule now.',
+            }),
+          });
+        }
+      },
+      5 * 60 * 1000,
+    );
+    return () => clearTimeout(timer);
+  }, [bookingConfirmed, user]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
@@ -83,7 +112,15 @@ export default function App() {
           <BookingForm
             details={selection}
             realtorUuid={realtorUuid}
-            onBooked={() => setSelection(null)}
+            onBooked={() => {
+              setSelection(null);
+              setBookingConfirmed(true);
+              if (selection) {
+                alert(
+                  `Thank you for booking a meeting with ${realtor.name} at ${selection.date} ${selection.time}. ${realtor.name} will soon enter contact with you.`,
+                );
+              }
+            }}
             user={user}
           />
         </div>
@@ -106,6 +143,6 @@ export default function App() {
           )}
         </div>
       </div>
-      </>
+    </>
   );
 }

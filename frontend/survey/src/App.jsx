@@ -71,7 +71,8 @@ export default function App() {
         q.classList.add('hidden');
       });
 
-      const questionId = stepNumber === 'contact' ? 'contactInfo' : `q${stepNumber}`;
+      const questionId =
+        stepNumber === 'contact' ? 'contactInfo' : `q${stepNumber}`;
       const currentQuestion = document.getElementById(questionId);
       if (currentQuestion) {
         currentQuestion.classList.remove('hidden');
@@ -96,11 +97,14 @@ export default function App() {
     }
 
     function getCurrentStepValue() {
-      const currentQuestionId = currentStep === 'contact' ? 'contactInfo' : `q${currentStep}`;
+      const currentQuestionId =
+        currentStep === 'contact' ? 'contactInfo' : `q${currentStep}`;
       const currentQuestion = document.getElementById(currentQuestionId);
       if (!currentQuestion) return null;
 
-      const radioInput = currentQuestion.querySelector('input[type="radio"]:checked');
+      const radioInput = currentQuestion.querySelector(
+        'input[type="radio"]:checked',
+      );
       if (radioInput) return radioInput.value;
 
       const textInput = currentQuestion.querySelector('input[type="text"]');
@@ -110,21 +114,29 @@ export default function App() {
     }
 
     function canProceed() {
-      const currentQuestionId = currentStep === 'contact' ? 'contactInfo' : `q${currentStep}`;
+      const currentQuestionId =
+        currentStep === 'contact' ? 'contactInfo' : `q${currentStep}`;
       const currentQuestion = document.getElementById(currentQuestionId);
       if (!currentQuestion) return false;
 
       if (currentQuestionId === 'contactInfo') {
-        const requiredFields = currentQuestion.querySelectorAll('input[required]');
-        return Array.from(requiredFields).every((field) => field.value.trim() !== '');
+        const requiredFields =
+          currentQuestion.querySelectorAll('input[required]');
+        return Array.from(requiredFields).every(
+          (field) => field.value.trim() !== '',
+        );
       }
 
-      const radioChecked = currentQuestion.querySelector('input[type="radio"]:checked');
+      const radioChecked = currentQuestion.querySelector(
+        'input[type="radio"]:checked',
+      );
       if (currentQuestion.querySelector('input[type="radio"]')) {
         return radioChecked !== null;
       }
 
-      const textInput = currentQuestion.querySelector('input[type="text"][required]');
+      const textInput = currentQuestion.querySelector(
+        'input[type="text"][required]',
+      );
       if (textInput) {
         return textInput.value.trim() !== '';
       }
@@ -224,10 +236,28 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
-      window.location.href =
-        `${process.env.SITE_URL}/${realtorUuid}/${encodeURIComponent(
-          phone
-        )}`;
+      if (shouldRedirectToRealtor) {
+        window.location.href = `${process.env.SITE_URL}/${realtorUuid}/${encodeURIComponent(phone)}`;
+      } else {
+        document.getElementById('successMessage').textContent =
+          'Thank you! A realtor will contact you soon.';
+        document.getElementById('successMessage').style.display = 'block';
+        await fetch('/api/schedule', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            time: new Date().toISOString(),
+            phone,
+            content:
+              'Thanks for reaching out! A realtor will contact you soon.',
+          }),
+        });
+        await fetch('/api/message', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone, message: 'New lead', followUp: true }),
+        });
+      }
     });
 
     showQuestion(1);

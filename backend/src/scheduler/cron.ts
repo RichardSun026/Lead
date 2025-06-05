@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { createClient } from '@supabase/supabase-js';
 import { Twilio } from 'twilio';
 
@@ -26,7 +26,7 @@ export async function handler(): Promise<void> {
     return;
   }
 
-  for (const row of (data ?? []) as any[]) {
+  for (const row of data ?? []) {
     try {
       await twilio.messages.create({
         body: row.message_text ?? '',

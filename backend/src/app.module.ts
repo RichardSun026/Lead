@@ -22,7 +22,6 @@ import { MessengerService } from './messenger/messenger.service';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
 
-
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
 
