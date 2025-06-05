@@ -45,7 +45,10 @@ export class LeadsService {
     console.debug('[LeadsService] realtorId', realtorId);
 
     if (!realtorId) {
-      console.error('[LeadsService] invalid realtor for uuid', input.realtorUuid);
+      console.error(
+        '[LeadsService] invalid realtor for uuid',
+        input.realtorUuid,
+      );
       throw new Error('Invalid realtor');
     }
 
@@ -68,9 +71,16 @@ export class LeadsService {
       sqft: input.sqft,
       occupancy: input.occupancy,
       sell_time: input.timeframe,
-      working_with_agent:
-        input.professional?.toLowerCase() === 'yes' ? true : false,
-      looking_to_buy: input.expert?.toLowerCase() === 'yes' ? true : false,
+      working_with_agent: input.professional
+        ? input.professional.toLowerCase() === 'yes'
+          ? 'yes'
+          : 'no'
+        : undefined,
+      looking_to_buy: input.expert
+        ? input.expert.toLowerCase() === 'yes'
+          ? 'yes'
+          : 'no'
+        : undefined,
     };
     console.debug('[LeadsService] upserting lead', leadRecord);
 
@@ -155,8 +165,8 @@ export class LeadsService {
         home_built?: string;
         occupancy?: string;
         sell_time?: string;
-        working_with_agent?: boolean;
-        looking_to_buy?: boolean;
+        working_with_agent?: string;
+        looking_to_buy?: string;
         realtor?: { f_name?: string; e_name?: string } | null;
       } | null) ?? null;
     if (!lead) return null;
@@ -165,8 +175,14 @@ export class LeadsService {
       ? `${lead.realtor.f_name ?? ''} ${lead.realtor.e_name ?? ''}`.trim()
       : 'the realtor';
 
-    const bool = (v?: boolean) =>
-      v === true ? 'Yes' : v === false ? 'No' : '';
+    const bool = (v?: string) => {
+      if (!v) return '';
+      return v.toLowerCase() === 'yes'
+        ? 'Yes'
+        : v.toLowerCase() === 'no'
+          ? 'No'
+          : '';
+    };
 
     const answers = [
       { question: 'ZIP code', answer: lead.address ?? '' },
