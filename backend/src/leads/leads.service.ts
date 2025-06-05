@@ -29,21 +29,31 @@ export class LeadsService {
   }
 
   async createLead(input: LeadInput): Promise<void> {
-    const { data } = await this.client
+    console.debug('[LeadsService] createLead called with', input);
+
+    const { data, error: realtorErr } = await this.client
       .from('realtor')
       .select('realtor_id')
       .eq('uuid', input.realtorUuid)
       .maybeSingle();
+    if (realtorErr) {
+      console.error('[LeadsService] failed to fetch realtor', realtorErr);
+      throw realtorErr;
+    }
+
     const realtorId = (data as { realtor_id: number } | null)?.realtor_id;
+    console.debug('[LeadsService] realtorId', realtorId);
 
     if (!realtorId) {
+      console.error('[LeadsService] invalid realtor for uuid', input.realtorUuid);
       throw new Error('Invalid realtor');
     }
 
     const [firstName, ...rest] = input.name.trim().split(' ');
     const lastName = rest.join(' ');
+    console.debug('[LeadsService] parsed name', { firstName, lastName });
 
-    await this.client.from('leads').upsert({
+    const leadRecord = {
       phone: input.phone,
       realtor_id: realtorId,
       first_name: firstName,
@@ -61,7 +71,18 @@ export class LeadsService {
       working_with_agent:
         input.professional?.toLowerCase() === 'yes' ? true : false,
       looking_to_buy: input.expert?.toLowerCase() === 'yes' ? true : false,
-    });
+    };
+    console.debug('[LeadsService] upserting lead', leadRecord);
+
+    const { error: upsertError } = await this.client
+      .from('leads')
+      .upsert(leadRecord);
+    if (upsertError) {
+      console.error('[LeadsService] failed to upsert lead', upsertError);
+      throw upsertError;
+    }
+
+    console.debug('[LeadsService] lead saved successfully');
   }
 
   async findByPhone(phone: string) {

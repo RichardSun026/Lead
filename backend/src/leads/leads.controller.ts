@@ -32,6 +32,12 @@ export class LeadsController {
     @Body('professional') professional: string,
     @Body('expert') expert: string,
   ) {
+    console.debug('[LeadsController] received create lead request', {
+      name,
+      phone,
+      email,
+      realtorUuid,
+    });
     if (!name || !phone) {
       throw new HttpException(
         'Missing required fields',
@@ -44,6 +50,7 @@ export class LeadsController {
     }
 
     try {
+      console.debug('[LeadsController] calling LeadsService.createLead');
       await this.leads.createLead({
         name,
         phone,
@@ -60,8 +67,10 @@ export class LeadsController {
         professional,
         expert,
       });
+      console.debug('[LeadsController] lead saved successfully');
       return { status: 'ok' };
     } catch {
+      console.error('[LeadsController] unable to save lead');
       throw new HttpException(
         'Unable to save lead',
         HttpStatus.INTERNAL_SERVER_ERROR,
