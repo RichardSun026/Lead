@@ -46,6 +46,14 @@ realtor's video and calendar using the UUID provided in the URL.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
+## User Experience Flow
+The journey from survey to booking involves multiple services working together. A full walkthrough is available in [docs/survey-flow.md](docs/survey-flow.md). In short:
+
+1. The survey stores answers in Supabase and Twilio, then either redirects the user to the booking site `[1a*]` or notifies them a realtor will follow up `[1b*]`.
+2. On the site the user can book within five minutes `[2a*]` or receive scheduled reminders `[2b*]`.
+3. Messaging features (book, see availability, stop) are handled through Twilio and OpenAI.
+
+
 ### Calendar Sync
 The backend exposes `/calendar/:realtorId/events` to create and `/calendar/:realtorId/events/:eventId` to delete Google Calendar events.
 Events are mirrored in Supabase tables `google_credentials` and `google_calendar_events`.
