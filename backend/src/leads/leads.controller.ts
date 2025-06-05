@@ -43,9 +43,6 @@ export class LeadsController {
       throw new HttpException('Invalid phone format', HttpStatus.BAD_REQUEST);
     }
 
-    if (zipcode && !/^\d{5}(-\d{4})?$/.test(zipcode)) {
-      throw new HttpException('Invalid ZIP code', HttpStatus.BAD_REQUEST);
-    }
     try {
       await this.leads.createLead({
         name,

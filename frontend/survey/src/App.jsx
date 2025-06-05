@@ -259,7 +259,7 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
-      if (shouldRedirectToRealtor) {
+      if (true) {
         window.location.href = `${process.env.SITE_URL}/${realtorUuid}/${encodeURIComponent(phone)}`;
       } else {
         document.getElementById('successMessage').textContent =
@@ -278,7 +278,7 @@ export default function App() {
         await fetch('/api/message', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, message: 'New lead', followUp: true }),
+          body: JSON.stringify({ phone, message: 'New lead' }),
         });
       }
     });

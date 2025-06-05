@@ -18,7 +18,6 @@ export const surveyMarkup = `
                     required
                     placeholder="Enter ZIP code"
                     inputmode="numeric"
-                    pattern="\\d{5}(-\\d{4})?"
                     maxlength="10"
                 >
             </div>
@@ -279,7 +278,6 @@ export const surveyMarkup = `
                             required
                             placeholder="(555) 123-4567"
                             inputmode="tel"
-                            pattern="\(\\d{3}\) ?\\d{3}-\\d{4}"
                             maxlength="14"
                         >
                     </div>
