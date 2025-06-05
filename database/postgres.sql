@@ -2,9 +2,10 @@
 -- drop any old objects that get in the way
 --    (tables first, then ENUMs; CASCADE blows away dependents)
 -- ─────────────────────────────────────────────────────────────
+drop table if exists public.scheduled_messages cascade;
 drop table if exists public.booked    cascade;
 drop table if exists public.leads     cascade;
-drop table if exists public.realtor  cascade;
+drop table if exists public.realtor   cascade;
 
 
 
@@ -53,13 +54,24 @@ create table public.leads (
 
 /* 2-c  Booked calls / appointments */
 create table public.booked (
-    phone        varchar(50) primary key references public.leads(phone) on delete cascade,
-    name    varchar(255) not null,
-    booked_date  date,
-    booked_time  time,
-    time_zone    varchar(100),
-    realtor_id   bigint not null references public.realtor(realtor_id) on delete cascade,
-    created_at   timestamptz default now()
+    phone           varchar(50) primary key references public.leads(phone) on delete cascade,
+    name            varchar(255) not null,
+    appointment_time timestamptz,
+    meeting_link    varchar(600),
+    realtor_id      bigint not null references public.realtor(realtor_id) on delete cascade,
+    created_at      timestamptz default now()
+);
+
+/* 2-d Scheduled messages for future SMS */
+create table public.scheduled_messages (
+    id             bigserial primary key,
+    phone          varchar(50) not null references public.leads(phone) on delete cascade,
+    realtor_id     bigint not null references public.realtor(realtor_id) on delete cascade,
+    scheduled_time timestamptz not null,
+    message_type   varchar(20) default 'text',
+    message_status varchar(20) default 'pending',
+    message_text   text,
+    created_at     timestamptz default now()
 );
 
 -- ─────────────────────────────────────────────────────────────
