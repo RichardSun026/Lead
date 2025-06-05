@@ -259,8 +259,9 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
-      if (true) {
-        window.location.href = `${process.env.SITE_URL}/${realtorUuid}/${encodeURIComponent(phone)}`;
+      if (true) { // Replace with actual condition to check if redirect is needed
+        const siteUrl = import.meta.env.SITE_URL || "http://169.254.229.17:5174";
+        window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
       } else {
         document.getElementById('successMessage').textContent =
           'Thank you! A realtor will contact you soon.';
