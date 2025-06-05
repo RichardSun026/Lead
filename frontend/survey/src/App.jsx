@@ -18,6 +18,8 @@ export default function App() {
     const zipInput = form.querySelector('input[name="zipcode"]');
     const phoneInput = form.querySelector('input[name="phone"]');
 
+    let sendToSite = true;
+
     const formatZip = (value) => {
       const digits = value.replace(/\D/g, '').slice(0, 9);
       if (digits.length <= 5) return digits;
@@ -55,19 +57,28 @@ export default function App() {
       7: { next: 8 },
       8: {
         next: (value) => {
-          if (value === 'no') return 'contact';
+          if (value === 'no') {
+            sendToSite = false;
+            return 'contact';
+          }
           return 9;
         },
       },
       9: {
         next: (value) => {
           if (value === 'immediate' || value === 'within-3-months') return 10;
-          return 'contact';
+          else {
+            sendToSite = false;
+            return 'contact';
+          }
         },
       },
       10: {
         next: (value) => {
-          if (value === 'yes') return 'contact';
+          if (value === 'yes') {
+            sendToSite = false;
+            return 'contact';
+          }
           return 11;
         },
       },
@@ -259,32 +270,33 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
-      if (true) { // Replace with actual condition to check if redirect is needed
-        const siteUrl = "http://192.168.68.83:5174";
+      if (sendToSite) {
+        const siteUrl = "http://192.168.68.83:5174"; // Replace with actual site URL
         // window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
-      } else {
-        document.getElementById('successMessage').textContent =
-          'Thank you! A realtor will contact you soon.';
-        document.getElementById('successMessage').style.display = 'block';
-        await fetch('/api/schedule', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            time: new Date().toISOString(),
-            phone,
-            content:
-              'Thanks for reaching out! A realtor will contact you soon.',
-          }),
-        });
-        await fetch('/api/message', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, message: 'New lead' }),
-        });
       }
-    });
+      document.getElementById('successMessage').textContent =
+        'Thank you! An agent will contact you soon.';
+      document.getElementById('successMessage').style.display = 'block';
+      await fetch('/api/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          time: new Date().toISOString(),
+          phone,
+          content:
+            `Hi ${name}, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I’d like to ask a couple of quick questions.
 
-    showQuestion(1);
+Could you tell me a bit about any recent updates or improvements you’ve made to the property? Things like kitchen remodels, new roofing, or updated flooring can really influence value.
+`,
+        }),
+      });
+      // await fetch('/api/message', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ phone, message: 'New lead' }),
+      // });
+
+    });
   }, []);
 
   return <div dangerouslySetInnerHTML={{ __html: surveyMarkup }} />;

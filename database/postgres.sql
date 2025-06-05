@@ -55,14 +55,15 @@ create type public.year_built_enum as enum (
 create type public.occupancy_enum as enum ('i-live','rented','vacant','other');
 create type public.changes_enum as enum ('yes','maybe','no');
 create type public.timeframe_enum as enum (
+    '',
     'immediate',
     'within-3-months',
     '6-months',
     'year-plus',
     'not-sure'
 );
-create type public.working_with_agent_enum as enum ('yes','no');
-create type public.looking_to_buy_enum as enum ('yes','no');
+create type public.working_with_agent_enum as enum ('yes','no','');
+create type public.looking_to_buy_enum as enum ('yes','no','');
 -- ─────────────────────────────────────────────────────────────
 -- 2. Core tables
 -- ─────────────────────────────────────────────────────────────

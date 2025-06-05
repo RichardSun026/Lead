@@ -45,9 +45,9 @@ export class LeadsController {
       );
     }
 
-    if (!/^\(\d{3}\) ?\d{3}-\d{4}$/.test(phone)) {
-      throw new HttpException('Invalid phone format', HttpStatus.BAD_REQUEST);
-    }
+    // if (!/^\(\d{3}\) ?\d{3}-\d{4}$/.test(phone)) {
+    //   throw new HttpException('Invalid phone format', HttpStatus.BAD_REQUEST);
+    // }
 
     try {
       console.debug('[LeadsController] calling LeadsService.createLead');
