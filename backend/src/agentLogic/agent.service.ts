@@ -2,6 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConversationService } from '../clientRedis/conversation.service';
 import { PromptService } from '../agentHelp/prompt.service';
 import { OpenAiService } from '../agentHelp/openai.service';
+import { BookingService, BookingInput } from '../booking/booking.service';
+import { CalendarService } from '../calendar/calendar.service';
+import { SchedulerService } from '../scheduler/scheduler.service';
+import { MessengerService } from '../messenger/messenger.service';
 import OpenAI from 'openai';
 
 @Injectable()
@@ -11,21 +15,30 @@ export class AgentService {
     private readonly conversation: ConversationService,
     private readonly prompt: PromptService,
     private readonly openai: OpenAiService,
+    private readonly booking: BookingService,
+    private readonly calendar: CalendarService,
+    private readonly scheduler: SchedulerService,
+    private readonly messenger: MessengerService,
   ) {}
 
   async send(
     phone: string,
     userMsg: string,
     model = 'gpt-4o-mini',
+    followUp = false,
   ): Promise<string> {
     await this.conversation.store(phone, { role: 'user', content: userMsg });
-    return this.agentLoop(phone, model);
+    return this.agentLoop(phone, model, followUp);
   }
 
-  private async agentLoop(phone: string, model: string): Promise<string> {
+  private async agentLoop(
+    phone: string,
+    model: string,
+    followUp: boolean,
+  ): Promise<string> {
     const history = await this.conversation.fetchAll(phone);
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      { role: 'system', content: this.prompt.systemMessage() },
+      { role: 'system', content: this.prompt.systemMessage(followUp) },
       ...history,
     ];
 
@@ -34,6 +47,9 @@ export class AgentService {
 
     const calls = reply.tool_calls ?? [];
     if (calls.length === 0) {
+      if (reply.content) {
+        await this.messenger.sendSms(phone, reply.content);
+      }
       return reply.content ?? '';
     }
 
@@ -57,6 +73,34 @@ export class AgentService {
             result = { error: 'Missing or invalid { query: string }.' };
           }
           break;
+        case 'book_time':
+          if (isBookArgs(args)) {
+            await this.booking.createOrUpdate(args);
+            result = { status: 'booked' };
+          } else {
+            result = { error: 'invalid booking args' };
+          }
+          break;
+        case 'list_available_times':
+          if (isAvailArgs(args)) {
+            const { realtor_id, date } = args as {
+              realtor_id: number;
+              date: string;
+            };
+            const booked = await this.calendar.getBookedSlots(realtor_id, date);
+            result = { booked: booked.booked };
+          } else {
+            result = { error: 'invalid availability args' };
+          }
+          break;
+        case 'stop_messages':
+          if (isStopArgs(args)) {
+            await this.scheduler.cancelMessages(args.phone);
+            result = { status: 'stopped' };
+          } else {
+            result = { error: 'invalid stop args' };
+          }
+          break;
         default:
           result = { error: `Tool ${name} not implemented` };
       }
@@ -69,7 +113,7 @@ export class AgentService {
       await this.conversation.store(phone, toolMsg);
     }
 
-    return this.agentLoop(phone, model);
+    return this.agentLoop(phone, model, followUp);
   }
 }
 
@@ -80,4 +124,32 @@ function isSearchArgs(args: unknown): args is { query: string } {
     'query' in args &&
     typeof (args as { query: unknown }).query === 'string'
   );
+}
+
+function isBookArgs(args: unknown): args is BookingInput {
+  return (
+    typeof args === 'object' &&
+    args !== null &&
+    'phone' in args &&
+    'full_name' in args &&
+    'booked_date' in args &&
+    'booked_time' in args &&
+    'time_zone' in args &&
+    'realtor_id' in args
+  );
+}
+
+function isAvailArgs(
+  args: unknown,
+): args is { realtor_id: number; date: string } {
+  return (
+    typeof args === 'object' &&
+    args !== null &&
+    'realtor_id' in args &&
+    'date' in args
+  );
+}
+
+function isStopArgs(args: unknown): args is { phone: string } {
+  return typeof args === 'object' && args !== null && 'phone' in args;
 }

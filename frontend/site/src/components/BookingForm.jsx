@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function BookingForm({ details, realtorUuid, onBooked, user }) {
   const [form, setForm] = useState({
@@ -7,6 +7,14 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
     email: '',
   });
   const [status, setStatus] = useState('');
+
+  useEffect(() => {
+    setForm({
+      name: user?.full_name || '',
+      phone: user?.phone || '',
+      email: '',
+    });
+  }, [user]);
 
   const handle = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

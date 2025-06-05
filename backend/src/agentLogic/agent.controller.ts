@@ -7,8 +7,17 @@ export class AgentController {
 
   @Post()
   @HttpCode(200)
-  async send(@Body('phone') phone: string, @Body('message') message: string) {
-    const assistant = await this.messageService.send(phone, message);
+  async send(
+    @Body('phone') phone: string,
+    @Body('message') message: string,
+    @Body('followUp') followUp = false,
+  ) {
+    const assistant = await this.messageService.send(
+      phone,
+      message,
+      'gpt-4o-mini',
+      followUp,
+    );
     return { assistant };
   }
 }
