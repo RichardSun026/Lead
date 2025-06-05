@@ -15,6 +15,33 @@ export default function App() {
     const progressFill = document.getElementById('progressFill');
     const progressText = document.getElementById('progressText');
 
+    const zipInput = form.querySelector('input[name="zipcode"]');
+    const phoneInput = form.querySelector('input[name="phone"]');
+
+    const formatZip = (value) => {
+      const digits = value.replace(/\D/g, '').slice(0, 9);
+      if (digits.length <= 5) return digits;
+      return digits.slice(0, 5) + '-' + digits.slice(5);
+    };
+    const formatPhone = (value) => {
+      const digits = value.replace(/\D/g, '').slice(0, 10);
+      let out = '';
+      if (digits.length > 0) out += '(' + digits.slice(0, 3);
+      if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
+      if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+      return out;
+    };
+    if (zipInput) {
+      zipInput.addEventListener('input', (e) => {
+        e.target.value = formatZip(e.target.value);
+      });
+    }
+    if (phoneInput) {
+      phoneInput.addEventListener('input', (e) => {
+        e.target.value = formatPhone(e.target.value);
+      });
+    }
+
     let currentStep = 1;
     let stepHistory = [1];
 

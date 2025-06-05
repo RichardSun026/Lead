@@ -16,8 +16,21 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
     });
   }, [user]);
 
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 10);
+    let out = '';
+    if (digits.length > 0) out += '(' + digits.slice(0, 3);
+    if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
+    if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+    return out;
+  };
+
   const handle = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === 'phone') {
+      value = formatPhone(value);
+    }
+    setForm({ ...form, [e.target.name]: value });
   };
 
   const submit = async (e) => {
@@ -65,6 +78,9 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
           value={form.phone}
           onChange={handle}
           placeholder="Phone"
+          inputMode="tel"
+          pattern="\(\d{3}\) \d{3}-\d{4}"
+          maxLength="14"
           required
         />
       </div>
