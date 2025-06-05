@@ -24,9 +24,13 @@ export default function Callender({ realtorId, onSelect }) {
   useEffect(() => {
     if (!selectedDate || !realtorId) return;
     const dateStr = selectedDate.toISOString().split('T')[0];
+    console.debug('Fetching booked times for', dateStr);
     fetch(`/api/calendar/${realtorId}/booked?date=${dateStr}`)
       .then((r) => r.json())
-      .then((d) => setBooked(d.booked || []))
+      .then((d) => {
+        console.debug('Booked times response', d);
+        setBooked(d.booked || []);
+      })
       .catch(() => setBooked([]));
   }, [selectedDate, realtorId]);
 
@@ -52,7 +56,9 @@ export default function Callender({ realtorId, onSelect }) {
   }
 
   function selectDate(year, month, day) {
-    setSelectedDate(new Date(year, month, day));
+    const d = new Date(year, month, day);
+    console.debug('Date selected', d.toISOString().split('T')[0]);
+    setSelectedDate(d);
     setSelectedTime(null);
   }
 
@@ -137,9 +143,11 @@ export default function Callender({ realtorId, onSelect }) {
                 className={`time-slot${selectedTime === t ? ' selected' : ''}`}
                 disabled={booked.includes(t)}
                 onClick={() => {
+                  const date = selectedDate.toISOString().split('T')[0];
+                  console.debug('Time slot selected', date, t);
                   setSelectedTime(t);
                   onSelect({
-                    date: selectedDate.toISOString().split('T')[0],
+                    date,
                     time: t,
                   });
                 }}

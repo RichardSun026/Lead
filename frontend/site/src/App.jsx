@@ -125,6 +125,7 @@ export default function App() {
             details={selection}
             realtorUuid={realtorUuid}
             onBooked={() => {
+              console.debug('Booking confirmed', selection);
               setSelection(null);
               setBookingConfirmed(true);
               if (selection) {
