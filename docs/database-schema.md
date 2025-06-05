@@ -1,7 +1,7 @@
 # Database Schema
 
 This document summarizes the main tables used by the Lead Management System.
-The table definitions can be found in [`database/schema.sql`](../database/schema.sql).
+The table definitions can be found in [`database/postgres.sql`](../database/postgres.sql).
 Example data for local development is provided in [`database/seed.sql`](../database/seed.sql).
 
 ## Tables
@@ -22,26 +22,29 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `realtor_id` – references `Realtor`
 - `first_name`
 - `last_name`
-- `address`
+- `address` – typically ZIP code
 - `lead_state` – booked/hot/warm/cold
-- `home_type` – e.g. single family, condo
-- `home_built`
-- `home_worth`
-- `sell_time`
-- `home_condition`
+- `home_type` – `home_type_enum`
+- `bedrooms` – `bedrooms_enum`
+- `bathrooms` – `bathrooms_enum`
+- `sqft` – `sqft_enum`
+- `home_built` – `year_built_enum`
+- `occupancy` – `occupancy_enum`
+- `willing_to_sell` – `changes_enum`
+- `sell_time` – `timeframe_enum`
+- `professional` – `professional_enum`
+- `expert` – `expert_enum`
 - `working_with_agent`
 - `looking_to_buy`
 - `ad_id`
-- `tracking_parameters`
 - `sent_schedule_reminder`
 - `created_at`
 
 ### Booked
 - `phone` – primary key
 - `full_name`
-- `booked_date`
-- `booked_time`
-- `time_zone`
+- `appointment_time`
+- `meeting_link`
 - `realtor_id` – references `Realtor`
 - `created_at`
 
@@ -51,7 +54,8 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 
 ### scheduled_messages
 - `id` – primary key
-- `phone`
+- `phone` – references `Leads`
+- `realtor_id` – references `Realtor`
 - `scheduled_time`
 - `message_type`
 - `message_status`
@@ -87,8 +91,8 @@ The seed script inserts two sample leads and a booked appointment:
 INSERT INTO Leads (...)
     ('555-0001', 1, 'Eve', 'Example', '123 Main St', ...),
     ('555-0002', 2, 'John', 'Doe', '456 Oak Ave', ...);
-INSERT INTO Booked (phone, full_name, booked_date, booked_time, time_zone, realtor_id)
-VALUES ('555-0001', 'Eve Example', CURRENT_DATE, '10:00', 'UTC', 1);
+INSERT INTO Booked (phone, full_name, appointment_time, meeting_link, realtor_id)
+VALUES ('555-0001', 'Eve Example', NOW(), 'https://example.com/meet', 1);
 ```
 See [`database/seed.sql`](../database/seed.sql) for the full statements.
 
