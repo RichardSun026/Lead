@@ -15,6 +15,7 @@ const FROM = process.env.TWILIO_PHONE_NUMBER ?? '';
 
 export async function handler(): Promise<void> {
   const now = new Date().toISOString();
+  console.log(`cron.ts executing at ${now}`);
   const { data, error } = await supabase
     .from('scheduled_messages')
     .select('*')
@@ -26,6 +27,8 @@ export async function handler(): Promise<void> {
     return;
   }
 
+  console.log(`Found ${data?.length ?? 0} pending messages`);
+
   for (const row of data ?? []) {
     try {
       await twilio.messages.create({
@@ -33,18 +36,21 @@ export async function handler(): Promise<void> {
         to: row.phone,
         from: FROM,
       });
+      console.log(`Sent message ${row.id} to ${row.phone}`);
       await supabase
         .from('scheduled_messages')
         .update({ message_status: 'sent' })
         .eq('id', row.id);
     } catch (err) {
-      console.error('Send failed', err);
+      console.error(`Send failed for ${row.id}`, err);
       await supabase
         .from('scheduled_messages')
         .update({ message_status: 'failed' })
         .eq('id', row.id);
     }
   }
+
+  console.log('cron.ts run complete');
 }
 
 if (require.main === module) {
