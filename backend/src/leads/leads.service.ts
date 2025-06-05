@@ -112,4 +112,64 @@ export class LeadsService {
       website_url: realtor.website_url,
     };
   }
+
+  async getInfoForAgent(
+    phone: string,
+  ): Promise<
+    | {
+        realtorName: string;
+        answers: { question: string; answer: string }[];
+      }
+    | null
+  > {
+    const { data } = await this.client
+      .from('leads')
+      .select(
+        `address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
+      )
+      .eq('phone', phone)
+      .maybeSingle();
+    const lead =
+      (data as {
+        address?: string;
+        home_type?: string;
+        bedrooms?: string;
+        bathrooms?: string;
+        sqft?: string;
+        home_built?: string;
+        occupancy?: string;
+        sell_time?: string;
+        working_with_agent?: boolean;
+        looking_to_buy?: boolean;
+        realtor?: { f_name?: string; e_name?: string } | null;
+      } | null) ?? null;
+    if (!lead) return null;
+
+    const realtorName = lead.realtor
+      ? `${lead.realtor.f_name ?? ''} ${lead.realtor.e_name ?? ''}`.trim()
+      : 'the realtor';
+
+    const bool = (v?: boolean) => (v === true ? 'Yes' : v === false ? 'No' : '');
+
+    const answers = [
+      { question: 'ZIP code', answer: lead.address ?? '' },
+      { question: 'Home type', answer: lead.home_type ?? '' },
+      { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
+      { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
+      { question: 'Square footage', answer: lead.sqft ?? '' },
+      { question: 'Year built', answer: lead.home_built ?? '' },
+      { question: 'Occupancy', answer: lead.occupancy ?? '' },
+      { question: 'Selling timeframe', answer: lead.sell_time ?? '' },
+      {
+        question: 'Working with an agent',
+        answer: bool(lead.working_with_agent),
+      },
+      {
+        question: 'Looking to buy',
+        answer: bool(lead.looking_to_buy),
+      },
+    ].filter((a) => a.answer);
+
+    return { realtorName, answers };
+  }
 }

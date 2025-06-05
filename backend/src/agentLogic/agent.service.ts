@@ -6,6 +6,7 @@ import { BookingService, BookingInput } from '../booking/booking.service';
 import { CalendarService } from '../calendar/calendar.service';
 import { SchedulerService } from '../scheduler/scheduler.service';
 import { MessengerService } from '../messenger/messenger.service';
+import { LeadsService } from '../leads/leads.service';
 import OpenAI from 'openai';
 
 @Injectable()
@@ -19,6 +20,7 @@ export class AgentService {
     private readonly calendar: CalendarService,
     private readonly scheduler: SchedulerService,
     private readonly messenger: MessengerService,
+    private readonly leads: LeadsService,
   ) {}
 
   async send(
@@ -32,8 +34,12 @@ export class AgentService {
 
   private async agentLoop(phone: string, model: string): Promise<string> {
     const history = await this.conversation.fetchAll(phone);
+    const info = await this.leads.getInfoForAgent(phone);
+    const system = info
+      ? this.prompt.systemMessage(info.realtorName, info.answers)
+      : this.prompt.systemMessage();
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      { role: 'system', content: this.prompt.systemMessage() },
+      { role: 'system', content: system },
       ...history,
     ];
 
