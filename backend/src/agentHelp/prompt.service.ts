@@ -11,7 +11,7 @@ export class PromptService {
     realtorName = 'the realtor',
     surveyAnswers: { question: string; answer: string }[] = [],
   ): string {
-    let systemMessage = `You are acting as a friendly assistant on behalf of a real estate agent. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
+    let systemMessage = `You are acting as a friendly assistant on behalf of the real estate agent ${realtorName}. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
 
 Your goal is to:
 
