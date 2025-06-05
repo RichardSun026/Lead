@@ -4,7 +4,6 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
   const [form, setForm] = useState({
     name: user?.full_name || '',
     phone: user?.phone || '',
-    email: '',
   });
   const [status, setStatus] = useState('');
 
@@ -12,7 +11,6 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
     setForm({
       name: user?.full_name || '',
       phone: user?.phone || '',
-      email: '',
     });
   }, [user]);
 
@@ -82,15 +80,6 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
           pattern="\(\d{3}\) ?\d{3}-\d{4}"
           maxLength="14"
           required
-        />
-      </div>
-      <div className="form-group">
-        <input
-          className="form-input"
-          name="email"
-          value={form.email}
-          onChange={handle}
-          placeholder="Email"
         />
       </div>
       <button type="submit" className="btn-book">
