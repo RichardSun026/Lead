@@ -94,9 +94,12 @@ export class CalendarService {
 
     const start = `${date}T00:00:00`;
     const end = `${date}T23:59:59`;
-    const events = (await this.supabase.query(
+    const eventsResult = await this.supabase.query(
       `google_calendar_events?realtor_id=eq.${realtorId}&start_time=lte.${end}&end_time=gte.${start}&select=start_time,end_time`,
-    )) as { start_time: string; end_time: string }[];
+    );
+    const events = Array.isArray(eventsResult)
+      ? (eventsResult as { start_time: string; end_time: string }[])
+      : [];
 
     const times = new Set(booked.map((b) => b.booked_time));
     for (const e of events) {
