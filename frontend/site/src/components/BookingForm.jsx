@@ -28,12 +28,27 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
     if (e.target.name === 'phone') {
       value = formatPhone(value);
     }
-    setForm({ ...form, [e.target.name]: value });
+    const updated = { ...form, [e.target.name]: value };
+    console.debug('Form updated', updated);
+    setForm(updated);
   };
 
   const submit = async (e) => {
     e.preventDefault();
     if (!details) return;
+
+    if (!form.name || !form.phone) {
+      console.debug('Attempted booking with missing fields', form);
+      setStatus('Name and phone are required');
+      return;
+    }
+
+    console.debug('Submitting booking', {
+      ...form,
+      date: details.date,
+      time: details.time,
+    });
+
     setStatus('Submitting...');
     const res = await fetch('/api/booking', {
       method: 'POST',
@@ -47,6 +62,8 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
         realtor_id: details.realtorId,
       }),
     });
+    console.debug('Booking response status', res.status);
+
     if (res.ok) {
       setStatus('Booked!');
       onBooked();
