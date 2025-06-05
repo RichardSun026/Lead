@@ -278,13 +278,11 @@ export default function App() {
         'Thank you! An agent will contact you soon.';
       document.getElementById('successMessage').style.display = 'block';
 
-      const scheduleTime = new Date(Date.now() + 5 * 60 * 1000).toISOString(); // +5 min
-
       await fetch('/api/schedule', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          time: scheduleTime,
+          time: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
           phone,
           content:
             `Hi ${name}, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I’d like to ask a couple of quick questions.
