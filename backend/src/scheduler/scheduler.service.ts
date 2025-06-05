@@ -16,8 +16,19 @@ export class SchedulerService {
     time: string,
     content: string,
   ): Promise<void> {
+    const { data: lead, error } = await this.client
+      .from('leads')
+      .select('realtor_id')
+      .eq('phone', phone)
+      .maybeSingle();
+
+    if (error) throw error;
+    const realtorId = (lead as { realtor_id: number } | null)?.realtor_id;
+    if (!realtorId) throw new Error('Invalid phone number');
+
     await this.client.from('scheduled_messages').insert({
       phone,
+      realtor_id: realtorId,
       scheduled_time: time,
       message_type: 'text',
       message_text: content,
