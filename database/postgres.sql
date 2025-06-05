@@ -7,11 +7,61 @@ drop table if exists public.booked    cascade;
 drop table if exists public.leads     cascade;
 drop table if exists public.realtor   cascade;
 
+-- drop enums in case the script is re-run
+drop type if exists public.home_type_enum cascade;
+drop type if exists public.bedrooms_enum cascade;
+drop type if exists public.bathrooms_enum cascade;
+drop type if exists public.sqft_enum cascade;
+drop type if exists public.year_built_enum cascade;
+drop type if exists public.occupancy_enum cascade;
+drop type if exists public.changes_enum cascade;
+drop type if exists public.timeframe_enum cascade;
+drop type if exists public.professional_enum cascade;
+drop type if exists public.expert_enum cascade;
+
 
 
 
 -- ─────────────────────────────────────────────────────────────
 create extension if not exists "pgcrypto";   -- for gen_random_uuid()
+
+-- survey enumerations
+create type public.home_type_enum as enum (
+    'single-family',
+    'condo',
+    'townhouse',
+    'duplex',
+    'other'
+);
+
+create type public.bedrooms_enum as enum ('1','2','3','4','5+');
+create type public.bathrooms_enum as enum ('1','1.5','2','2.5','3+');
+create type public.sqft_enum as enum (
+    'under-1000',
+    '1000-1499',
+    '1500-1999',
+    '2000-2499',
+    '2500+',
+    'not-sure'
+);
+create type public.year_built_enum as enum (
+    'before-1970',
+    '1970-1990',
+    '1990-2010',
+    'after-2010',
+    'not-sure'
+);
+create type public.occupancy_enum as enum ('i-live','rented','vacant','other');
+create type public.changes_enum as enum ('yes','maybe','no');
+create type public.timeframe_enum as enum (
+    'immediate',
+    'within-3-months',
+    '6-months',
+    'year-plus',
+    'not-sure'
+);
+create type public.professional_enum as enum ('yes','no');
+create type public.expert_enum as enum ('yes','no');
 -- ─────────────────────────────────────────────────────────────
 -- 2. Core tables
 -- ─────────────────────────────────────────────────────────────
@@ -36,15 +86,21 @@ create index on public.realtor(uuid);
 create table public.leads (
     phone                varchar(50) primary key,
     realtor_id           bigint      not null references public.realtor(realtor_id) on delete cascade,
-    name            varchar(127),
-    email            varchar(127),
+    first_name           varchar(127),
+    last_name            varchar(127),
+    email                varchar(127),
     address              varchar(255),
     lead_state           varchar(20),
-    home_type            varchar(50),
-    home_built           varchar(50),
-    home_worth           varchar(50),
-    sell_time            varchar(50),
-    home_condition       varchar(50),
+    home_type            public.home_type_enum,
+    bedrooms             public.bedrooms_enum,
+    bathrooms            public.bathrooms_enum,
+    sqft                 public.sqft_enum,
+    home_built           public.year_built_enum,
+    occupancy            public.occupancy_enum,
+    willing_to_sell      public.changes_enum,
+    sell_time            public.timeframe_enum,
+    professional         public.professional_enum,
+    expert               public.expert_enum,
     working_with_agent   boolean,
     looking_to_buy       boolean,
     ad_id                varchar(50),
