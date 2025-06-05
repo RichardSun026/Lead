@@ -50,7 +50,7 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
     });
 
     setStatus('Submitting...');
-    const res = await fetch('/api/booking', {
+    const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
