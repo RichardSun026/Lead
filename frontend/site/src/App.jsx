@@ -3,6 +3,7 @@ import './App.css';
 import VideoPlayer from './components/VideoPlayer';
 import Callender from './components/Callender';
 import BookingForm from './components/BookingForm';
+import CustomerTestimonials from './components/CustomerTestimonials';
 
 export default function App() {
   const [realtor, setRealtor] = useState(null);
@@ -12,6 +13,15 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [realtorUuid, setRealtorUuid] = useState('');
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
+
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 10);
+    let out = '';
+    if (digits.length > 0) out += '(' + digits.slice(0, 3);
+    if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
+    if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+    return out;
+  };
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -27,10 +37,12 @@ export default function App() {
     setRealtorUuid(uuid);
 
     if (parts.length >= 2) {
-      const phone = decodeURIComponent(parts[1]);
-      fetch(`/api/user?phone=${phone}`)
+      const rawPhone = decodeURIComponent(parts[1]);
+      const formattedPhone = formatPhone(rawPhone);
+      setUser({ phone: formattedPhone });
+      fetch(`/api/user?phone=${formattedPhone}`)
         .then((r) => r.json())
-        .then(setUser)
+        .then((d) => setUser((prev) => ({ ...prev, ...d })))
         .catch(() => {});
     } else {
       const tracking = url.searchParams.get('utm_source');
@@ -125,12 +137,6 @@ export default function App() {
           />
         </div>
         <div className="buttons">
-          <button
-            className="btn btn-testimonials"
-            onClick={() => alert('Coming soon!')}
-          >
-            ⭐ Customer Testimonials
-          </button>
           {realtor.website_url && (
             <a
               href={realtor.website_url}
@@ -143,6 +149,7 @@ export default function App() {
           )}
         </div>
       </div>
+      <CustomerTestimonials />
     </>
   );
 }

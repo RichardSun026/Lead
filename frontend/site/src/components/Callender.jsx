@@ -15,6 +15,7 @@ function generateSlots() {
 export default function Callender({ realtorId, onSelect }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [booked, setBooked] = useState([]);
   const slots = generateSlots();
 
@@ -52,6 +53,7 @@ export default function Callender({ realtorId, onSelect }) {
 
   function selectDate(year, month, day) {
     setSelectedDate(new Date(year, month, day));
+    setSelectedTime(null);
   }
 
   function renderDays() {
@@ -132,14 +134,15 @@ export default function Callender({ realtorId, onSelect }) {
             {slots.map((t) => (
               <button
                 key={t}
-                className="time-slot"
+                className={`time-slot${selectedTime === t ? ' selected' : ''}`}
                 disabled={booked.includes(t)}
-                onClick={() =>
+                onClick={() => {
+                  setSelectedTime(t);
                   onSelect({
                     date: selectedDate.toISOString().split('T')[0],
                     time: t,
-                  })
-                }
+                  });
+                }}
               >
                 {new Date(`1970-01-01T${t}:00`).toLocaleTimeString('en-US', {
                   hour: 'numeric',

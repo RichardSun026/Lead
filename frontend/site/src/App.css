@@ -38,7 +38,7 @@ body {
 
 .video-section {
   background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #9333ea 100%);
-  padding: 0px 0px;
+  padding: 20px;
   text-align: center;
 }
 
@@ -49,6 +49,8 @@ body {
 .video {
   position: relative;
   width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
   padding-bottom: 177.77%;
   overflow: hidden;
 }
@@ -148,6 +150,12 @@ body {
 }
 
 .time-slot:not(:disabled):hover {
+  background: #8b5cf6;
+  border-color: #a855f7;
+  color: white;
+}
+
+.time-slot.selected {
   background: #8b5cf6;
   border-color: #a855f7;
   color: white;
