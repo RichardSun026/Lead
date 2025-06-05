@@ -279,7 +279,7 @@ export const surveyMarkup = `
                             required
                             placeholder="(555) 123-4567"
                             inputmode="tel"
-                            pattern="\(\\d{3}\) ?\\d{3}-\\d{4}"
+                            pattern="\(\d{3}\) ?\d{3}-\d{4}"
                             maxlength="14"
                         >
                     </div>
