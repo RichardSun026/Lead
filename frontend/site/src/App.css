@@ -149,16 +149,17 @@ body {
   cursor: not-allowed;
 }
 
-.time-slot:not(:disabled):hover {
+/* .time-slot:not(:disabled):hover {
   background: #8b5cf6;
   border-color: #a855f7;
   color: white;
-}
+} */
 
 .time-slot.selected {
-  background: #8b5cf6;
-  border-color: #a855f7;
-  color: white;
+  border: 2px solid #007AFF;
+  background: transparent;
+  color: #007AFF;
+  /* border-radius: 50%; */
 }
 
 .booking-form {
@@ -181,7 +182,7 @@ body {
 .btn-book {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+  background: linear-gradient(135deg, #007AFF 0%, #a855f7 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -263,10 +264,10 @@ body {
   position: relative;
 }
 
-.calendar-day:hover {
+/* .calendar-day:hover {
   background: #404040;
   transform: scale(1.05);
-}
+} */
 
 .calendar-day.selected {
   border: 2px solid #007AFF;
