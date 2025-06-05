@@ -79,7 +79,7 @@ export default function BookingForm({ details, realtorUuid, onBooked, user }) {
           onChange={handle}
           placeholder="Phone"
           inputMode="tel"
-          pattern="\(\d{3}\) \d{3}-\d{4}"
+          pattern="\(\d{3}\) ?\d{3}-\d{4}"
           maxLength="14"
           required
         />
