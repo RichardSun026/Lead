@@ -16,7 +16,6 @@ export default function App() {
     const progressText = document.getElementById('progressText');
 
     let currentStep = 1;
-    let shouldRedirectToRealtor = false;
     let stepHistory = [1];
 
     const questionFlow = {
@@ -46,10 +45,7 @@ export default function App() {
         },
       },
       11: {
-        next: (value) => {
-          if (value === 'yes') shouldRedirectToRealtor = true;
-          return 'contact';
-        },
+        next: () => 'contact',
       },
     };
 
