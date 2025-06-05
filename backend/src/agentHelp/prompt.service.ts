@@ -7,14 +7,17 @@ type ChatCompletionTool = NonNullable<
 
 @Injectable()
 export class PromptService {
-  systemMessage(): string {
-    system_message = `You are acting as a friendly assistant on behalf of a real estate agent. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
+  systemMessage(
+    realtorName = 'the realtor',
+    surveyAnswers: { question: string; answer: string }[] = [],
+  ): string {
+    let systemMessage = `You are acting as a friendly assistant on behalf of a real estate agent. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
 
 Your goal is to:
 
 Determine whether the user may be interested in selling their home
 
-Subtly guide the conversation toward booking an appointment with ${realtor_name} the real estate agent if there’s interest
+Subtly guide the conversation toward booking an appointment with ${realtorName} the real estate agent if there’s interest
 
 Behavior Rules:
 Never reveal that you are an AI unless the user explicitly asks
@@ -40,18 +43,16 @@ Politely provide a rough value estimate based on their survey
 
 Thank them for their time and end the conversation
 
-As the conversation approaches its limit, tell the user that you will not be able to give a very good home value estimate, and that if he wishes a more precise one the real estate agent ${realtor_name}, could be of great help, mainly if they are interested in selling the house any time soon.
+As the conversation approaches its limit, tell the user that you will not be able to give a very good home value estimate, and that if he wishes a more precise one the real estate agent ${realtorName}, could be of great help, mainly if they are interested in selling the house any time soon.
 
 Overall Objective:
 Your job is to gently probe and qualify the user’s selling intent while maintaining the tone of a home value consultation. If interest is detected, promptly book an appointment with the real estate agent.
 
 This is the survey the user filled out:`;
-    i = 0;
-    for answer of survey_answers) {
-        i ++;
-        system_message += `\n\n${answer.question}: ${answer.answer}`;
-      }
-    return system_message;
+    for (const answer of surveyAnswers) {
+      systemMessage += `\n\n${answer.question}: ${answer.answer}`;
+    }
+    return systemMessage;
   }
 
   searchSystemMessage(): string {
