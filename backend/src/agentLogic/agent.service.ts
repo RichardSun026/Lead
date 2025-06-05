@@ -25,20 +25,15 @@ export class AgentService {
     phone: string,
     userMsg: string,
     model = 'gpt-4o-mini',
-    followUp = false,
   ): Promise<string> {
     await this.conversation.store(phone, { role: 'user', content: userMsg });
-    return this.agentLoop(phone, model, followUp);
+    return this.agentLoop(phone, model);
   }
 
-  private async agentLoop(
-    phone: string,
-    model: string,
-    followUp: boolean,
-  ): Promise<string> {
+  private async agentLoop(phone: string, model: string): Promise<string> {
     const history = await this.conversation.fetchAll(phone);
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
-      { role: 'system', content: this.prompt.systemMessage(followUp) },
+      { role: 'system', content: this.prompt.systemMessage() },
       ...history,
     ];
 
@@ -113,7 +108,7 @@ export class AgentService {
       await this.conversation.store(phone, toolMsg);
     }
 
-    return this.agentLoop(phone, model, followUp);
+    return this.agentLoop(phone, model);
   }
 }
 
