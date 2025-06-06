@@ -22,10 +22,15 @@ This repository hosts a monorepo used to experiment with lead generation and boo
    ```bash
 npm run start:dev
 ```
-3. Build and launch everything with the master switch:
+3. Build and launch everything with the master switch. This compiles the backend
+   and both React apps, then starts the backend server together with Vite preview
+   servers for each site:
    ```bash
 npm run master-switch
 ```
+
+The landing page preview will be available at `http://localhost:4173` and the
+survey site at `http://localhost:4174`.
 
 To develop or build the front ends:
 
@@ -40,9 +45,7 @@ npm run build
 npm run preview    # optional: serve the built files locally
 ```
 
-When running the landing page, navigate to `http://localhost:5173/<realtorUUID>`.
-The user marker portion of the URL is optional and no longer required. The page fetches the
-realtor's video and calendar using the UUID provided in the URL.
+When running the landing page in development mode, navigate to `http://localhost:5173/<realtorUUID>`. When using the master switch or `npm run preview`, open `http://localhost:4173` instead. The user marker portion of the URL is optional and no longer required. The page fetches the realtor's video and calendar using the UUID provided in the URL.
 
 See the [docs directory](docs/README.md) for additional notes such as the database schema and sample scripts.
 
