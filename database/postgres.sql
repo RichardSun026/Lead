@@ -139,6 +139,28 @@ create table public.scheduled_messages (
     created_at     timestamptz default now()
 );
 
+/* 2-e Google OAuth credentials */
+create table public.google_credentials (
+    realtor_id    bigint primary key references public.realtor(realtor_id) on delete cascade,
+    access_token  varchar(255) not null,
+    refresh_token varchar(255) not null,
+    token_expires timestamptz not null,
+    created_at    timestamptz default now()
+);
+
+/* 2-f Synced Google Calendar events */
+create table public.google_calendar_events (
+    id              bigserial primary key,
+    realtor_id      bigint not null references public.realtor(realtor_id) on delete cascade,
+    google_event_id varchar(255) not null,
+    summary         varchar(255),
+    description     text,
+    start_time      timestamptz not null,
+    end_time        timestamptz not null,
+    created_at      timestamptz default now()
+);
+create index on public.google_calendar_events(google_event_id);
+
 -- ─────────────────────────────────────────────────────────────
 -- 3. Seed data – four realtors
 --    (HTML in video_url is quoted with $$ to avoid escaping hell)
