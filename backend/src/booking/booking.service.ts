@@ -4,10 +4,6 @@ import { MessengerService } from '../messenger/messenger.service';
 import { CalendarService } from '../calendar/calendar.service';
 import { DateTime } from 'luxon';
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,
-  @typescript-eslint/no-unsafe-call,
-  @typescript-eslint/no-unsafe-member-access */
-
 export interface BookingInput {
   phone: string;
   full_name: string;
@@ -55,12 +51,15 @@ export class BookingService {
       },
     );
     const end = start.plus({ minutes: 30 });
+    const startIso = start.toISO();
+    const endIso = end.toISO();
+    if (!startIso || !endIso) throw new Error('Invalid booking time');
 
     await this.calendar.addEvent(input.realtor_id, {
       summary: `Meeting with ${input.full_name}`,
       description: `Phone: ${input.phone}`,
-      start: start.toISO(),
-      end: end.toISO(),
+      start: startIso,
+      end: endIso,
       calendarId: 'primary',
       phone: input.phone,
     });
