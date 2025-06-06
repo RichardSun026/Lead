@@ -2,6 +2,8 @@
 
 This short guide explains how to link a Google Calendar so that bookings created through the website and the AI are kept in sync.
 
+The admin dashboard exposes a **Link Google Calendar** button during the onboarding process. Clicking it will open the Google consent screen using the `/api/calendar/oauth/<realtorId>` endpoint. After granting access the backend receives a refresh token so future calendar calls work without additional prompts.
+
 1. Ensure the backend is running and accessible. The `GOOGLE_REDIRECT_URI` environment variable must point to
    `http://<server>/api/calendar/oauth/callback` (or your deployed URL).
 2. Obtain your personal authorization link by calling:
