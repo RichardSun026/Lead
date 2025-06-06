@@ -35,7 +35,7 @@ import { PromptService } from './agentHelp/prompt.service';
       envFilePath: 'backend/.env',
     }),
 
-    ServeStaticModule.forRoot([
+    ServeStaticModule.forRoot(
       {
         rootPath: join(__dirname, '..', '..', 'frontend', 'site', 'dist'),
         serveRoot: '/',
@@ -44,7 +44,7 @@ import { PromptService } from './agentHelp/prompt.service';
         rootPath: join(__dirname, '..', '..', 'frontend', 'survey', 'dist'),
         serveRoot: '/survey',
       },
-    ]),
+    ),
 
     RedisModule.forRoot({
       url: process.env.REDIS_URL,
