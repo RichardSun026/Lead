@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from '@nestjs-modules/ioredis';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 import { AppController } from './app.controller';
 import { ConversationController } from './clientRedis/conversation.controller';
@@ -31,6 +33,17 @@ import { PromptService } from './agentHelp/prompt.service';
       isGlobal: true,
       envFilePath: 'backend/.env',
     }),
+
+    ServeStaticModule.forRoot([
+      {
+        rootPath: join(__dirname, '..', '..', 'frontend', 'site', 'dist'),
+        serveRoot: '/',
+      },
+      {
+        rootPath: join(__dirname, '..', '..', 'frontend', 'survey', 'dist'),
+        serveRoot: '/survey',
+      },
+    ]),
 
     RedisModule.forRoot({
       url: process.env.REDIS_URL,

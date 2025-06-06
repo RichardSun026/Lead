@@ -15,7 +15,7 @@
     "start:dev": "nest start --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
     "start:debug": "nest start --debug --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
     "start:prod": "node backend/dist/main",
-    "master-switch": "concurrently \"npm run start:dev\" \"npm --workspace frontend/site run dev\" \"npm --workspace frontend/user-report run dev\"",
+    "master-switch": "npm run build && npm --workspace frontend/site run build && npm --workspace frontend/survey run build && npm run start:prod",
     "lint": "eslint \"{backend/src,frontend,libs,backend/test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
