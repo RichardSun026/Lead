@@ -49,6 +49,25 @@ export class SupabaseService {
     );
   }
 
+  async insertCredentials(
+    realtorId: number,
+    token: { access_token: string; refresh_token: string; expires_in: number },
+  ): Promise<void> {
+    const expires = new Date(
+      Date.now() + token.expires_in * 1000,
+    ).toISOString();
+    await fetch(`${this.baseUrl}/google_credentials`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify({
+        realtor_id: realtorId,
+        access_token: token.access_token,
+        refresh_token: token.refresh_token,
+        token_expires: expires,
+      }),
+    });
+  }
+
   async upsertEvent(
     realtorId: number,
     googleEventId: string,

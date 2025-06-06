@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
@@ -14,10 +15,36 @@ import { CalendarService, EventInput } from './calendar.service';
 export class CalendarController {
   constructor(private readonly calendar: CalendarService) {}
 
+  @Get('oauth/:realtorId')
+  getAuthUrl(@Param('realtorId') realtorId: number) {
+    return { url: this.calendar.generateAuthUrl(realtorId) };
+  }
+
+  @Get('oauth/callback')
+  @HttpCode(200)
+  async oauthCallback(
+    @Query('code') code: string,
+    @Query('state') state: string,
+  ) {
+    const realtorId = Number(state);
+    await this.calendar.handleOAuthCallback(code, realtorId);
+    return { status: 'linked' };
+  }
+
   @Post(':realtorId/events')
   @HttpCode(201)
   addEvent(@Param('realtorId') realtorId: number, @Body() body: EventInput) {
     return this.calendar.addEvent(realtorId, body);
+  }
+
+  @Patch(':realtorId/events/:eventId')
+  updateEvent(
+    @Param('realtorId') realtorId: number,
+    @Param('eventId') eventId: string,
+    @Body() body: Partial<EventInput> & { calendarId: string },
+  ) {
+    const { calendarId, ...update } = body;
+    return this.calendar.updateEvent(realtorId, calendarId, eventId, update);
   }
 
   @Delete(':realtorId/events/:eventId')
@@ -36,5 +63,10 @@ export class CalendarController {
     @Query('date') date: string,
   ) {
     return this.calendar.getBookedSlots(realtorId, date);
+  }
+
+  @Get(':realtorId/openings')
+  getOpen(@Param('realtorId') realtorId: number, @Query('date') date: string) {
+    return this.calendar.getOpenSlots(realtorId, date);
   }
 }
