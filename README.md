@@ -18,11 +18,11 @@ This repository hosts a monorepo used to experiment with lead generation and boo
    ```bash
    npm install
    ```
-2. Start the backend in development mode:
+2. Start the backend in development mode (optional):
    ```bash
 npm run start:dev
 ```
-3. Start all services together with the master switch:
+3. Build and launch everything with the master switch:
    ```bash
 npm run master-switch
 ```
