@@ -20,6 +20,7 @@ drop type if exists public.professional_enum cascade;
 drop type if exists public.expert_enum cascade;
 drop type if exists public.working_with_agent_enum cascade;
 drop type if exists public.looking_to_buy_enum cascade;
+drop type if exists booking_status_t cascade;
 
 
 
@@ -64,6 +65,8 @@ create type public.timeframe_enum as enum (
 );
 create type public.working_with_agent_enum as enum ('yes','no','');
 create type public.looking_to_buy_enum as enum ('yes','no','');
+
+create type booking_status_t as enum ('pending','confirmed','canceled');
 -- ─────────────────────────────────────────────────────────────
 -- 2. Core tables
 -- ─────────────────────────────────────────────────────────────
@@ -109,14 +112,20 @@ create table public.leads (
 );
 
 /* 2-c  Booked calls / appointments */
-create table public.booked (
-    phone           varchar(50) primary key references public.leads(phone) on delete cascade,
-    name            varchar(255) not null,
-    appointment_time timestamptz,
-    meeting_link    varchar(600),
-    realtor_id      bigint not null references public.realtor(realtor_id) on delete cascade,
-    created_at      timestamptz default now()
+create table public.bookings (
+    booking_id        bigserial primary key,
+    phone           varchar(50) not null references public.leads(phone) on delete cascade,
+    realtor_id        bigint       not null references public.realtor(realtor_id) on delete cascade,
+
+    appointment_time  timestamptz  not null,
+    google_calendar_id varchar(256) not null,
+    google_event_id    varchar(256) not null,
+
+    status            booking_status_t default 'confirmed',
+    created_at        timestamptz     default now(),
+    updated_at        timestamptz     default now()
 );
+
 
 /* 2-d Scheduled messages for future SMS */
 create table public.scheduled_messages (
