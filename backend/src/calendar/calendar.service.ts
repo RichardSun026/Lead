@@ -18,6 +18,40 @@ export class CalendarService {
     private readonly scheduler: SchedulerService,
   ) {}
 
+  generateAuthUrl(realtorId: number) {
+    const params = new URLSearchParams({
+      client_id: process.env.GOOGLE_CLIENT_ID as string,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI as string,
+      response_type: 'code',
+      access_type: 'offline',
+      scope: 'https://www.googleapis.com/auth/calendar',
+      state: realtorId.toString(),
+      prompt: 'consent',
+    });
+    return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  }
+
+  async handleOAuthCallback(code: string, realtorId: number) {
+    const params = new URLSearchParams({
+      code,
+      client_id: process.env.GOOGLE_CLIENT_ID as string,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI as string,
+      grant_type: 'authorization_code',
+    });
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString(),
+    });
+    const json = (await res.json()) as {
+      access_token: string;
+      refresh_token: string;
+      expires_in: number;
+    };
+    await this.supabase.insertCredentials(realtorId, json);
+  }
+
   private async refreshAccessToken(realtorId: number, refreshToken: string) {
     const params = new URLSearchParams({
       client_id: process.env.GOOGLE_CLIENT_ID as string,
@@ -75,6 +109,37 @@ export class CalendarService {
     return data;
   }
 
+  async updateEvent(
+    realtorId: number,
+    calendarId: string,
+    eventId: string,
+    update: Partial<Omit<EventInput, 'calendarId' | 'phone'>>,
+  ) {
+    const accessToken = await this.getAccessToken(realtorId);
+    await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          summary: update.summary,
+          description: update.description,
+          start: update.start ? { dateTime: update.start } : undefined,
+          end: update.end ? { dateTime: update.end } : undefined,
+        }),
+      },
+    );
+    await this.supabase.upsertEvent(realtorId, eventId, {
+      summary: update.summary,
+      description: update.description,
+      start: update.start,
+      end: update.end,
+    });
+  }
+
   async removeEvent(realtorId: number, calendarId: string, eventId: string) {
     const accessToken = await this.getAccessToken(realtorId);
     await fetch(
@@ -88,15 +153,15 @@ export class CalendarService {
   }
 
   async getBookedSlots(realtorId: number, date: string) {
-    const booked = await this.supabase.query(
-      `booked?realtor_id=eq.${realtorId}&booked_date=eq.${date}&select=booked_time`,
-    );
-    const bookedList = Array.isArray(booked)
-      ? (booked as { booked_time: string }[])
-      : [];
-
     const start = `${date}T00:00:00`;
     const end = `${date}T23:59:59`;
+    const booked = await this.supabase.query(
+      `booked?realtor_id=eq.${realtorId}&appointment_time=gte.${start}&appointment_time=lte.${end}&select=appointment_time`,
+    );
+    const bookedList = Array.isArray(booked)
+      ? (booked as { appointment_time: string }[])
+      : [];
+
     const eventsResult = await this.supabase.query(
       `google_calendar_events?realtor_id=eq.${realtorId}&start_time=lte.${end}&end_time=gte.${start}&select=start_time,end_time`,
     );
@@ -104,7 +169,11 @@ export class CalendarService {
       ? (eventsResult as { start_time: string; end_time: string }[])
       : [];
 
-    const times = new Set(bookedList.map((b) => b.booked_time));
+    const times = new Set(
+      bookedList.map((b) =>
+        new Date(b.appointment_time).toISOString().substring(11, 16),
+      ),
+    );
     for (const e of events) {
       const s = new Date(e.start_time);
       const en = new Date(e.end_time);
@@ -114,5 +183,19 @@ export class CalendarService {
     }
 
     return { booked: Array.from(times) };
+  }
+
+  async getOpenSlots(realtorId: number, date: string) {
+    const booked = await this.getBookedSlots(realtorId, date);
+    const slots: string[] = [];
+    for (let h = 9; h < 17; h++) {
+      for (let m = 0; m < 60; m += 30) {
+        slots.push(
+          `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`,
+        );
+      }
+    }
+    const open = slots.filter((s) => !booked.booked.includes(s));
+    return { open };
   }
 }
