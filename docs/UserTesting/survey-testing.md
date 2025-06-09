@@ -34,13 +34,7 @@ To replicate the reminder SMS that the survey normally triggers, call `POST /api
 ```bash
 curl -X POST http://134.199.198.237:3000/api/schedule \
   -H 'Content-Type: application/json' \
-  -d '{
-    "phone": "+5511998966766",
-    "time": "2025-06-09 18:18:17.341719+00",
-    "content": "Hi Jane Tester, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I’d like to ask a couple of quick questions.
-
-Could you tell me a bit about any recent updates or improvements you’ve made to the property? Things like kitchen remodels, new roofing, or updated flooring can really influence value."
-  }'
+  --data-raw '{"phone":"+5511998966766","time":"2025-06-09T18:18:17Z","content":"Hi Jane Tester, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I would like to ask a couple of quick questions.\n\nCould you tell me about any recent updates or improvements you have made to the property? Things like kitchen remodels, new roofing, or updated flooring can really influence value."}'
 ```
 
 This queues the message in Supabase and the Scheduler service will deliver it at the specified time.
