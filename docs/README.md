@@ -5,3 +5,4 @@ This directory holds supplementary notes and guides related to the Lead Manageme
 - [Environment Variables](environment-variables.md)
 - [Survey and Site Flow](survey-flow.md)
 - [Setup Guide](setup-guide.md)
+- [Testing the Survey with cURL](survey-testing.md)
