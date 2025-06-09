@@ -7,7 +7,7 @@ The survey front‑end normally posts answers to the Nest backend at `http://loc
 Use `POST /api/leads` to store the survey answers and contact info. Every field is optional except `name`, `phone` and `realtorUuid`.
 
 ```bash
-curl -X POST http://localhost:3000/api/leads \
+curl -X POST http://134.199.198.237:3000/api/leads \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "Jane Tester",
@@ -34,12 +34,14 @@ Replace `YOUR-REALTOR-UUID` with the UUID of the target realtor. A successful re
 To replicate the reminder SMS that the survey normally triggers, call `POST /api/schedule` with the phone number, ISO timestamp and message text:
 
 ```bash
-curl -X POST http://localhost:3000/api/schedule \
+curl -X POST http://134.199.198.237:3000/api/schedule \
   -H 'Content-Type: application/json' \
   -d '{
     "phone": "+5511998966766",
     "time": "2024-01-01T12:00:00.000Z",
-    "content": "Hi Jane, thanks for filling out the survey!"
+    "content": "Hi Jane Tester, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I’d like to ask a couple of quick questions.
+
+Could you tell me a bit about any recent updates or improvements you’ve made to the property? Things like kitchen remodels, new roofing, or updated flooring can really influence value."
   }'
 ```
 
