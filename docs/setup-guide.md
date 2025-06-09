@@ -33,5 +33,9 @@ To run all services in containers (backend, landing page, survey site and Redis)
 ```bash
 docker-compose up --build
 ```
+```bash
+scp /Users/peternyman/dev/Fon/Lead/backend/.env root@134.199.198.237:/home/Lead/backend/.env
+```
+
 
 Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `localhost:6379`.
