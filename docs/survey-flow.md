@@ -14,7 +14,7 @@ Once on the booking site two scenarios may occur:
 - **[2a\*] Immediate Booking** – if the user books a time within five minutes, a confirmation message is sent:
   > “Thank you for booking a meeting with {realtor_name} at {date} {time}. {realtor_name} will soon enter contact with you.”
   Sending additional messages does nothing.
-- **[2b\*] No Booking Yet** – if no booking is made within five minutes, a cron job schedules a reminder SMS via the Scheduler service.
+- **[2b\*] No Booking Yet** – if no booking is made within five minutes, the built-in cron job schedules a reminder SMS via the Scheduler service.
 
 Each booking writes a Google Calendar event and stores its link and phone number in Supabase. When users reschedule, the site reads updated times from Google Calendar and confirms the change.
 

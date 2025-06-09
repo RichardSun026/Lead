@@ -61,7 +61,7 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `message_status`
 - `message_text`
 - `created_at`
-- rows are processed by `backend/src/scheduler/cron.ts`
+- rows are processed by the cron job in `backend/src/scheduler/cron.ts`
 
 ### message_logs
 - `id` – primary key
