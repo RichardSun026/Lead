@@ -50,4 +50,4 @@ This functionality is now implemented inside the Nest backend.
   - `POST /schedule` – schedule an SMS with `phone`, `time` and `content` in the body
   - `POST /schedule/cancel/:phone` – cancel pending messages for a phone number
 - **Database**: uses the `scheduled_messages` table in Supabase
-- A cron job runs the `cron.ts` script to send due messages via Twilio
+- The Nest server automatically starts a job that periodically invokes `cron.ts` to send due messages via Twilio
