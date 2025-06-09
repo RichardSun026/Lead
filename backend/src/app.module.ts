@@ -23,6 +23,7 @@ import { LeadsService } from './leads/leads.service';
 import { MessengerService } from './messenger/messenger.service';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
+import { SystemMessageController } from './system-message.controller';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -58,6 +59,7 @@ import { PromptService } from './agentHelp/prompt.service';
     SchedulerController,
     LeadsController,
     BookingController,
+    SystemMessageController,
   ],
   providers: [
     AppService,
