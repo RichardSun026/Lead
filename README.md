@@ -185,7 +185,7 @@ All services share environment variables for:
 
 ## Docker Setup
 
-To run the backend, landing page, survey site and Redis locally using Docker compose:
+To run the API, landing page, survey site and Redis locally using Docker compose:
 
 ```bash
 docker-compose up --build
@@ -193,7 +193,7 @@ docker-compose up --build
 
 The services will be available at:
 
-- Backend: <http://localhost:3000>
+- API: <http://localhost:3000>
 - Landing page: <http://localhost:4173>
 - Survey site: <http://localhost:4174>
 - Redis: localhost port 6379

@@ -22,7 +22,7 @@ This guide explains how to configure the project for local development and how t
    ```bash
    npm run master-switch
    ```
-   - Backend API: <http://localhost:3000>
+   - API: <http://localhost:3000>
    - Landing page: <http://localhost:4173>
    - Survey site: <http://localhost:4174>
 
