@@ -49,7 +49,7 @@ export class AgentService {
     const calls = reply.tool_calls ?? [];
     if (calls.length === 0) {
       if (reply.content) {
-        await this.messenger.sendSms(phone, reply.content);
+        await this.messenger.sendSms(phone, reply.content, false);
       }
       return reply.content ?? '';
     }
