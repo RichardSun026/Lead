@@ -11,9 +11,9 @@ It can be used to verify Twilio integration and the AI assistant's response.
 Send a POST request to the `/message` endpoint with the target phone number and the message text:
 
 ```bash
-curl -X POST http://134.199.198.237:3000/message \
+curl -X POST http://134.199.198.237:3000/api/message \
   -H "Content-Type: application/json" \
-  -d '{"phone": "+15551234567", "message": "Hello"}'
+  -d '{"phone": "+15551234567", "message": "Hello thank you for the message, yes i am instrested in selling my house"}'
 ```
 
 The server replies with the assistant's message in JSON:
