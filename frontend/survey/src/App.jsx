@@ -6,7 +6,8 @@ export default function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
-    const realtorUuid = parts[0] || '';
+    const idx = parts[0] === 'survey' ? 1 : 0;
+    const realtorUuid = parts[idx] || '';
 
     const form = document.getElementById('surveyForm');
     const prevBtn = document.getElementById('prevBtn');
