@@ -21,6 +21,7 @@ interface LeadInput {
 @Injectable()
 export class LeadsService {
   private readonly client: SupabaseClient<any>;
+  private readonly uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   constructor() {
     const url = process.env.SUPABASE_URL ?? '';
@@ -30,6 +31,14 @@ export class LeadsService {
 
   async createLead(input: LeadInput): Promise<void> {
     console.debug('[LeadsService] createLead called with', input);
+
+    if (!this.uuidRe.test(input.realtorUuid)) {
+      console.error(
+        '[LeadsService] invalid realtor uuid format',
+        input.realtorUuid,
+      );
+      throw new Error('Invalid realtor');
+    }
 
     const { data, error: realtorErr } = await this.client
       .from('realtor')
@@ -115,6 +124,10 @@ export class LeadsService {
 
   async findRealtor(uuid: string) {
     console.debug('[LeadsService] fetching realtor', uuid);
+    if (!this.uuidRe.test(uuid)) {
+      console.debug('[LeadsService] invalid uuid format', uuid);
+      return null;
+    }
     const { data, error } = await this.client
       .from('realtor')
       .select('realtor_id,f_name,e_name,video_url,website_url')
