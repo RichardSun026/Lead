@@ -6,6 +6,10 @@ drop table if exists public.scheduled_messages cascade;
 drop table if exists public.booked    cascade;
 drop table if exists public.leads     cascade;
 drop table if exists public.realtor   cascade;
+drop table if exists public.bookings   cascade;
+drop table if exists public.google_credentials cascade;
+drop table if exists public.google_calendar_events cascade;
+
 
 -- drop enums in case the script is re-run
 drop type if exists public.home_type_enum cascade;
