@@ -11,7 +11,7 @@ curl -X POST http://localhost:3000/api/leads \
   -H 'Content-Type: application/json' \
   -d '{
     "name": "Jane Tester",
-    "phone": "+15551234567",
+    "phone": "+5511998966766",
     "email": "jane@example.com",
     "realtorUuid": "YOUR-REALTOR-UUID",
     "zipcode": "90210",
@@ -37,7 +37,7 @@ To replicate the reminder SMS that the survey normally triggers, call `POST /api
 curl -X POST http://localhost:3000/api/schedule \
   -H 'Content-Type: application/json' \
   -d '{
-    "phone": "+15551234567",
+    "phone": "+5511998966766",
     "time": "2024-01-01T12:00:00.000Z",
     "content": "Hi Jane, thanks for filling out the survey!"
   }'
