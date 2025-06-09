@@ -13,7 +13,7 @@ curl -X POST http://134.199.198.237:3000/api/leads \
     "name": "Jane Tester",
     "phone": "+5511998966766",
     "email": "jane@example.com",
-    "realtorUuid": "YOUR-REALTOR-UUID",
+    "realtorUuid": "f957761b-104e-416e-a550-25e010ca9302",
     "zipcode": "90210",
     "homeType": "single-family",
     "bedrooms": "3",
@@ -26,8 +26,6 @@ curl -X POST http://134.199.198.237:3000/api/leads \
     "expert": "yes"
   }'
 ```
-
-Replace `YOUR-REALTOR-UUID` with the UUID of the target realtor. A successful request returns `{ "status": "ok" }`.
 
 ## Schedule a Follow‑up Message (optional)
 
