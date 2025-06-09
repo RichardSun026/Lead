@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Twilio } from 'twilio';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { ConversationService } from '../clientRedis/conversation.service';
 
 @Injectable()
 export class MessengerService {
@@ -8,8 +9,7 @@ export class MessengerService {
   private readonly twilio: Twilio;
   private readonly from: string;
   private readonly supabase: SupabaseClient<any>;
-
-  constructor() {
+  constructor(private readonly conversation: ConversationService) {
     this.twilio = new Twilio(
       process.env.TWILIO_ACCOUNT_SID ?? '',
       process.env.TWILIO_AUTH_TOKEN ?? '',
@@ -34,6 +34,7 @@ export class MessengerService {
         message_text: text,
         status: 'sent',
       });
+      await this.conversation.store(phone, { role: 'assistant', content: text });
     } catch (err) {
       this.log.error('Failed to send SMS', err as Error);
       await this.supabase.from('message_logs').insert({
@@ -42,6 +43,7 @@ export class MessengerService {
         message_text: text,
         status: 'failed',
       });
+      await this.conversation.store(phone, { role: 'assistant', content: text });
     }
   }
 }
