@@ -15,11 +15,6 @@ import { CalendarService, EventInput } from './calendar.service';
 export class CalendarController {
   constructor(private readonly calendar: CalendarService) {}
 
-  @Get('oauth/:realtorId')
-  getAuthUrl(@Param('realtorId') realtorId: number) {
-    return { url: this.calendar.generateAuthUrl(realtorId) };
-  }
-
   @Get('oauth/callback')
   @HttpCode(200)
   async oauthCallback(
@@ -29,6 +24,11 @@ export class CalendarController {
     const realtorId = Number(state);
     await this.calendar.handleOAuthCallback(code, realtorId);
     return { status: 'linked' };
+  }
+
+  @Get('oauth/:realtorId')
+  getAuthUrl(@Param('realtorId') realtorId: number) {
+    return { url: this.calendar.generateAuthUrl(realtorId) };
   }
 
   @Post(':realtorId/events')
