@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { Twilio } from 'twilio';
+import { ConversationService } from '../clientRedis/conversation.service';
 
 @Injectable()
 export class SchedulerService implements OnModuleInit, OnModuleDestroy {
@@ -15,7 +16,7 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   private interval?: NodeJS.Timeout;
   private readonly log = new Logger('SchedulerService');
 
-  constructor() {
+  constructor(private readonly conversation: ConversationService) {
     const url = process.env.SUPABASE_URL ?? '';
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
     this.client = createClient(url, key);
@@ -103,12 +104,20 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
           .update({ message_status: 'sent' })
           .eq('id', row.id);
         this.log.log(`Sent message ${row.id} to ${row.phone}`);
+        await this.conversation.store(row.phone, {
+          role: 'assistant',
+          content: row.message_text ?? '',
+        });
       } catch (err) {
         this.log.error(`Send failed for ${row.id}`, err as Error);
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'failed' })
           .eq('id', row.id);
+        await this.conversation.store(row.phone, {
+          role: 'assistant',
+          content: row.message_text ?? '',
+        });
       }
     }
   }
