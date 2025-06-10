@@ -37,4 +37,9 @@ export class ConversationService {
         (m): m is OpenAI.Chat.ChatCompletionMessageParam => m !== undefined,
       );
   }
+
+  /*---------------  LENGTH  ----------------*/
+  async length(phone: string): Promise<number> {
+    return this.redis.llen(LIST(phone));
+  }
 }

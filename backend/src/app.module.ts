@@ -26,6 +26,8 @@ import { BookingController } from './booking/booking.controller';
 import { SystemMessageController } from './system-message.controller';
 import { RealtorController } from './realtor/realtor.controller';
 import { RealtorService } from './realtor/realtor.service';
+import { ReportsController } from './reports/reports.controller';
+import { ReportsService } from './reports/reports.service';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -58,6 +60,18 @@ import { PromptService } from './agentHelp/prompt.service';
         ),
         serveRoot: '/realtor',
       },
+      {
+        rootPath: join(
+          __dirname,
+          '..',
+          '..',
+          'frontend',
+          'RealtorInterface',
+          'LeadReports',
+          'dist',
+        ),
+        serveRoot: '/LeadReports',
+      },
     ),
 
     RedisModule.forRoot({
@@ -75,6 +89,7 @@ import { PromptService } from './agentHelp/prompt.service';
     BookingController,
     RealtorController,
     SystemMessageController,
+    ReportsController,
   ],
   providers: [
     AppService,
@@ -89,6 +104,7 @@ import { PromptService } from './agentHelp/prompt.service';
     MessengerService,
     BookingService,
     RealtorService,
+    ReportsService,
   ],
 })
 export class AppModule {}
