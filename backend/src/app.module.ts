@@ -24,6 +24,8 @@ import { MessengerService } from './messenger/messenger.service';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
 import { SystemMessageController } from './system-message.controller';
+import { RealtorController } from './realtor/realtor.controller';
+import { RealtorService } from './realtor/realtor.service';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -44,6 +46,18 @@ import { PromptService } from './agentHelp/prompt.service';
         rootPath: join(__dirname, '..', '..', 'frontend', 'survey', 'dist'),
         serveRoot: '/survey',
       },
+      {
+        rootPath: join(
+          __dirname,
+          '..',
+          '..',
+          'frontend',
+          'RealtorInterface',
+          'Onboarding',
+          'dist',
+        ),
+        serveRoot: '/realtor',
+      },
     ),
 
     RedisModule.forRoot({
@@ -59,6 +73,7 @@ import { PromptService } from './agentHelp/prompt.service';
     SchedulerController,
     LeadsController,
     BookingController,
+    RealtorController,
     SystemMessageController,
   ],
   providers: [
@@ -73,6 +88,7 @@ import { PromptService } from './agentHelp/prompt.service';
     LeadsService,
     MessengerService,
     BookingService,
+    RealtorService,
   ],
 })
 export class AppModule {}
