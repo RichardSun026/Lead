@@ -218,4 +218,68 @@ export class LeadsService {
 
     return { realtorName, answers };
   }
+
+  async getLeadReport(phone: string): Promise<{
+    name: string;
+    phone: string;
+    address: string | null;
+    answers: { question: string; answer: string }[];
+  } | null> {
+    const { data } = await this.client
+      .from('leads')
+      .select(
+        `first_name,last_name,phone,address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
+      )
+      .eq('phone', phone)
+      .maybeSingle();
+    const lead =
+      (data as {
+        first_name?: string;
+        last_name?: string;
+        phone: string;
+        address?: string;
+        home_type?: string;
+        bedrooms?: string;
+        bathrooms?: string;
+        sqft?: string;
+        home_built?: string;
+        occupancy?: string;
+        sell_time?: string;
+        working_with_agent?: string;
+        looking_to_buy?: string;
+      } | null) ?? null;
+    if (!lead) return null;
+
+    const bool = (v?: string) => {
+      if (!v) return '';
+      return v.toLowerCase() === 'yes'
+        ? 'Yes'
+        : v.toLowerCase() === 'no'
+          ? 'No'
+          : '';
+    };
+
+    const answers = [
+      { question: 'ZIP code', answer: lead.address ?? '' },
+      { question: 'Home type', answer: lead.home_type ?? '' },
+      { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
+      { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
+      { question: 'Square footage', answer: lead.sqft ?? '' },
+      { question: 'Year built', answer: lead.home_built ?? '' },
+      { question: 'Occupancy', answer: lead.occupancy ?? '' },
+      { question: 'Selling timeframe', answer: lead.sell_time ?? '' },
+      {
+        question: 'Working with an agent',
+        answer: bool(lead.working_with_agent),
+      },
+      { question: 'Looking to buy', answer: bool(lead.looking_to_buy) },
+    ].filter((a) => a.answer);
+
+    return {
+      name: `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim(),
+      phone: lead.phone,
+      address: lead.address ?? null,
+      answers,
+    };
+  }
 }
