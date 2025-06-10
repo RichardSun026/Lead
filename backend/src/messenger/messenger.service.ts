@@ -21,7 +21,11 @@ export class MessengerService {
     );
   }
 
-  async sendSms(phone: string, text: string): Promise<void> {
+  async sendSms(
+    phone: string,
+    text: string,
+    storeMessage = true,
+  ): Promise<void> {
     try {
       await this.twilio.messages.create({
         body: text,
@@ -34,7 +38,9 @@ export class MessengerService {
         message_text: text,
         status: 'sent',
       });
-      await this.conversation.store(phone, { role: 'assistant', content: text });
+      if (storeMessage) {
+        await this.conversation.store(phone, { role: 'assistant', content: text });
+      }
     } catch (err) {
       this.log.error('Failed to send SMS', err as Error);
       await this.supabase.from('message_logs').insert({
@@ -43,7 +49,9 @@ export class MessengerService {
         message_text: text,
         status: 'failed',
       });
-      await this.conversation.store(phone, { role: 'assistant', content: text });
+      if (storeMessage) {
+        await this.conversation.store(phone, { role: 'assistant', content: text });
+      }
     }
   }
 }
