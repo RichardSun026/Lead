@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { normalizePhone } from '../utils/phone';
 
 interface LeadInput {
   name: string;
@@ -65,8 +66,9 @@ export class LeadsService {
     const lastName = rest.join(' ');
     console.debug('[LeadsService] parsed name', { firstName, lastName });
 
+    const sanitizedPhone = normalizePhone(input.phone);
     const leadRecord = {
-      phone: input.phone,
+      phone: sanitizedPhone,
       realtor_id: realtorId,
       first_name: firstName,
       last_name: lastName,
@@ -105,10 +107,11 @@ export class LeadsService {
   }
 
   async findByPhone(phone: string) {
+    const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select('first_name,last_name,phone')
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .maybeSingle();
     const lead = data as {
       first_name: string;
@@ -161,12 +164,13 @@ export class LeadsService {
     realtorName: string;
     answers: { question: string; answer: string }[];
   } | null> {
+    const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select(
         `address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
       )
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .maybeSingle();
     const lead =
       (data as {
@@ -225,12 +229,13 @@ export class LeadsService {
     address: string | null;
     answers: { question: string; answer: string }[];
   } | null> {
+    const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select(
         `first_name,last_name,phone,address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
       )
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .maybeSingle();
     const lead =
       (data as {
