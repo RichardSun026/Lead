@@ -2,16 +2,21 @@ import React, { useState } from 'react';
 
 export default function App() {
   const [step, setStep] = useState(1);
-  const [info, setInfo] = useState({ name: '', email: '', phone: '' });
+  const [info, setInfo] = useState({ firstName: '', lastName: '', email: '', phone: '' });
   const [realtor, setRealtor] = useState(null);
   const [password, setPassword] = useState('');
 
   const handleFirstSubmit = async (e) => {
     e.preventDefault();
+    const payload = {
+      name: `${info.firstName} ${info.lastName}`.trim(),
+      email: info.email,
+      phone: info.phone,
+    };
     const res = await fetch('/api/realtor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(info),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
     setRealtor(data);
@@ -38,9 +43,17 @@ export default function App() {
           <p>Please provide your details to create your account.</p>
           <input
             type="text"
-            placeholder="Full name"
-            value={info.name}
-            onChange={(e) => setInfo({ ...info, name: e.target.value })}
+            placeholder="First name"
+            value={info.firstName}
+            onChange={(e) => setInfo({ ...info, firstName: e.target.value })}
+            required
+          />
+          <br />
+          <input
+            type="text"
+            placeholder="Last name"
+            value={info.lastName}
+            onChange={(e) => setInfo({ ...info, lastName: e.target.value })}
             required
           />
           <br />
