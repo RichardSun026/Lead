@@ -8,9 +8,9 @@ This page summarises the variables defined in `.env.example` and what they are u
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations in Supabase.
 
 ## Twilio
-- `TWILIO_ACCOUNT_SID` – account identifier for sending SMS via Twilio.
+- `TWILIO_ACCOUNT_SID` – account identifier for sending WhatsApp messages via Twilio.
 - `TWILIO_AUTH_TOKEN` – authentication token used with the SID.
-- `TWILIO_PHONE_NUMBER` – phone number from which SMS are sent.
+- `TWILIO_PHONE_NUMBER` – WhatsApp-enabled phone number used to send messages.
 
 ## Third‑party APIs
 - `OPENAI_API_KEY` – key for generating AI responses via OpenAI.

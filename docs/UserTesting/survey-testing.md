@@ -29,7 +29,7 @@ curl -X POST http://134.199.198.237:3000/api/leads \
 
 ## Schedule a Follow‑up Message (optional)
 
-To replicate the reminder SMS that the survey normally triggers, call `POST /api/schedule` with the phone number, ISO timestamp and message text:
+To replicate the reminder WhatsApp message that the survey normally triggers, call `POST /api/schedule` with the phone number, ISO timestamp and message text:
 
 ```bash
 curl -X POST http://134.199.198.237:3000/api/schedule \
