@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { createClient } from '@supabase/supabase-js';
 import { TwilioService } from '../twilio/twilio.service';
 import Redis from 'ioredis';
@@ -11,6 +10,14 @@ const supabase = createClient<any>(
 const twilio = new TwilioService();
 const redis = new Redis(process.env.REDIS_URL ?? '');
 const LIST = (phone: string) => `phone:${phone}:json`;
+
+function isRow(
+  row: unknown,
+): row is { id: number; phone: string; message_text?: string | null } {
+  return (
+    typeof row === 'object' && row !== null && 'id' in row && 'phone' in row
+  );
+}
 
 export async function handler(): Promise<void> {
   const now = new Date().toISOString();
@@ -28,27 +35,31 @@ export async function handler(): Promise<void> {
 
   console.log(`Found ${data?.length ?? 0} pending messages`);
 
-  for (const row of data ?? []) {
+  for (const raw of data ?? []) {
+    if (!isRow(raw)) {
+      console.warn('Skipping malformed row');
+      continue;
+    }
     try {
-      await twilio.sendWhatsApp(row.phone, row.message_text ?? '');
-      console.log(`Sent message ${row.id} to ${row.phone}`);
+      await twilio.sendWhatsApp(raw.phone, raw.message_text ?? '');
+      console.log(`Sent message ${raw.id} to ${raw.phone}`);
       await supabase
         .from('scheduled_messages')
         .update({ message_status: 'sent' })
-        .eq('id', row.id);
+        .eq('id', raw.id);
       await redis.rpush(
-        LIST(row.phone),
-        JSON.stringify({ role: 'assistant', content: row.message_text ?? '' }),
+        LIST(raw.phone),
+        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
       );
     } catch (err) {
-      console.error(`Send failed for ${row.id}`, err);
+      console.error(`Send failed for ${raw.id}`, err);
       await supabase
         .from('scheduled_messages')
         .update({ message_status: 'failed' })
-        .eq('id', row.id);
+        .eq('id', raw.id);
       await redis.rpush(
-        LIST(row.phone),
-        JSON.stringify({ role: 'assistant', content: row.message_text ?? '' }),
+        LIST(raw.phone),
+        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
       );
     }
   }

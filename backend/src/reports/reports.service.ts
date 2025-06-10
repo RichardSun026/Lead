@@ -54,9 +54,7 @@ export class ReportsService {
       'Summarize these survey answers:\n' +
       answers.map((a) => `${a.question}: ${a.answer}`).join('\n');
     const reply = await this.openai.chat(
-      [
-        { role: 'user', content },
-      ],
+      [{ role: 'user', content }],
       'gpt-4o-mini',
     );
     const summary = reply.content ?? '';
@@ -76,13 +74,15 @@ export class ReportsService {
     const history = await this.conversation.fetchAll(phone);
     if (history.length === 0) return '';
     const text = history
-      .map((m) => `${m.role}: ${m.content}`)
+      .map((m) => {
+        const c =
+          typeof m.content === 'string' ? m.content : JSON.stringify(m.content);
+        return `${m.role}: ${c}`;
+      })
       .join('\n')
       .slice(-12000);
     const reply = await this.openai.chat(
-      [
-        { role: 'user', content: `Summarize this conversation:\n${text}` },
-      ],
+      [{ role: 'user', content: `Summarize this conversation:\n${text}` }],
       'gpt-4o-mini',
     );
     const summary = reply.content ?? '';

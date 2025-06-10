@@ -29,6 +29,7 @@ import { RealtorController } from './realtor/realtor.controller';
 import { RealtorService } from './realtor/realtor.service';
 import { ReportsController } from './reports/reports.controller';
 import { ReportsService } from './reports/reports.service';
+import { TwilioController } from './twilio/twilio.controller';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -91,6 +92,7 @@ import { PromptService } from './agentHelp/prompt.service';
     RealtorController,
     SystemMessageController,
     ReportsController,
+    TwilioController,
   ],
   providers: [
     AppService,
