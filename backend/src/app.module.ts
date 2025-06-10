@@ -21,6 +21,7 @@ import { SchedulerService } from './scheduler/scheduler.service';
 
 import { LeadsService } from './leads/leads.service';
 import { MessengerService } from './messenger/messenger.service';
+import { TwilioService } from './twilio/twilio.service';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
 import { SystemMessageController } from './system-message.controller';
@@ -102,6 +103,7 @@ import { PromptService } from './agentHelp/prompt.service';
     SupabaseService,
     LeadsService,
     MessengerService,
+    TwilioService,
     BookingService,
     RealtorService,
     ReportsService,
