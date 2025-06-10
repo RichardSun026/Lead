@@ -13,6 +13,16 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   private interval?: NodeJS.Timeout;
   private readonly log = new Logger('SchedulerService');
 
+  private isRow(row: unknown): row is {
+    id: number;
+    phone: string;
+    message_text?: string | null;
+  } {
+    return (
+      typeof row === 'object' && row !== null && 'id' in row && 'phone' in row
+    );
+  }
+
   constructor(private readonly messenger: MessengerService) {
     const url = process.env.SUPABASE_URL ?? '';
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
@@ -84,20 +94,24 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
       return;
     }
 
-    for (const row of data ?? []) {
+    for (const raw of data ?? []) {
+      if (!this.isRow(raw)) {
+        this.log.warn('Skipping malformed row');
+        continue;
+      }
       try {
-        await this.messenger.sendSms(row.phone, row.message_text ?? '');
+        await this.messenger.sendSms(raw.phone, raw.message_text ?? '');
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'sent' })
-          .eq('id', row.id);
-        this.log.log(`Sent message ${row.id} to ${row.phone}`);
+          .eq('id', raw.id);
+        this.log.log(`Sent message ${raw.id} to ${raw.phone}`);
       } catch (err) {
-        this.log.error(`Send failed for ${row.id}`, err as Error);
+        this.log.error(`Send failed for ${raw.id}`, err as Error);
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'failed' })
-          .eq('id', row.id);
+          .eq('id', raw.id);
       }
     }
   }
