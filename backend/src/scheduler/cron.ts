@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { createClient } from '@supabase/supabase-js';
-import { Twilio } from 'twilio';
+import { TwilioService } from '../twilio/twilio.service';
 import Redis from 'ioredis';
 
 const supabase = createClient<any>(
@@ -8,11 +8,7 @@ const supabase = createClient<any>(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
 );
 
-const twilio = new Twilio(
-  process.env.TWILIO_ACCOUNT_SID ?? '',
-  process.env.TWILIO_AUTH_TOKEN ?? '',
-);
-const FROM = process.env.TWILIO_PHONE_NUMBER ?? '';
+const twilio = new TwilioService();
 const redis = new Redis(process.env.REDIS_URL ?? '');
 const LIST = (phone: string) => `phone:${phone}:json`;
 
@@ -34,11 +30,7 @@ export async function handler(): Promise<void> {
 
   for (const row of data ?? []) {
     try {
-      await twilio.messages.create({
-        body: row.message_text ?? '',
-        to: `whatsapp:${row.phone}`,
-        from: `whatsapp:${FROM}`,
-      });
+      await twilio.sendWhatsApp(row.phone, row.message_text ?? '');
       console.log(`Sent message ${row.id} to ${row.phone}`);
       await supabase
         .from('scheduled_messages')

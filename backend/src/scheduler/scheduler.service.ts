@@ -5,26 +5,18 @@ import {
   Logger,
 } from '@nestjs/common';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
-import { Twilio } from 'twilio';
-import { ConversationService } from '../clientRedis/conversation.service';
+import { MessengerService } from '../messenger/messenger.service';
 
 @Injectable()
 export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   private readonly client: SupabaseClient<any>;
-  private readonly twilio: Twilio;
-  private readonly from: string;
   private interval?: NodeJS.Timeout;
   private readonly log = new Logger('SchedulerService');
 
-  constructor(private readonly conversation: ConversationService) {
+  constructor(private readonly messenger: MessengerService) {
     const url = process.env.SUPABASE_URL ?? '';
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
     this.client = createClient(url, key);
-    this.twilio = new Twilio(
-      process.env.TWILIO_ACCOUNT_SID ?? '',
-      process.env.TWILIO_AUTH_TOKEN ?? '',
-    );
-    this.from = process.env.TWILIO_PHONE_NUMBER ?? '';
   }
 
   async scheduleMessage(
@@ -94,30 +86,18 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
 
     for (const row of data ?? []) {
       try {
-        await this.twilio.messages.create({
-          body: row.message_text ?? '',
-          to: `whatsapp:${row.phone}`,
-          from: `whatsapp:${this.from}`,
-        });
+        await this.messenger.sendSms(row.phone, row.message_text ?? '');
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'sent' })
           .eq('id', row.id);
         this.log.log(`Sent message ${row.id} to ${row.phone}`);
-        await this.conversation.store(row.phone, {
-          role: 'assistant',
-          content: row.message_text ?? '',
-        });
       } catch (err) {
         this.log.error(`Send failed for ${row.id}`, err as Error);
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'failed' })
           .eq('id', row.id);
-        await this.conversation.store(row.phone, {
-          role: 'assistant',
-          content: row.message_text ?? '',
-        });
       }
     }
   }
