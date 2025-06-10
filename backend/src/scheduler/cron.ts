@@ -36,8 +36,8 @@ export async function handler(): Promise<void> {
     try {
       await twilio.messages.create({
         body: row.message_text ?? '',
-        to: row.phone,
-        from: FROM,
+        to: `whatsapp:${row.phone}`,
+        from: `whatsapp:${FROM}`,
       });
       console.log(`Sent message ${row.id} to ${row.phone}`);
       await supabase

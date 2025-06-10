@@ -29,8 +29,8 @@ export class MessengerService {
     try {
       await this.twilio.messages.create({
         body: text,
-        to: phone,
-        from: this.from,
+        to: `whatsapp:${phone}`,
+        from: `whatsapp:${this.from}`,
       });
       await this.supabase.from('message_logs').insert({
         phone,
@@ -42,7 +42,7 @@ export class MessengerService {
         await this.conversation.store(phone, { role: 'assistant', content: text });
       }
     } catch (err) {
-      this.log.error('Failed to send SMS', err as Error);
+      this.log.error('Failed to send message', err as Error);
       await this.supabase.from('message_logs').insert({
         phone,
         message_type: 'text',

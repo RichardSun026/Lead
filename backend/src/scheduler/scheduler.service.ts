@@ -96,8 +96,8 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
       try {
         await this.twilio.messages.create({
           body: row.message_text ?? '',
-          to: row.phone,
-          from: this.from,
+          to: `whatsapp:${row.phone}`,
+          from: `whatsapp:${this.from}`,
         });
         await this.client
           .from('scheduled_messages')
