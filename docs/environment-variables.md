@@ -10,7 +10,7 @@ This page summarises the variables defined in `.env.example` and what they are u
 ## Twilio
 - `TWILIO_ACCOUNT_SID` – account identifier for sending WhatsApp messages via Twilio.
 - `TWILIO_AUTH_TOKEN` – authentication token used with the SID.
-- `TWILIO_PHONE_NUMBER` – WhatsApp-enabled phone number used to send messages.
+- `TWILIO_PHONE_NUMBER` – WhatsApp-enabled phone number used to send messages. The server logs an error during startup if this value is not provided.
 
 ## Third‑party APIs
 - `OPENAI_API_KEY` – key for generating AI responses via OpenAI.
