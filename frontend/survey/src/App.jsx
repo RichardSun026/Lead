@@ -233,7 +233,8 @@ export default function App() {
 
       const formData = new FormData(form);
       const name = formData.get('fullName');
-      const phone = formData.get('phone');
+      const rawPhone = formData.get('phone');
+      const phone = '+1' + String(rawPhone).replace(/\D/g, '').slice(-10);
       const email = formData.get('email') || '';
       const zipcode = formData.get('zipcode') || '';
       const homeType = formData.get('homeType') || '';
