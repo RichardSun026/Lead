@@ -30,3 +30,11 @@ services:
       - api
     ports:
       - '4174:80'
+  onboarding:
+    build:
+      context: .
+      dockerfile: frontend/RealtorInterface/Onboarding/Dockerfile
+    depends_on:
+      - api
+    ports:
+      - '4175:80'

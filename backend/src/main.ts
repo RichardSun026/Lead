@@ -9,7 +9,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   const expressApp = app.getHttpAdapter().getInstance();
-  expressApp.get(/^\/(?!api|survey).*/, (req, res) => {
+  expressApp.get(/^\/(?!api|survey|realtor).*/, (req, res) => {
     res.sendFile(
       join(__dirname, '..', '..', 'frontend', 'site', 'dist', 'index.html'),
     );
