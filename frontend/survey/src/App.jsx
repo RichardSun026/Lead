@@ -278,9 +278,13 @@ export default function App() {
         siteUrl.port = '4173';
         console.log(`Redirecting to site: ${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`);
         window.location.href = `${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`;
+        document.getElementById('successMessage').textContent =
+        'Thank you for filling out the servey! you will be ridirected to our web site.';
       }
-      document.getElementById('successMessage').textContent =
+      else {
+        document.getElementById('successMessage').textContent =
         'Thank you! An agent will contact you soon.';
+      }
       document.getElementById('successMessage').style.display = 'block';
 
       await fetch('/api/schedule', {
