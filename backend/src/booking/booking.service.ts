@@ -3,6 +3,7 @@ import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { MessengerService } from '../messenger/messenger.service';
 import { CalendarService } from '../calendar/calendar.service';
 import { DateTime } from 'luxon';
+import { normalizePhone } from '../utils/phone';
 
 export interface BookingInput {
   phone: string;
@@ -28,10 +29,11 @@ export class BookingService {
   }
 
   async getExisting(phone: string) {
+    const sanitized = normalizePhone(phone);
     const { data } = await this.supabase
       .from('booked')
       .select('appointment_time')
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .maybeSingle();
     if (!data) return null;
     const iso = data.appointment_time as string;
@@ -43,7 +45,8 @@ export class BookingService {
   }
 
   async createOrUpdate(input: BookingInput) {
-    const existing = await this.getExisting(input.phone);
+    const phone = normalizePhone(input.phone);
+    const existing = await this.getExisting(phone);
     const start = DateTime.fromISO(
       `${input.booked_date}T${input.booked_time}`,
       {
@@ -57,22 +60,22 @@ export class BookingService {
 
     await this.calendar.addEvent(input.realtor_id, {
       summary: `Meeting with ${input.full_name}`,
-      description: `Phone: ${input.phone}`,
+      description: `Phone: ${phone}`,
       start: startIso,
       end: endIso,
       calendarId: 'primary',
-      phone: input.phone,
+      phone,
     });
 
     await this.supabase.from('booked').upsert({
-      phone: input.phone,
+      phone,
       name: input.full_name,
       appointment_time: start.toISO(),
       realtor_id: input.realtor_id,
     });
 
     const msg = `Thanks ${input.full_name}, your appointment is confirmed for ${start.toISO()}.`;
-    await this.messenger.sendSms(input.phone, msg);
+    await this.messenger.sendSms(phone, msg);
     return { wasRebooking: !!existing };
   }
 }

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { MessengerService } from '../messenger/messenger.service';
+import { normalizePhone } from '../utils/phone';
 
 @Injectable()
 export class SchedulerService implements OnModuleInit, OnModuleDestroy {
@@ -34,10 +35,11 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     time: string,
     content: string,
   ): Promise<void> {
+    const sanitized = normalizePhone(phone);
     const { data: lead, error } = await this.client
       .from('leads')
       .select('realtor_id')
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .maybeSingle();
 
     if (error) throw error;
@@ -45,7 +47,7 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     if (!realtorId) throw new Error('Invalid phone number');
 
     await this.client.from('scheduled_messages').insert({
-      phone,
+      phone: sanitized,
       realtor_id: realtorId,
       scheduled_time: time,
       message_type: 'text',
@@ -54,6 +56,7 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
   }
 
   async scheduleFollowUps(phone: string, appointment: string): Promise<void> {
+    const sanitized = normalizePhone(phone);
     const eventTime = new Date(appointment);
     const offsets = [
       {
@@ -63,21 +66,22 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
       { ms: -60 * 60 * 1000, text: 'Reminder: your appointment is in 1 hour.' },
     ];
     await this.scheduleMessage(
-      phone,
+      sanitized,
       new Date().toISOString(),
       `Thanks for booking! Your appointment is on ${eventTime.toISOString()}.`,
     );
     for (const o of offsets) {
       const when = new Date(eventTime.getTime() + o.ms).toISOString();
-      await this.scheduleMessage(phone, when, o.text);
+      await this.scheduleMessage(sanitized, when, o.text);
     }
   }
 
   async cancelMessages(phone: string): Promise<void> {
+    const sanitized = normalizePhone(phone);
     await this.client
       .from('scheduled_messages')
       .update({ message_status: 'canceled' })
-      .eq('phone', phone)
+      .eq('phone', sanitized)
       .eq('message_status', 'pending');
   }
 
