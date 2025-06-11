@@ -16,7 +16,6 @@
     "start:dev": "nest start --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
     "start:debug": "nest start --debug --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
     "start:prod": "node backend/dist/main",
-    "master-switch": "npm run build && npm --workspace frontend/site run build && npm --workspace frontend/survey run build && npm --workspace frontend/RealtorInterface/Onboarding run build && npx concurrently \"npm run start:prod\" \"npm --workspace frontend/site run preview -- --port 4173\" \"npm --workspace frontend/survey run preview -- --port 4174\" \"npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175\"",
     "lint": "eslint \"{backend/src,frontend,libs,backend/test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
