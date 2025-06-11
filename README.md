@@ -45,4 +45,5 @@ All services can be started with Docker:
 ```bash
 docker-compose up --build
 ```
-This brings up the API, both front ends and Redis using the same ports as above.
+This brings up the API, all front ends and Redis. The landing page will be
+available on ports 80 and 443, while the other sites use the ports listed above.
