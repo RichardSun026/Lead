@@ -8,7 +8,9 @@ import {
   Patch,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
+import type { Response } from 'express';
 import { CalendarService, EventInput } from './calendar.service';
 
 @Controller('calendar')
@@ -20,10 +22,11 @@ export class CalendarController {
   async oauthCallback(
     @Query('code') code: string,
     @Query('state') state: string,
+    @Res() res: Response,
   ) {
     const realtorId = Number(state);
     await this.calendar.handleOAuthCallback(code, realtorId);
-    return { status: 'linked' };
+    return res.redirect('/realtor');
   }
 
   @Get('oauth/:realtorId')
