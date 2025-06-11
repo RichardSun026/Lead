@@ -50,4 +50,4 @@ scp /Users/peternyman/dev/Fon/Lead/backend/.env root@134.199.198.237:/home/Lead/
 ```
 
 
-Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the landing page listens on ports 80 and 443, while the other services keep the ports listed above. Redis will listen on `localhost:6379`.
+Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `localhost:6379`.
