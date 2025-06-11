@@ -273,8 +273,9 @@ export default function App() {
       }
 
       if (sendToSite) {
-        const siteUrl = "http://134.199.198.237:4173"; // Replace with actual site URL
-        window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
+        const siteUrl = new URL(window.location.href);
+        siteUrl.port = '4173';
+        window.location.href = `${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`;
       }
       document.getElementById('successMessage').textContent =
         'Thank you! An agent will contact you soon.';
