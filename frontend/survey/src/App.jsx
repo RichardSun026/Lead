@@ -272,6 +272,7 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
+      colsole.log('[frontend/survey/src/App.jsx]DEFULT MESSAGE')
       if (sendToSite) {
         const siteUrl = new URL(window.location.href);
         siteUrl.port = '4173';
