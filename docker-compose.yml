@@ -1,9 +1,13 @@
 version: '3.8'
+
 services:
+  # ---------- infrastructure ----------
   redis:
     image: redis:7
     ports:
       - '6379:6379'
+
+  # ---------- backend ----------
   api:
     build:
       context: .
@@ -14,6 +18,25 @@ services:
       - redis
     ports:
       - '3000:3000'
+
+  # ---------- public front-door (ONLY this service owns 80/443) ----------
+  proxy:
+    image: nginx:alpine
+    container_name: lead-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./proxy/conf.d:/etc/nginx/conf.d:ro                       # vhost files
+      - /etc/letsencrypt/live/myrealvaluation.com:/etc/nginx/certs:ro  # TLS keys
+    depends_on:
+      - site
+      - survey
+      - onboarding
+      - leadreports
+      - api
+
+  # ---------- SPAs (internal high ports) ----------
   site:
     build:
       context: .
@@ -22,6 +45,7 @@ services:
       - api
     ports:
       - '4173:80'
+
   survey:
     build:
       context: .
@@ -30,6 +54,7 @@ services:
       - api
     ports:
       - '4174:80'
+
   onboarding:
     build:
       context: .
@@ -38,6 +63,7 @@ services:
       - api
     ports:
       - '4175:80'
+
   leadreports:
     build:
       context: .
