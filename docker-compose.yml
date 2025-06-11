@@ -30,7 +30,8 @@ services:
     depends_on:
       - api
     ports:
-      - '4174:80'
+      - '80:80'
+      - '443:443'
   onboarding:
     build:
       context: .
@@ -38,7 +39,8 @@ services:
     depends_on:
       - api
     ports:
-      - '4175:80'
+      - '80:80'
+      - '443:443'
   leadreports:
     build:
       context: .
@@ -46,4 +48,5 @@ services:
     depends_on:
       - api
     ports:
-      - '4176:80'
+      - '80:80'
+      - '443:443'
