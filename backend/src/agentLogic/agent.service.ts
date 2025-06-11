@@ -26,7 +26,7 @@ export class AgentService {
   async send(
     phone: string,
     userMsg: string,
-    model = 'gpt-4o-mini',
+    model = 'gpt-4.1',
   ): Promise<string> {
     await this.conversation.store(phone, { role: 'user', content: userMsg });
     return this.agentLoop(phone, model);

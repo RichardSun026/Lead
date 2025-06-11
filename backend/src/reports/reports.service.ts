@@ -55,7 +55,7 @@ export class ReportsService {
       answers.map((a) => `${a.question}: ${a.answer}`).join('\n');
     const reply = await this.openai.chat(
       [{ role: 'user', content }],
-      'gpt-4o-mini',
+      'gpt-4.1-nano',
     );
     const summary = reply.content ?? '';
     await this.redis.set(key, summary);
@@ -83,7 +83,7 @@ export class ReportsService {
       .slice(-12000);
     const reply = await this.openai.chat(
       [{ role: 'user', content: `Summarize this conversation:\n${text}` }],
-      'gpt-4o-mini',
+      'gpt-4.1-nano',
     );
     const summary = reply.content ?? '';
     await this.redis.mset(
