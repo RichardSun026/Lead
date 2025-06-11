@@ -48,16 +48,18 @@
             text-decoration: none;
         }
 
-        .logo-placeholder {
-            width: 200px;
+        .logo-img {
             height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        }
+
+        .github-link {
+            color: #ffffff;
+            text-decoration: none;
             font-weight: bold;
+        }
+
+        .github-link:hover {
+            text-decoration: underline;
         }
 
         /* Hero Section */
@@ -289,10 +291,8 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div class="logo-placeholder">
-                    <!-- Replace with actual logo -->
-                    My Real Evaluation
-                </div>
+                <img src="../../Logo.png" alt="My Real Evaluation Logo" class="logo-img" />
+                <a href="https://github.com" class="github-link">GitHub</a>
             </div>
         </div>
     </header>
@@ -303,7 +303,7 @@
             <div class="hero-content">
                 <h1>Smarter Real Estate Leads, Powered by AI</h1>
                 <p>Connect with motivated sellers through the most intelligent and efficient lead generation platform built for realtors.</p>
-                <a href="#realtor-signup" class="cta-button">Get Started – Realtor Sign-Up</a>
+                <a href="../RealtorInterface/Onboarding/index.html" class="cta-button">Get Started – Realtor Sign-Up</a>
             </div>
         </div>
     </section>
@@ -385,20 +385,12 @@
     <section class="final-cta">
         <div class="container">
             <h2>Ready to grow your business with smarter leads?</h2>
-            <a href="#realtor-signup" class="cta-button">Get Started – Realtor Sign-Up</a>
+            <a href="../RealtorInterface/Onboarding/index.html" class="cta-button">Get Started – Realtor Sign-Up</a>
         </div>
     </section>
 
     <script>
-        // Smooth scrolling for CTA buttons
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                // Since this is a demo, we'll just show an alert
-                // In production, this would link to your realtor onboarding page
-                alert('This would link to your realtor onboarding page. Please replace the href="#realtor-signup" with your actual onboarding page URL.');
-            });
-        });
+
 
         // Add scroll animations
         const observerOptions = {
