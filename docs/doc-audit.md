@@ -19,6 +19,7 @@ Each markdown file in the repository has been tagged with a status:
 | docs/survey-flow.md | keep |
 | docs/UserTesting/message-testing.md | keep |
 | docs/UserTesting/survey-testing.md | keep |
+| docs/nginx-proxy.md | keep |
 | docs/site-migration-plan.md | delete |
 | docs/site.md | delete |
 | docs/user-data-site.md | delete |
