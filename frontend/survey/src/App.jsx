@@ -273,7 +273,7 @@ export default function App() {
       }
 
       if (sendToSite) {
-        const siteUrl = "http://134.199.198.237:4173/"; // Replace with actual site URL
+        const siteUrl = "http://134.199.198.237:4173"; // Replace with actual site URL
         window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
       }
       document.getElementById('successMessage').textContent =
