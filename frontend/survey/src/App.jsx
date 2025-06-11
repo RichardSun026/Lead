@@ -273,6 +273,7 @@ export default function App() {
       }
 
       if (sendToSite) {
+        console.log(`Redirecting to site: ${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`);
         const siteUrl = "http://134.199.198.237:4173"; // Replace with actual site URL
         window.location.href = `${siteUrl}/${realtorUuid}/${encodeURIComponent(phone)}`;
       }
