@@ -156,7 +156,7 @@ export class CalendarService {
     const start = `${date}T00:00:00`;
     const end = `${date}T23:59:59`;
     const booked = await this.supabase.query(
-      `booked?realtor_id=eq.${realtorId}&appointment_time=gte.${start}&appointment_time=lte.${end}&select=appointment_time`,
+      `bookings?realtor_id=eq.${realtorId}&appointment_time=gte.${start}&appointment_time=lte.${end}&select=appointment_time`,
     );
     const bookedList = Array.isArray(booked)
       ? (booked as { appointment_time: string }[])

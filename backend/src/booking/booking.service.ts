@@ -31,7 +31,7 @@ export class BookingService {
   async getExisting(phone: string) {
     const sanitized = normalizePhone(phone);
     const { data } = await this.supabase
-      .from('booked')
+      .from('bookings')
       .select('appointment_time')
       .eq('phone', sanitized)
       .maybeSingle();
@@ -75,7 +75,7 @@ export class BookingService {
       phone,
     });
 
-    await this.supabase.from('booked').upsert({
+    await this.supabase.from('bookings').upsert({
       phone,
       name: input.full_name,
       appointment_time: start.toISO(),
