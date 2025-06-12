@@ -40,13 +40,17 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `sent_schedule_reminder`
 - `created_at`
 
-### Booked
-- `phone` – primary key
-- `full_name`
-- `appointment_time`
-- `meeting_link`
+### Bookings
+- `booking_id` – primary key
+- `phone` – references `Leads`
 - `realtor_id` – references `Realtor`
+- `appointment_time`
+- `google_calendar_id`
+- `google_event_id`
+- `status`
 - `created_at`
+- `updated_at`
+- unique `(realtor_id, appointment_time)` to prevent double booking
 
 ### Messages
 - `phone` – references `Leads`
@@ -91,8 +95,8 @@ The seed script inserts two sample leads and a booked appointment:
 INSERT INTO Leads (...)
     ('555-0001', 1, 'Eve', 'Example', '123 Main St', ...),
     ('555-0002', 2, 'John', 'Doe', '456 Oak Ave', ...);
-INSERT INTO Booked (phone, full_name, appointment_time, meeting_link, realtor_id)
-VALUES ('555-0001', 'Eve Example', NOW(), 'https://example.com/meet', 1);
+INSERT INTO Bookings (phone, realtor_id, appointment_time, google_calendar_id, google_event_id)
+VALUES ('555-0001', 1, NOW(), 'primary', 'abc123');
 ```
 See [`database/seed.sql`](../database/seed.sql) for the full statements.
 
