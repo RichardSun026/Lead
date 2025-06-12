@@ -46,6 +46,15 @@ services:
     ports:
       - '4173:80'
 
+  startpage:
+    build:
+      context: .
+      dockerfile: frontend/StartPage/Dockerfile
+    depends_on:
+      - api
+    ports:
+      - '4177:80'
+
   survey:
     build:
       context: .
