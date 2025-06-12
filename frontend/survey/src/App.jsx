@@ -157,9 +157,10 @@ export default function App() {
       if (currentQuestionId === 'contactInfo') {
         const requiredFields =
           currentQuestion.querySelectorAll('input[required]');
-        return Array.from(requiredFields).every(
-          (field) => field.value.trim() !== '',
-        );
+        return Array.from(requiredFields).every((field) => {
+          if (field.type === 'checkbox') return field.checked;
+          return field.value.trim() !== '';
+        });
       }
 
       const radioChecked = currentQuestion.querySelector(
@@ -233,6 +234,7 @@ export default function App() {
 
       const formData = new FormData(form);
       const name = formData.get('fullName');
+      const address = formData.get('address') || '';
       const rawPhone = formData.get('phone');
       const phone = '+1' + String(rawPhone).replace(/\D/g, '').slice(-10);
       const email = formData.get('email') || '';
@@ -254,6 +256,7 @@ export default function App() {
           body: JSON.stringify({
             name,
             phone,
+            address,
             email,
             realtorUuid,
             zipcode,
