@@ -7,6 +7,7 @@ interface LeadInput {
   phone: string;
   email: string;
   realtorUuid: string;
+  address?: string;
   zipcode?: string;
   homeType?: string;
   bedrooms?: string;
@@ -74,6 +75,7 @@ export class LeadsService {
       last_name: lastName,
       email: input.email,
       address: input.zipcode,
+      street_address: input.address,
       lead_state: 'cold',
       home_type: input.homeType,
       home_built: input.yearBuilt,
@@ -202,6 +204,7 @@ export class LeadsService {
     };
 
     const answers = [
+      { question: 'Address', answer: lead.street_address ?? '' },
       { question: 'ZIP code', answer: lead.address ?? '' },
       { question: 'Home type', answer: lead.home_type ?? '' },
       { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
@@ -227,13 +230,14 @@ export class LeadsService {
     name: string;
     phone: string;
     address: string | null;
+    zipcode: string | null;
     answers: { question: string; answer: string }[];
   } | null> {
     const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select(
-        `first_name,last_name,phone,address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
+        `first_name,last_name,phone,address,street_address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
       )
       .eq('phone', sanitized)
       .maybeSingle();
@@ -243,6 +247,7 @@ export class LeadsService {
         last_name?: string;
         phone: string;
         address?: string;
+        street_address?: string;
         home_type?: string;
         bedrooms?: string;
         bathrooms?: string;
@@ -265,6 +270,7 @@ export class LeadsService {
     };
 
     const answers = [
+      { question: 'Address', answer: lead.street_address ?? '' },
       { question: 'ZIP code', answer: lead.address ?? '' },
       { question: 'Home type', answer: lead.home_type ?? '' },
       { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
@@ -283,7 +289,8 @@ export class LeadsService {
     return {
       name: `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim(),
       phone: lead.phone,
-      address: lead.address ?? null,
+      address: lead.street_address ?? null,
+      zipcode: lead.address ?? null,
       answers,
     };
   }
