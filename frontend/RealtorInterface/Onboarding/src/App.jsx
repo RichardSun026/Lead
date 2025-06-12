@@ -12,57 +12,52 @@ export default function App() {
   const handleFirstSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const payload = {
-      name: `${info.firstName} ${info.lastName}`.trim(),
-      email: info.email,
-      phone: info.phone,
-    };
-    try {
-      const res = await fetch('/api/realtor', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      setRealtor(data);
-      setStep(2);
-    } finally {
+    
+    // Simulate API call
+    setTimeout(() => {
+      const mockData = {
+        realtor_id: 'realtor_123',
+        name: `${info.firstName} ${info.lastName}`.trim()
+      };
+      setRealtor(mockData);
       setIsLoading(false);
-    }
+      setStep(2);
+    }, 1500);
   };
 
   const handleCalendarLink = async () => {
     if (!realtor) return;
     setIsLoading(true);
-    try {
-      const res = await fetch(`/api/calendar/oauth/${realtor.realtor_id}`);
-      const json = await res.json();
-      window.location.href = json.url;
-    } finally {
+    
+    // Simulate calendar connection
+    setTimeout(() => {
       setIsLoading(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 2000);
-    }
+    }, 1000);
   };
 
   const handleSecondSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
     setTimeout(() => {
       setIsLoading(false);
-      alert('\uD83C\uDF89 Onboarding complete! Welcome aboard!');
+      alert('🎉 Onboarding complete! Welcome aboard!');
     }, 1000);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center p-4">
+      {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
       </div>
 
       <div className="relative w-full max-w-md">
+        {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
             <span className="text-white/80 text-sm font-medium">Step {step} of 2</span>
@@ -72,10 +67,11 @@ export default function App() {
             <div
               className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full transition-all duration-700 ease-out"
               style={{ width: `${(step / 2) * 100}%` }}
-            />
+            ></div>
           </div>
         </div>
 
+        {/* Main card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 transform transition-all duration-500 hover:shadow-3xl">
           {step === 1 && (
             <div className="space-y-6">
@@ -142,7 +138,7 @@ export default function App() {
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 ) : (
                   <>
                     <span>Continue</span>
@@ -168,7 +164,7 @@ export default function App() {
                 <p className="text-white/60 text-sm mb-4">
                   Make sure you're logged into the correct Google account. If you encounter issues, try using an incognito window.
                 </p>
-
+                
                 <button
                   type="button"
                   onClick={handleCalendarLink}
@@ -176,7 +172,7 @@ export default function App() {
                   className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 mb-4"
                 >
                   {isLoading ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                   ) : showSuccess ? (
                     <>
                       <CheckCircle className="w-5 h-5 text-green-400" />
@@ -191,7 +187,9 @@ export default function App() {
                 </button>
 
                 <div className="border-t border-white/10 pt-4">
-                  <p className="text-white/60 text-sm mb-3">Set a temporary password to complete your setup</p>
+                  <p className="text-white/60 text-sm mb-3">
+                    Set a temporary password to complete your setup
+                  </p>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
                     <input
@@ -212,7 +210,7 @@ export default function App() {
                 className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 ) : (
                   <>
                     <CheckCircle className="w-5 h-5" />
@@ -224,8 +222,11 @@ export default function App() {
           )}
         </div>
 
+        {/* Footer */}
         <div className="text-center mt-6">
-          <p className="text-white/40 text-sm">Secure • Private • Professional</p>
+          <p className="text-white/40 text-sm">
+            Secure • Private • Professional
+          </p>
         </div>
       </div>
     </div>
