@@ -20,11 +20,14 @@ export default function App() {
 
   return (
     <>
-                    <img src="../../Logo.png" alt="My Real Evaluation Logo" className="logo-img" />
-                    <a href="https://github.com" className="github-link">GitHub</a>
-                </div>
-            </div>
-        </header>
+      <header>
+        <div className="container">
+          <div className="header-content">
+            <img src="../../Logo.png" alt="My Real Evaluation Logo" className="logo-img" />
+            <a href="https://github.com" className="github-link">GitHub</a>
+          </div>
+        </div>
+      </header>
     
         <section className="hero">
             <div className="container">
