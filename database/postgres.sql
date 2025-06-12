@@ -129,6 +129,7 @@ create table public.bookings (
     created_at        timestamptz     default now(),
     updated_at        timestamptz     default now()
 );
+create unique index on public.bookings(realtor_id, appointment_time);
 
 
 /* 2-d Scheduled messages for future SMS */

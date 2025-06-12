@@ -58,6 +58,14 @@ export class BookingService {
     const endIso = end.toISO();
     if (!startIso || !endIso) throw new Error('Invalid booking time');
 
+    const day = start.toISODate();
+    const openings = await this.calendar.getBookedSlots(
+      input.realtor_id,
+      day ?? input.booked_date,
+    );
+    if (openings.booked.includes(start.toFormat('HH:mm')))
+      throw new Error('Time slot already booked');
+
     await this.calendar.addEvent(input.realtor_id, {
       summary: `Meeting with ${input.full_name}`,
       description: `Phone: ${phone}`,
