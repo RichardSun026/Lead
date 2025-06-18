@@ -6,7 +6,6 @@ RUN npm run build
 
 FROM nginx:alpine
 COPY frontend/RealtorInterface/Onboarding/nginx.conf /etc/nginx/conf.d/default.conf
-RUN mkdir -p /usr/share/nginx/html/onboarding
-COPY --from=builder /app/onboarding/dist /usr/share/nginx/html/onboarding
+COPY --from=builder /app/onboarding/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
