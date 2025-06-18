@@ -22,7 +22,12 @@ export class RealtorService {
     const last = rest.join(' ');
     const { data, error } = await this.client
       .from('realtor')
-      .insert({ f_name: first, e_name: last, email: input.email, phone: input.phone })
+      .insert({
+        f_name: first,
+        e_name: last,
+        email: input.email,
+        phone: input.phone,
+      })
       .select('uuid,realtor_id')
       .single();
     if (error) throw error;

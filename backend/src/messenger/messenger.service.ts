@@ -32,7 +32,10 @@ export class MessengerService {
         status: 'sent',
       });
       if (storeMessage) {
-        await this.conversation.store(phone, { role: 'assistant', content: text });
+        await this.conversation.store(phone, {
+          role: 'assistant',
+          content: text,
+        });
       }
     } catch (err) {
       this.log.error('Failed to send message', err as Error);
@@ -43,7 +46,10 @@ export class MessengerService {
         status: 'failed',
       });
       if (storeMessage) {
-        await this.conversation.store(phone, { role: 'assistant', content: text });
+        await this.conversation.store(phone, {
+          role: 'assistant',
+          content: text,
+        });
       }
     }
   }

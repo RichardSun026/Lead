@@ -22,7 +22,8 @@ interface LeadInput {
 @Injectable()
 export class LeadsService {
   private readonly client: SupabaseClient<any>;
-  private readonly uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  private readonly uuidRe =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
   constructor() {
     const url = process.env.SUPABASE_URL ?? '';
