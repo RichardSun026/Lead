@@ -34,7 +34,7 @@ export default function App() {
                 <div className="hero-content">
                     <h1>Smarter Real Estate Leads, Powered by AI</h1>
                     <p>Connect with motivated sellers through the most intelligent and efficient lead generation platform built for realtors.</p>
-                    <a href="http://134.199.198.237:4175/" className="cta-button">Get Started – Realtor Sign-Up</a>
+                    <a href="/onboarding" className="cta-button">Get Started – Realtor Sign-Up</a>
                 </div>
             </div>
         </section>
@@ -112,7 +112,7 @@ export default function App() {
         <section className="final-cta">
             <div className="container">
                 <h2>Ready to grow your business with smarter leads?</h2>
-                <a href="http://134.199.198.237:4175/" className="cta-button">Get Started – Realtor Sign-Up</a>
+                <a href="/onboarding" className="cta-button">Get Started – Realtor Sign-Up</a>
             </div>
         </section>
     

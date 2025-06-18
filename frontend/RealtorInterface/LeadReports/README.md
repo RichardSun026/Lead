@@ -1,6 +1,6 @@
 Help me create a Reports for easy accses to lead information, 
 
-each report should be accesed by a link which is url/LeadReports/:phone
+each report should be accessed at `https://www.myrealvaluation.com/console/reports/:phone`
 
 all information form the report should come from supabase.
 

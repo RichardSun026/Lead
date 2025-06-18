@@ -42,10 +42,15 @@ server {
     ssl_certificate     /etc/letsencrypt/live/myrealvaluation.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/myrealvaluation.com/privkey.pem;
 
-    location /          { proxy_pass http://site:80;        proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
-    location /survey/   { proxy_pass http://survey:80/;     proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location = /          { proxy_pass http://startpage:80/; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /s/         { proxy_pass http://site:80/;       proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /           { proxy_pass http://site:80;        proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /survey     { proxy_pass http://survey:80;      proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /survey/    { proxy_pass http://survey:80/;     proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /onboarding { proxy_pass http://onboarding:80;  proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
     location /onboarding/ { proxy_pass http://onboarding:80/; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
-    location /reports/  { proxy_pass http://leadreports:80/; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /console/reports { proxy_pass http://leadreports:80/; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
+    location /console/reports/ { proxy_pass http://leadreports:80/; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
     location /api/      { proxy_pass http://api:3000/;      proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; }
 }
 ```
@@ -62,10 +67,11 @@ docker-compose up --build
 
 Once the containers are running, Nginx exposes ports 80 and 443 on the host. It routes requests to:
 
-- `/` → landing page container (`site`)
-- `/survey/` → survey container (`survey`)
-- `/onboarding/` → onboarding front end
-- `/reports/` → lead reports front end
+- `/` → marketing start page (`startpage`)
+- `/:uuid` or `/s/:uuid` → booking site (`site`)
+- `/survey` → survey container (`survey`)
+- `/onboarding` → onboarding front end
+- `/console/reports` → lead reports front end
 - `/api/` → NestJS backend
 
 With this setup a single domain serves the entire application stack over HTTPS.
