@@ -1,7 +1,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app/onboarding
 COPY frontend/RealtorInterface/Onboarding ./
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 FROM nginx:alpine
