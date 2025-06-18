@@ -35,7 +35,7 @@ This repository contains a small NestJS backend and two React front ends used to
    ```
    - API: <http://localhost:3000>
    - Start page: <http://localhost:4173>
-   - Landing page: <http://localhost:4177>
+   - Landing page: <http://localhost:4177> (hosted at `/s`)
    - Survey site: <http://localhost:4174>
     - Lead reports: <http://localhost:4176/console/reports>
 

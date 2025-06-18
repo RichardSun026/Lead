@@ -26,18 +26,19 @@ export default function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
-    console.debug('Parsed path parts', parts);
-    if (parts.length < 1) {
+    const idx = parts[0] === 's' ? 1 : 0;
+    console.debug('Parsed path parts', parts, 'using idx', idx);
+    if (parts.length - idx < 1) {
       setError('Missing realtor id');
       setLoading(false);
       return;
     }
-    const uuid = parts[0];
+    const uuid = parts[idx];
     console.debug('Detected realtor uuid', uuid);
     setRealtorUuid(uuid);
 
-    if (parts.length >= 2) {
-      const rawPhone = decodeURIComponent(parts[1]);
+    if (parts.length - idx >= 2) {
+      const rawPhone = decodeURIComponent(parts[idx + 1]);
       const formattedPhone = formatPhone(rawPhone);
       setUser({ phone: formattedPhone });
       fetch(`/api/user?phone=${formattedPhone}`)
