@@ -48,3 +48,23 @@ All services can be started with Docker:
 docker-compose up --build
 ```
 This brings up the API, both front ends and Redis using the same ports as above.
+
+### Deployment (host Nginx)
+Ubuntu’s built-in Nginx now owns ports **80/443**. All Docker services expose
+high ports on `localhost`; the vhost file
+`deploy/host-nginx/myrealvaluation.conf` maps paths to those ports.
+
+```bash
+docker compose up -d --build        # start Redis, API, and SPA containers
+sudo cp deploy/host-nginx/myrealvaluation.conf \
+     /etc/nginx/sites-available/
+sudo ln -sf /etc/nginx/sites-available/myrealvaluation.conf \
+          /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+If you see “address already in use,” stop any legacy proxy containers:
+
+```bash
+docker rm -f lead-proxy || true
+```

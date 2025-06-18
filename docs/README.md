@@ -10,4 +10,4 @@ Guides and references for working with the Lead Management System.
 - [Testing the Survey with cURL](UserTesting/survey-testing.md)
 - [Sending Test Messages](UserTesting/message-testing.md)
 - [Open Questions](open-questions.md)
-- [Nginx Proxy Setup](nginx-proxy.md)
+- [Host-level Nginx Setup](host-nginx.md)

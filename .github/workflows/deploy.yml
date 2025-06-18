@@ -13,7 +13,9 @@ jobs:
             git pull
             docker compose down
             docker compose up -d --build
-            cp proxy/conf.d/site.conf /etc/nginx/sites-available/myrealvaluation.conf
+            # Copy new host-level vhost and reload Ubuntu Nginx
+            cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
+            ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
             nginx -t
             systemctl reload nginx
 
