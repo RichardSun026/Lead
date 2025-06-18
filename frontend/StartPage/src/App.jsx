@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import logo from '/logo.png';
+import logo from '/Logo.png';
 
 export default function App() {
   useEffect(() => {
