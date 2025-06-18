@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import logo from '/Logo.png';
 
 export default function App() {
   useEffect(() => {
@@ -23,8 +24,7 @@ export default function App() {
       <header>
         <div className="container">
           <div className="header-content">
-            <img src="../../Logo.png" alt="My Real Evaluation Logo" className="logo-img" />
-            <a href="https://github.com" className="github-link">GitHub</a>
+            <img src={logo} alt="My Real Evaluation Logo" className="logo-img" />
           </div>
         </div>
       </header>
