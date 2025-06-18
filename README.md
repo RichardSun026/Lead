@@ -37,7 +37,7 @@ This repository contains a small NestJS backend and two React front ends used to
    - Landing page: <http://localhost:4173>
    - Start page: <http://localhost:4177>
    - Survey site: <http://localhost:4174>
-   - Lead reports: <http://localhost:4176/LeadReports>
+    - Lead reports: <http://localhost:4176/console/reports>
 
 To work on either front end individually, run `npm run dev` inside its folder. See the [docs directory](docs/README.md) for environment variables, database schema and other guides.
 
