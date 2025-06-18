@@ -33,11 +33,11 @@ This repository contains a small NestJS backend and two React front ends used to
    npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175
    npm --workspace frontend/RealtorInterface/LeadReports run preview -- --port 4176
    ```
-   - API: <http://localhost:3000>
-   - Start page: <http://localhost:4173>
-   - Landing page: <http://localhost:4177> (hosted at `/s`)
-   - Survey site: <http://localhost:4174>
-    - Lead reports: <http://localhost:4176/console/reports>
+  - API: <https://www.myrealvalaution.com/api>
+  - Start page: <https://www.myrealvalaution.com/>
+  - Landing page: <https://www.myrealvalaution.com/s> (hosted at `/s`)
+  - Survey site: <https://www.myrealvalaution.com/survey>
+   - Lead reports: <https://www.myrealvalaution.com/console/reports>
 
 To work on either front end individually, run `npm run dev` inside its folder. See the [docs directory](docs/README.md) for environment variables, database schema and other guides.
 
@@ -51,7 +51,7 @@ This brings up the API, both front ends and Redis using the same ports as above.
 
 ### Deployment (host Nginx)
 Ubuntu’s built-in Nginx now owns ports **80/443**. All Docker services expose
-high ports on `localhost`; the vhost file
+high ports on `https://www.myrealvalaution.com/*`; the vhost file
 `deploy/host-nginx/myrealvaluation.conf` maps paths to those ports.
 
 ```bash
@@ -68,4 +68,3 @@ If you see “address already in use,” stop any legacy proxy containers:
 ```bash
 docker rm -f lead-proxy || true
 ```
-.
