@@ -4,7 +4,7 @@ This guide explains how to manually trigger the messaging flow using `curl`.
 It can be used to verify Twilio integration and the AI assistant's response.
 
 ## Prerequisites
-- The backend server must be running. By default it listens on `https://www.myrealvalaution.com/api`.
+- The backend server must be running. By default it listens on `https://www.myrealvaluation.com/api`.
 - Environment variables for Twilio and Supabase need to be configured in `backend/.env`.
 
 ## Example Request
