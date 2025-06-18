@@ -275,7 +275,7 @@ export default function App() {
       colsole.log('[frontend/survey/src/App.jsx]DEFULT MESSAGE')
       if (sendToSite) {
         const siteUrl = new URL(window.location.href);
-        siteUrl.port = '4173';
+        siteUrl.port = '4177';
         console.log(`Redirecting to site: ${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`);
         window.location.href = `${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`;
         document.getElementById('successMessage').textContent =

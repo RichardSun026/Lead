@@ -28,13 +28,15 @@ This guide explains how to configure the project for local development and how t
    ```
    In separate terminals preview each front end:
    ```bash
-   npm --workspace frontend/site run preview -- --port 4173
+   npm --workspace frontend/StartPage run preview -- --port 4173
+   npm --workspace frontend/site run preview -- --port 4177
    npm --workspace frontend/survey run preview -- --port 4174
    npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175
    npm --workspace frontend/RealtorInterface/LeadReports run preview -- --port 4176
    ```
    - API: <http://localhost:3000>
-   - Landing page: <http://localhost:4173>
+   - Start page: <http://localhost:4173>
+   - Landing page: <http://localhost:4177>
    - Survey site: <http://localhost:4174>
     - Lead reports: <http://localhost:4176/console/reports>
 
