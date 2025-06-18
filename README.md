@@ -10,38 +10,13 @@ This repository contains a small NestJS backend and two React front ends used to
 - **database/** – SQL schema and utilities
 - **docs/** – project documentation
 
-## Running Locally
-
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. (Optional) start the backend in watch mode:
-   ```bash
-   npm run start:dev
-   ```
-3. Build the project and start the services individually:
-   ```bash
-   npm run build
-   npm run start:prod
-   ```
-   In other terminals preview each front end:
-   ```bash
-   npm --workspace frontend/StartPage run preview -- --port 4173
-   npm --workspace frontend/site run preview -- --port 4177
-   npm --workspace frontend/survey run preview -- --port 4174
-   npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175
-   npm --workspace frontend/RealtorInterface/LeadReports run preview -- --port 4176
-   ```
   - API: <https://www.myrealvalaution.com/api>
   - Start page: <https://www.myrealvalaution.com/>
   - Landing page: <https://www.myrealvalaution.com/s> (hosted at `/s`)
   - Survey site: <https://www.myrealvalaution.com/survey>
    - Lead reports: <https://www.myrealvalaution.com/console/reports>
 
-To work on either front end individually, run `npm run dev` inside its folder. See the [docs directory](docs/README.md) for environment variables, database schema and other guides.
-
-## Docker Compose
+## Running with Docker Compose
 
 All services can be started with Docker:
 ```bash
