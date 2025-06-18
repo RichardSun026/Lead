@@ -20,6 +20,15 @@ services:
       - "3000:3000"
 
   # ── SPAs (now reachable via host-Nginx on high ports) ────────
+  startpage:
+    build:
+      context: .
+      dockerfile: frontend/StartPage/Dockerfile
+    depends_on:
+      - api
+    ports:
+      - "4173:80"
+
   site:
     build:
       context: .
@@ -27,7 +36,7 @@ services:
     depends_on:
       - api
     ports:
-      - "4173:80"
+      - "4177:80"
 
   survey:
     build:
