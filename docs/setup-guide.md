@@ -36,7 +36,7 @@ This guide explains how to configure the project for local development and how t
    ```
    - API: <http://localhost:3000>
    - Start page: <http://localhost:4173>
-   - Landing page: <http://localhost:4177>
+   - Landing page: <http://localhost:4177> (hosted at `/s`)
    - Survey site: <http://localhost:4174>
     - Lead reports: <http://localhost:4176/console/reports>
 
