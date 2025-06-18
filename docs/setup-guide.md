@@ -37,8 +37,8 @@ This guide explains how to configure the project for local development and how t
    - API: <https://www.myrealvaluation.com/api>
    - Start page: <https://www.myrealvaluation.com/>
    - Landing page: <https://www.myrealvaluation.com/s> (hosted at `/s`)
-   - Survey site: <https://www.myrealvaluation.com/survey>
-    - Lead reports: <https://www.myrealvaluation.com/console/reports>
+  - Survey site: <https://www.myrealvaluation.com/survey>
+  - Lead reports: <https://www.myrealvaluation.com/console/reports>
 
 ## Docker Compose
 
