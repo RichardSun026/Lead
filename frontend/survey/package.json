@@ -2,7 +2,6 @@
   "name": "survey",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/survey/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

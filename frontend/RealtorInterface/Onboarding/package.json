@@ -2,7 +2,6 @@
   "name": "realtor-onboarding",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/onboarding/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
