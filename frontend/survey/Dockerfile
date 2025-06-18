@@ -5,7 +5,6 @@ RUN npm install && npm run build
 
 FROM nginx:alpine
 COPY frontend/survey/nginx.conf /etc/nginx/conf.d/default.conf
-RUN mkdir -p /usr/share/nginx/html/survey
-COPY --from=build /app/survey/dist /usr/share/nginx/html/survey
+COPY --from=build /app/survey/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
