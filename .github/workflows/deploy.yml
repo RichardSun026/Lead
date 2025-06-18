@@ -13,4 +13,7 @@ jobs:
             git pull
             docker compose down
             docker compose up -d --build
+            cp proxy/conf.d/site.conf /etc/nginx/sites-available/myrealvaluation.conf
+            nginx -t
+            systemctl reload nginx
 
