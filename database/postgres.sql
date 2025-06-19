@@ -98,7 +98,6 @@ create table public.leads (
     first_name           varchar(127),
     last_name            varchar(127),
     email                varchar(127),
-    address              varchar(255),
     lead_state           varchar(20),
     home_type            public.home_type_enum,
     bedrooms             public.bedrooms_enum,
