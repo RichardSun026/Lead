@@ -69,10 +69,10 @@ import { PromptService } from './agentHelp/prompt.service';
           '..',
           'frontend',
           'RealtorInterface',
-          'LeadReports',
+          'Console',
           'dist',
         ),
-        serveRoot: '/LeadReports',
+        serveRoot: '/Console',
       },
     ),
 

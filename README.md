@@ -14,7 +14,7 @@ This repository contains a small NestJS backend and two React front ends used to
   - Start page: <https://www.myrealvaluation.com/>
   - Landing page: <https://www.myrealvaluation.com/s>
   - Survey site: <https://www.myrealvaluation.com/survey>
-  - Lead reports: <https://www.myrealvaluation.com/console/reports>
+  - Console: <https://www.myrealvaluation.com/console>
 
 ## Running with Docker Compose
 
@@ -43,3 +43,9 @@ If you see “address already in use,” stop any legacy proxy containers:
 ```bash
 docker rm -f lead-proxy || true
 ```
+
+### Security
+
+Supabase row level security ensures each realtor only accesses their own leads.
+The policy checks the `realtor_id` stored in the JWT `app_metadata` against each
+row's `realtor_id`.
