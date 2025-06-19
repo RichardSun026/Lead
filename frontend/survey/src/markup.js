@@ -289,7 +289,7 @@ export const surveyMarkup = `
                     <div class="consent-field">
                     <label style="display:flex;align-items:flex-start;gap:8px;">
                         <input type="checkbox" name="consent" required style="margin-top:4px;">
-                        <span>I agree to receive marketing text messages from My Real Evaluation at the number I provided. These may be sent using automated technology, and my consent is not required to make a purchase. Message &amp; data rates may apply. I can opt out at any time by replying STOP.</span>
+                        <span><span class="required">*</span>&nbsp;I agree to receive marketing text messages from My Real Evaluation at the number I provided. These may be sent using automated technology, and my consent is not required to make a purchase. Message &amp; data rates may apply. I can opt out at any time by replying STOP.</span>
                     </label>
                 </div>
             </div>
