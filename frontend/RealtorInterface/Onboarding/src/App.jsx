@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import { User, Mail, Phone, Calendar, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
+);
 
 export default function App() {
   const [step, setStep] = useState(1);
@@ -39,14 +45,18 @@ export default function App() {
     }, 1000);
   };
 
-  const handleSecondSubmit = (e) => {
+  const handleSecondSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    setTimeout(() => {
-      setIsLoading(false);
-      alert('🎉 Onboarding complete! Welcome aboard!');
-    }, 1000);
+
+    await supabase.auth.signUp({
+      email: info.email,
+      password,
+      options: { data: { realtorId: realtor?.realtor_id } },
+    });
+
+    setIsLoading(false);
+    window.location.href = '/console';
   };
 
   return (
