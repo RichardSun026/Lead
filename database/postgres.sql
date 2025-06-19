@@ -114,6 +114,16 @@ create table public.leads (
     created_at           timestamptz default now()
 );
 
+alter table public.leads enable row level security;
+create policy "realtor can access own leads" on public.leads
+  for select using (
+    exists (
+      select 1 from public.realtor r
+      where r.realtor_id = leads.realtor_id
+        and r.uuid = auth.uid()
+    )
+  );
+
 /* 2-c  Booked calls / appointments */
 create table public.bookings (
     booking_id        bigserial primary key,
