@@ -1,6 +1,8 @@
 FROM node:20-alpine AS build
 WORKDIR /app/console
 COPY frontend/RealtorInterface/Console ./
+# include environment variables for Supabase during the build
+COPY backend/.env ./.env
 RUN npm install && npm run build
 
 FROM nginx:alpine
