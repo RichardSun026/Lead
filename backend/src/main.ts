@@ -1,12 +1,14 @@
 import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe());
 
   const expressApp = app.getHttpAdapter().getInstance();
   expressApp.get(/^\/(?!api|survey|realtor).*/, (req, res) => {

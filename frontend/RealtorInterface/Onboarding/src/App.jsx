@@ -8,6 +8,7 @@ export default function App() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [calendarConnected, setCalendarConnected] = useState(false);
 
   const handleFirstSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +34,7 @@ export default function App() {
     setTimeout(() => {
       setIsLoading(false);
       setShowSuccess(true);
+      setCalendarConnected(true);
       setTimeout(() => setShowSuccess(false), 2000);
     }, 1000);
   };
@@ -168,12 +170,12 @@ export default function App() {
                 <button
                   type="button"
                   onClick={handleCalendarLink}
-                  disabled={isLoading}
+                  disabled={isLoading || calendarConnected}
                   className="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 mb-4"
                 >
                   {isLoading ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  ) : showSuccess ? (
+                  ) : calendarConnected || showSuccess ? (
                     <>
                       <CheckCircle className="w-5 h-5 text-green-400" />
                       <span>Connected!</span>
@@ -206,7 +208,7 @@ export default function App() {
 
               <button
                 onClick={handleSecondSubmit}
-                disabled={isLoading}
+                disabled={isLoading || !calendarConnected || !password}
                 className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
