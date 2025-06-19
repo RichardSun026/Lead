@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Ensure input text and placeholders remain visible */
+input {
+  @apply text-white;
+}
+
+input::placeholder {
+  @apply text-white/70;
+}
