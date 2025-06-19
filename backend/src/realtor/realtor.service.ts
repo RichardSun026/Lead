@@ -1,11 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-
-export interface RealtorInput {
-  name: string;
-  email: string;
-  phone: string;
-}
+import { CreateRealtorDto } from './dto/create-realtor.dto';
 
 @Injectable()
 export class RealtorService {
@@ -17,7 +12,7 @@ export class RealtorService {
     this.client = createClient(url, key);
   }
 
-  async createRealtor(input: RealtorInput) {
+  async createRealtor(input: CreateRealtorDto) {
     const [first, ...rest] = input.name.trim().split(' ');
     const last = rest.join(' ');
     const { data, error } = await this.client
