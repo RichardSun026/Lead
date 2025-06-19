@@ -32,13 +32,13 @@ This guide explains how to configure the project for local development and how t
    npm --workspace frontend/site run preview -- --port 4177
    npm --workspace frontend/survey run preview -- --port 4174
    npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175
-   npm --workspace frontend/RealtorInterface/LeadReports run preview -- --port 4176
+   npm --workspace frontend/RealtorInterface/Console run preview -- --port 4176
    ```
    - API: <https://www.myrealvaluation.com/api>
    - Start page: <https://www.myrealvaluation.com/>
    - Landing page: <https://www.myrealvaluation.com/s> (hosted at `/s`)
   - Survey site: <https://www.myrealvaluation.com/survey>
-  - Lead reports: <https://www.myrealvaluation.com/console/reports>
+  - Console: <https://www.myrealvaluation.com/console>
 
 ## Docker Compose
 

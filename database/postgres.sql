@@ -193,3 +193,8 @@ values
         style="position:absolute;top:0;left:0;width:100%;height:100%;"
         title="IMG_5159"></iframe>$$,
      'skovdepeter@gmail.com','https://www.ferrari.com/en-BR');
+
+-- ── Row level security so each realtor only accesses their own leads
+alter table public.leads enable row level security;
+create policy "realtor can view own leads" on public.leads
+  for select using (realtor_id = (auth.jwt() ->> 'realtor_id')::bigint);
