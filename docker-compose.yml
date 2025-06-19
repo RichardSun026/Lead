@@ -56,10 +56,10 @@ services:
     ports:
       - "4175:80"
 
-  leadreports:
+  console:
     build:
       context: .
-      dockerfile: frontend/RealtorInterface/LeadReports/Dockerfile
+      dockerfile: frontend/RealtorInterface/Console/Dockerfile
     depends_on:
       - api
     ports:

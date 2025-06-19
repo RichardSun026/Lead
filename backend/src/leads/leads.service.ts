@@ -288,4 +288,19 @@ export class LeadsService {
       answers,
     };
   }
+
+  async listLeads(uuid: string) {
+    const realtor = await this.findRealtor(uuid);
+    if (!realtor) return [];
+    const { data } = await this.client
+      .from('leads')
+      .select('phone,first_name,last_name')
+      .eq('realtor_id', realtor.realtorId)
+      .order('created_at', { ascending: false });
+    const rows = (data as any[]) || [];
+    return rows.map((r) => ({
+      phone: r.phone,
+      name: `${r.first_name ?? ''} ${r.last_name ?? ''}`.trim(),
+    }));
+  }
 }

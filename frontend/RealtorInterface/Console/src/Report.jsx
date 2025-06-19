@@ -50,7 +50,8 @@ export default function App() {
         <div className="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
             <div className="flex justify-between items-center">
-              <div>
+              <div className="flex items-center gap-4">
+                <a href="/console" className="text-white hover:text-blue-200">←</a>
                 <h1 className="text-3xl font-bold text-white mb-2">Lead Report</h1>
                 <p className="text-blue-100">Comprehensive lead information and analysis</p>
               </div>
