@@ -157,9 +157,12 @@ export default function App() {
       if (currentQuestionId === 'contactInfo') {
         const requiredFields =
           currentQuestion.querySelectorAll('input[required]');
-        return Array.from(requiredFields).every(
-          (field) => field.value.trim() !== '',
-        );
+        return Array.from(requiredFields).every((field) => {
+          if (field.type === 'checkbox') {
+            return field.checked;
+          }
+          return field.value.trim() !== '';
+        });
       }
 
       const radioChecked = currentQuestion.querySelector(
