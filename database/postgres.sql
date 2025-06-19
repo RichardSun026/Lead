@@ -192,4 +192,11 @@ values
         frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
         style="position:absolute;top:0;left:0;width:100%;height:100%;"
         title="IMG_5159"></iframe>$$,
-     'skovdepeter@gmail.com','https://www.ferrari.com/en-BR');
+    'skovdepeter@gmail.com','https://www.ferrari.com/en-BR');
+
+-- ─────────────────────────────────────────────────────────────
+-- Row level security for leads
+-- ─────────────────────────────────────────────────────────────
+alter table public.leads enable row level security;
+create policy "realtors select own leads" on public.leads
+  for select using ((current_setting('request.jwt.claims', true)::json->>'realtor_id')::bigint = realtor_id);
