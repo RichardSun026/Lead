@@ -9,7 +9,7 @@ owns ports **80/443** and forwards requests to Docker-mapped ports:
 | `/s` | `site` | `4177` |
 | `/survey` | `survey` | `4174` |
 | `/onboarding` | `onboarding` | `4175` |
-| `/console/reports` | `leadreports` | `4176` |
+| `/console` | `console` | `4176` |
 | `/api/` | `api` | `3000` |
 
 ## Deployment steps

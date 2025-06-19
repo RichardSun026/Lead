@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import {
   User,
   Phone,
@@ -11,8 +12,8 @@ import {
   X,
 } from 'lucide-react';
 
-export default function App() {
-  const phone = window.location.pathname.split('/').pop();
+export default function Report() {
+  const { phone } = useParams();
   const [leadData, setLeadData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -50,7 +51,8 @@ export default function App() {
         <div className="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
             <div className="flex justify-between items-center">
-              <div>
+              <div className="flex items-center gap-4">
+                <Link to="/" className="text-white text-2xl">&larr;</Link>
                 <h1 className="text-3xl font-bold text-white mb-2">Lead Report</h1>
                 <p className="text-blue-100">Comprehensive lead information and analysis</p>
               </div>
