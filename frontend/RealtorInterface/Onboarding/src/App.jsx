@@ -42,10 +42,10 @@ export default function App() {
   const handleSecondSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     setTimeout(() => {
       setIsLoading(false);
-      alert('🎉 Onboarding complete! Welcome aboard!');
+      window.location.href = '/console';
     }, 1000);
   };
 
