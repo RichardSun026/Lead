@@ -271,6 +271,10 @@ export const surveyMarkup = `
                         <input type="text" name="fullName" required placeholder="Enter your full name">
                     </div>
                     <div class="contact-field">
+                        <label>Street Address <span class="required">*</span></label>
+                        <input type="text" name="address" required placeholder="123 Main St">
+                    </div>
+                    <div class="contact-field">
                         <label>Phone Number <span class="required">*</span></label>
                         <input
                             type="text"
@@ -285,6 +289,12 @@ export const surveyMarkup = `
                         <label>Email Address (optional)</label>
                         <input type="text" name="email" placeholder="your.email@example.com">
                     </div>
+                </div>
+                <div class="consent-field">
+                    <label style="display:flex;align-items:flex-start;gap:8px;">
+                        <input type="checkbox" name="consent" required style="margin-top:4px;">
+                        <span>I agree to receive marketing text messages from My Real Evaluation at the number I provided. These may be sent using automated technology, and my consent is not required to make a purchase. Message &amp; data rates may apply. I can opt out at any time by replying STOP.</span>
+                    </label>
                 </div>
             </div>
 
