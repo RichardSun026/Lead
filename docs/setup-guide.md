@@ -45,11 +45,8 @@ This guide explains how to configure the project for local development and how t
 To run all services in containers (backend, landing page, survey site and Redis):
 
 ```bash
-docker-compose up --build
-```
-```bash
-scp /Users/peternyman/dev/Fon/Lead/backend/.env root@134.199.198.237:/home/Lead/backend/.env
+docker compose --env-file backend/.env up --build
 ```
 
-
-Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `https://www.myrealvaluation.com:6379`.
+Make sure the `backend/.env` file exists and contains your Supabase and API keys. Using `--env-file` loads these variables when building the images so the frontends receive `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` during `npm run build`.
+When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `https://www.myrealvaluation.com:6379`.
