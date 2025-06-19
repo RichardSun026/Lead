@@ -114,6 +114,11 @@ create table public.leads (
     created_at           timestamptz default now()
 );
 
+alter table public.leads enable row level security;
+create policy "realtor-isolation" on public.leads
+  for select using (realtor_id = (auth.jwt()->>'realtor_id')::bigint)
+  with check (realtor_id = (auth.jwt()->>'realtor_id')::bigint);
+
 /* 2-c  Booked calls / appointments */
 create table public.bookings (
     booking_id        bigserial primary key,
