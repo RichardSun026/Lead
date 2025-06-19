@@ -1,6 +1,8 @@
 FROM node:20-alpine AS builder
 WORKDIR /app/onboarding
 COPY frontend/RealtorInterface/Onboarding ./
+# bring in backend environment variables so Vite can read them
+COPY backend/.env ./.env
 RUN npm install
 RUN npm run build
 
