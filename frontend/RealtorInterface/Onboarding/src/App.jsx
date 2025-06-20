@@ -58,6 +58,7 @@ export default function App() {
   const handleInfoSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    console.debug('Step 2 continue clicked', { email, info });
 
     if (info.video && !info.video.includes('player.vimeo.com')) {
       alert('Video link must be a player.vimeo.com URL');
@@ -68,12 +69,17 @@ export default function App() {
     const { data: userData, error: userError } = await supabase.auth.getUser();
     console.log('getUser result', { userData, userError });
     const user = userData?.user;
+    console.debug('Retrieved user for Step 2', user);
     if (!user) {
       alert('Please open the verification link sent to your email before continuing.');
       setIsLoading(false);
       return;
     }
 
+    console.debug('Submitting realtor info for', {
+      id: user.id,
+      email: user.email,
+    });
     const res = await fetch('/api/realtor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
