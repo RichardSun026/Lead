@@ -15,15 +15,13 @@ export class RealtorService {
   async createRealtor(input: CreateRealtorDto) {
     const [first, ...rest] = input.name.trim().split(' ');
     const last = rest.join(' ');
-    const { error } = await this.client
-      .from('realtor')
-      .insert({
-        realtor_id: input.userId,
-        f_name: first,
-        e_name: last,
-        website_url: input.websiteUrl ?? null,
-        video_url: input.videoUrl ?? null,
-      });
+    const { error } = await this.client.from('realtor').insert({
+      realtor_id: input.userId,
+      f_name: first,
+      e_name: last,
+      website_url: input.websiteUrl ?? null,
+      video_url: input.videoUrl ?? null,
+    });
     if (error) throw error;
     return { realtor_id: input.userId };
   }

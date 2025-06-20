@@ -4,7 +4,6 @@ import {
   Mail,
   Phone,
   Calendar,
-  Lock,
   ArrowRight,
   CheckCircle,
 } from 'lucide-react';
@@ -26,7 +25,6 @@ export default function App() {
     video: '',
   });
   const [realtor, setRealtor] = useState(null);
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
@@ -52,18 +50,39 @@ export default function App() {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
-      const mockData = {
-        realtor_id: 'realtor_123',
-        name: `${info.firstName} ${info.lastName}`.trim(),
-        website_url: info.website,
-        video_url: info.video,
-      };
-      setRealtor(mockData);
+    const { data: userData } = await supabase.auth.getUser();
+    const user = userData?.user;
+    if (!user) {
+      alert('Please open the verification link sent to your email before continuing.');
       setIsLoading(false);
-      setStep(3);
-    }, 1500);
+      return;
+    }
+
+    const res = await fetch('/api/realtor', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: `${info.firstName} ${info.lastName}`.trim(),
+        userId: user.id,
+        websiteUrl: info.website,
+        videoUrl: info.video,
+      }),
+    });
+
+    if (!res.ok) {
+      alert('Failed to save your info. Please try again.');
+      setIsLoading(false);
+      return;
+    }
+
+    setRealtor({
+      realtor_id: user.id,
+      name: `${info.firstName} ${info.lastName}`.trim(),
+      website_url: info.website,
+      video_url: info.video,
+    });
+    setIsLoading(false);
+    setStep(3);
   };
 
   const handleCalendarLink = async () => {
@@ -79,17 +98,7 @@ export default function App() {
     }, 1000);
   };
 
-  const handleSecondSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { realtorId: realtor?.realtor_id } },
-    });
-
-    setIsLoading(false);
+  const handleFinish = () => {
     window.location.href = '/console';
   };
 
@@ -330,27 +339,11 @@ export default function App() {
                   )}
                 </button>
 
-                <div className="border-t border-white/10 pt-4">
-                  <p className="text-white/60 text-sm mb-3">
-                    Set a temporary password to complete your setup
-                  </p>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
-                    <input
-                      type="password"
-                      placeholder="Temporary password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:border-transparent transition-all duration-300"
-                    />
-                  </div>
-                </div>
               </div>
 
               <button
-                onClick={handleSecondSubmit}
-                disabled={isLoading || !calendarConnected || !password}
+                onClick={handleFinish}
+                disabled={isLoading || !calendarConnected}
                 className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
@@ -358,7 +351,7 @@ export default function App() {
                 ) : (
                   <>
                     <CheckCircle className="w-5 h-5" />
-                    <span>Complete Setup</span>
+                    <span>Finish Setup</span>
                   </>
                 )}
               </button>
