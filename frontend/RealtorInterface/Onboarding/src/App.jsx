@@ -35,7 +35,10 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    await supabase.auth.signInWithOtp({ email });
+    await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/onboarding/` },
+    });
 
     setIsLoading(false);
     setStep(2);
