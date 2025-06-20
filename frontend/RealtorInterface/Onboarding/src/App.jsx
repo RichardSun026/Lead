@@ -180,6 +180,9 @@ export default function App() {
                   Tell us about yourself
                 </h2>
                 <p className="text-white/70">We just need a few details</p>
+                <p className="text-white/60 text-sm mt-1">
+                  Open the verification link sent to your email, then return here to continue.
+                </p>
               </div>
 
               <div className="space-y-4">
