@@ -1,16 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateRealtorDto {
   @IsString()
   @IsNotEmpty()
   name!: string;
 
-  @IsEmail()
+  @IsUUID()
   @IsNotEmpty()
-  email!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  phone!: string;
+  userId!: string;
 }

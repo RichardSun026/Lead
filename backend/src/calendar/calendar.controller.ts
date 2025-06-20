@@ -24,25 +24,25 @@ export class CalendarController {
     @Query('state') state: string,
     @Res() res: Response,
   ) {
-    const realtorId = Number(state);
+    const realtorId = state;
     await this.calendar.handleOAuthCallback(code, realtorId);
     return res.redirect('/realtor');
   }
 
   @Get('oauth/:realtorId')
-  getAuthUrl(@Param('realtorId') realtorId: number) {
+  getAuthUrl(@Param('realtorId') realtorId: string) {
     return { url: this.calendar.generateAuthUrl(realtorId) };
   }
 
   @Post(':realtorId/events')
   @HttpCode(201)
-  addEvent(@Param('realtorId') realtorId: number, @Body() body: EventInput) {
+  addEvent(@Param('realtorId') realtorId: string, @Body() body: EventInput) {
     return this.calendar.addEvent(realtorId, body);
   }
 
   @Patch(':realtorId/events/:eventId')
   updateEvent(
-    @Param('realtorId') realtorId: number,
+    @Param('realtorId') realtorId: string,
     @Param('eventId') eventId: string,
     @Body() body: Partial<EventInput> & { calendarId: string },
   ) {
@@ -53,7 +53,7 @@ export class CalendarController {
   @Delete(':realtorId/events/:eventId')
   @HttpCode(204)
   removeEvent(
-    @Param('realtorId') realtorId: number,
+    @Param('realtorId') realtorId: string,
     @Param('eventId') eventId: string,
     @Body('calendarId') calendarId: string,
   ) {
@@ -62,14 +62,14 @@ export class CalendarController {
 
   @Get(':realtorId/booked')
   getBooked(
-    @Param('realtorId') realtorId: number,
+    @Param('realtorId') realtorId: string,
     @Query('date') date: string,
   ) {
     return this.calendar.getBookedSlots(realtorId, date);
   }
 
   @Get(':realtorId/openings')
-  getOpen(@Param('realtorId') realtorId: number, @Query('date') date: string) {
+  getOpen(@Param('realtorId') realtorId: string, @Query('date') date: string) {
     return this.calendar.getOpenSlots(realtorId, date);
   }
 }

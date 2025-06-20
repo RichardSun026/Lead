@@ -11,7 +11,7 @@ export interface BookingInput {
   booked_date: string; // YYYY-MM-DD
   booked_time: string; // HH:mm
   time_zone: string;
-  realtor_id: number;
+  realtor_id: string;
 }
 
 @Injectable()

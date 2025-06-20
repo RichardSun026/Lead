@@ -52,7 +52,7 @@ export class LeadsService {
       throw realtorErr;
     }
 
-    const realtorId = (data as { realtor_id: number } | null)?.realtor_id;
+    const realtorId = (data as { realtor_id: string } | null)?.realtor_id;
     console.debug('[LeadsService] realtorId', realtorId);
 
     if (!realtorId) {
@@ -142,7 +142,7 @@ export class LeadsService {
       throw error;
     }
     const realtor = data as {
-      realtor_id: number;
+      realtor_id: string;
       f_name: string;
       e_name: string;
       video_url: string;
