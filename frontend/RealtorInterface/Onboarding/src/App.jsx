@@ -35,7 +35,36 @@ export default function App() {
       const { data, error } = await supabase.auth.getSession();
       console.log('Initial session', data, error);
     };
+
+    const setSessionFromHash = async () => {
+      if (window.location.hash.includes('access_token')) {
+        console.log('Found auth hash', window.location.hash);
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const access_token = params.get('access_token');
+        const refresh_token = params.get('refresh_token');
+        if (access_token && refresh_token) {
+          const { data, error } = await supabase.auth.setSession({
+            access_token,
+            refresh_token,
+          });
+          console.log('setSession result', { data, error });
+          window.location.hash = '';
+        }
+      }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        console.log('Auth state change', event, session);
+      },
+    );
+
     logInitialSession();
+    setSessionFromHash();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
   const videoValid =
     info.video === '' || info.video.includes('player.vimeo.com');
@@ -65,6 +94,9 @@ export default function App() {
       setIsLoading(false);
       return;
     }
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    console.debug('Current session for Step 2', sessionData);
 
     const { data: userData, error: userError } = await supabase.auth.getUser();
     console.log('getUser result', { userData, userError });
