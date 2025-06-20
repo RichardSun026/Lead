@@ -29,3 +29,5 @@ This page summarises the variables defined in `.env.example` and what they are u
 
 ## Miscellaneous
 - `WEBHOOK_URL` – endpoint that receives lead data (used by the Facebook form utilities).
+- `REDIS_URL` – connection string for the Redis instance storing conversation history.
+- `SCHEDULER_INTERVAL_MS` – how often the scheduler checks for due messages in milliseconds (defaults to `60000`).
