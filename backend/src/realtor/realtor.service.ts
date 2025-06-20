@@ -18,14 +18,13 @@ export class RealtorService {
     const { data, error } = await this.client
       .from('realtor')
       .insert({
+        realtor_id: input.userId,
         f_name: first,
         e_name: last,
-        email: input.email,
-        phone: input.phone,
       })
       .select('uuid,realtor_id')
       .single();
     if (error) throw error;
-    return data as { uuid: string; realtor_id: number };
+    return data as { uuid: string; realtor_id: string };
   }
 }

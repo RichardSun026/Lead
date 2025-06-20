@@ -275,14 +275,14 @@ export default function App() {
         console.error('Failed to create lead', err);
       }
 
-      colsole.log('[frontend/survey/src/App.jsx]DEFULT MESSAGE')
+      console.log('[frontend/survey/src/App.jsx]DEFAULT MESSAGE')
       if (sendToSite) {
         const siteUrl = new URL(window.location.href);
         siteUrl.port = '4177';
         console.log(`Redirecting to site: ${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`);
         window.location.href = `${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`;
         document.getElementById('successMessage').textContent =
-        'Thank you for filling out the servey! you will be ridirected to our web site.';
+        'Thank you for filling out the survey! You will be redirected to our website.';
       }
       else {
         document.getElementById('successMessage').textContent =

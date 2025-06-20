@@ -43,7 +43,7 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
       .maybeSingle();
 
     if (error) throw error;
-    const realtorId = (lead as { realtor_id: number } | null)?.realtor_id;
+    const realtorId = (lead as { realtor_id: string } | null)?.realtor_id;
     if (!realtorId) throw new Error('Invalid phone number');
 
     await this.client.from('scheduled_messages').insert({
