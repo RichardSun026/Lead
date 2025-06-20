@@ -15,7 +15,9 @@ This page summarises the variables defined in `.env.example` and what they are u
 ## Third‑party APIs
 - `OPENAI_API_KEY` – key for generating AI responses via OpenAI.
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` – OAuth
-  credentials used when syncing Google Calendar events.
+  credentials used when syncing Google Calendar events. `GOOGLE_REDIRECT_URI`
+  should point to `/api/calendar/oauth/callback` on your domain
+  (e.g. `http://localhost:3000/api/calendar/oauth/callback`).
 
 ## User Data Site
 - `USER_DATA_PASSWORD` – password required to generate a user data report.
