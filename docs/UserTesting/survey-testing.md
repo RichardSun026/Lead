@@ -4,7 +4,7 @@ The survey front‑end normally posts answers to the Nest backend at `https://ww
 
 ## Create a Lead
 
-Use `POST /api/leads` to store the survey answers and contact info. Every field is optional except `name`, `phone` and `realtorUuid`.
+Use `POST /api/leads` to store the survey answers and contact info. Every field is optional except `name`, `phone` and `realtorId`.
 
 ```bash
 curl -X POST http://134.199.198.237:3000/api/leads \
@@ -13,7 +13,7 @@ curl -X POST http://134.199.198.237:3000/api/leads \
     "name": "Jane Tester",
     "phone": "+5511998966766",
     "email": "jane@example.com",
-    "realtorUuid": "f957761b-104e-416e-a550-25e010ca9302",
+    "realtorId": "f957761b-104e-416e-a550-25e010ca9302",
     "zipcode": "90210",
     "homeType": "single-family",
     "bedrooms": "3",

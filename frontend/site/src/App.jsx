@@ -11,7 +11,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [selection, setSelection] = useState(null);
   const [user, setUser] = useState(null);
-  const [realtorUuid, setRealtorUuid] = useState('');
+  const [realtorId, setRealtorId] = useState('');
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
 
   const formatPhone = (value) => {
@@ -33,9 +33,9 @@ export default function App() {
       setLoading(false);
       return;
     }
-    const uuid = parts[idx];
-    console.debug('Detected realtor uuid', uuid);
-    setRealtorUuid(uuid);
+    const id = parts[idx];
+    console.debug('Detected realtor id', id);
+    setRealtorId(id);
 
     if (parts.length - idx >= 2) {
       const rawPhone = decodeURIComponent(parts[idx + 1]);
@@ -55,7 +55,7 @@ export default function App() {
       }
     }
 
-    fetch(`/api/realtor?uuid=${uuid}`)
+    fetch(`/api/realtor?realtorId=${id}`)
       .then((r) => {
         console.debug('Realtor fetch status', r.status);
         return r.json();
@@ -124,7 +124,6 @@ export default function App() {
           />
           <BookingForm
             details={selection}
-            realtorUuid={realtorUuid}
             onBooked={() => {
               console.debug('Booking confirmed', selection);
               setSelection(null);

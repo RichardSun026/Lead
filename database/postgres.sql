@@ -78,7 +78,6 @@ create type booking_status_t as enum ('pending','confirmed','canceled');
 /* 2-a  Realtors */
 create table public.realtor (
     realtor_id   uuid primary key references auth.users(id),
-    uuid         uuid       not null unique default gen_random_uuid(),
     f_name       varchar(125) not null,
     e_name       varchar(125) not null,
     video_url    varchar(600),
@@ -86,8 +85,6 @@ create table public.realtor (
     -- time_zone
     created_at   timestamptz default now()
 );
-
-create index on public.realtor(uuid);
 
 /* 2-b  Leads */
 create table public.leads (
@@ -172,18 +169,15 @@ create index on public.google_calendar_events(google_event_id);
 --    (HTML in video_url is quoted with $$ to avoid escaping hell)
 -- ─────────────────────────────────────────────────────────────
 insert into public.realtor
-    (realtor_id, uuid, f_name, e_name, video_url, website_url)
+    (realtor_id, f_name, e_name, video_url, website_url)
 values
     ('11111111-1111-1111-1111-111111111111',
-     'a1b2c3d4-e5f6-4321-8765-1a2b3c4d5e6f',
      'Alice','Johnson',null,null),
 
     ('22222222-2222-2222-2222-222222222222',
-     'b2c3d4e5-f6a7-5432-8765-2b3c4d5e6f7a',
      'Bob','Smith',null,null),
 
     ('33333333-3333-3333-3333-333333333333',
-     'c3d4e5f6-a7b8-6543-8765-3c4d5e6f7a8b',
      'Carol','Davis',$$
 <iframe src="https://player.vimeo.com/video/1068770376?h=fb9b1d993b&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
         frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
@@ -192,7 +186,6 @@ values
      'https://www.audi.com/en/'),
 
     ('44444444-4444-4444-4444-444444444444',
-     'f957761b-104e-416e-a550-25e010ca9302',
      'Alfonso','Mac',$$
 <iframe src="https://player.vimeo.com/video/1068770376?h=fb9b1d993b&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
         frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"

@@ -20,7 +20,7 @@ export class LeadsController {
     @Body('name') name: string,
     @Body('phone') phone: string,
     @Body('email') email: string,
-    @Body('realtorUuid') realtorUuid: string,
+    @Body('realtorId') realtorId: string,
     @Body('zipcode') zipcode: string,
     @Body('homeType') homeType: string,
     @Body('bedrooms') bedrooms: string,
@@ -36,7 +36,7 @@ export class LeadsController {
       name,
       phone,
       email,
-      realtorUuid,
+      realtorId,
     });
     if (!name || !phone) {
       throw new HttpException(
@@ -51,7 +51,7 @@ export class LeadsController {
         name,
         phone,
         email,
-        realtorUuid,
+        realtorId,
         zipcode,
         homeType,
         bedrooms,
@@ -80,9 +80,9 @@ export class LeadsController {
   }
 
   @Get('realtor')
-  async getRealtor(@Query('uuid') uuid: string) {
-    console.log('[GET /realtor] uuid:', uuid);
-    const realtor = await this.leads.findRealtor(uuid);
+  async getRealtor(@Query('realtorId') realtorId: string) {
+    console.log('[GET /realtor] id:', realtorId);
+    const realtor = await this.leads.findRealtor(realtorId);
     if (!realtor) {
       console.warn('[GET /realtor] realtor not found');
     }
