@@ -35,7 +35,15 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    await supabase.auth.signInWithOtp({ email });
+    const redirectUrl = `${window.location.origin}/onboarding/`;
+    console.log('signInWithOtp', { email, redirectUrl });
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectUrl },
+    });
+
+    if (error) console.error('signInWithOtp error', error);
 
     setIsLoading(false);
     setStep(2);
@@ -51,7 +59,8 @@ export default function App() {
       return;
     }
 
-    const { data: userData } = await supabase.auth.getUser();
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    console.log('getUser', { userData, userError });
     const user = userData?.user;
     if (!user) {
       alert('Please open the verification link sent to your email before continuing.');
@@ -69,6 +78,7 @@ export default function App() {
         videoUrl: info.video,
       }),
     });
+    console.log('realtor POST status', res.status);
 
     if (!res.ok) {
       alert('Failed to save your info. Please try again.');
