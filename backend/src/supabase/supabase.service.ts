@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 interface GoogleCredentials {
-  realtor_id: number;
+  realtor_id: string;
   access_token: string;
   refresh_token: string;
   token_expires: string;
@@ -20,7 +20,7 @@ export class SupabaseService {
     } as Record<string, string>;
   }
 
-  async getCredentials(realtorId: number): Promise<GoogleCredentials | null> {
+  async getCredentials(realtorId: string): Promise<GoogleCredentials | null> {
     const res = await fetch(
       `${this.baseUrl}/google_credentials?realtor_id=eq.${realtorId}&select=*`,
       { headers: this.headers },
@@ -30,7 +30,7 @@ export class SupabaseService {
   }
 
   async updateCredentials(
-    realtorId: number,
+    realtorId: string,
     token: { access_token: string; expires_in: number },
   ): Promise<void> {
     const expires = new Date(
@@ -50,7 +50,7 @@ export class SupabaseService {
   }
 
   async insertCredentials(
-    realtorId: number,
+    realtorId: string,
     token: { access_token: string; refresh_token: string; expires_in: number },
   ): Promise<void> {
     const expires = new Date(
@@ -69,7 +69,7 @@ export class SupabaseService {
   }
 
   async upsertEvent(
-    realtorId: number,
+    realtorId: string,
     googleEventId: string,
     payload: Record<string, unknown>,
   ): Promise<void> {

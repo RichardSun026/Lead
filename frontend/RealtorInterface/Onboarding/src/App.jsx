@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { User, Mail, Phone, Calendar, Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  Lock,
+  ArrowRight,
+  CheckCircle,
+} from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -9,33 +17,44 @@ const supabase = createClient(
 
 export default function App() {
   const [step, setStep] = useState(1);
-  const [info, setInfo] = useState({ firstName: '', lastName: '', email: '', phone: '' });
+  const [email, setEmail] = useState('');
+  const [info, setInfo] = useState({ firstName: '', lastName: '', phone: '' });
   const [realtor, setRealtor] = useState(null);
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
 
-  const handleFirstSubmit = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
+    await supabase.auth.signInWithOtp({ email });
+
+    setIsLoading(false);
+    setStep(2);
+  };
+
+  const handleInfoSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
     // Simulate API call
     setTimeout(() => {
       const mockData = {
         realtor_id: 'realtor_123',
-        name: `${info.firstName} ${info.lastName}`.trim()
+        name: `${info.firstName} ${info.lastName}`.trim(),
       };
       setRealtor(mockData);
       setIsLoading(false);
-      setStep(2);
+      setStep(3);
     }, 1500);
   };
 
   const handleCalendarLink = async () => {
     if (!realtor) return;
     setIsLoading(true);
-    
+
     // Simulate calendar connection
     setTimeout(() => {
       setIsLoading(false);
@@ -50,7 +69,7 @@ export default function App() {
     setIsLoading(true);
 
     await supabase.auth.signUp({
-      email: info.email,
+      email,
       password,
       options: { data: { realtorId: realtor?.realtor_id } },
     });
@@ -72,13 +91,21 @@ export default function App() {
         {/* Progress indicator */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-white/80 text-sm font-medium">Step {step} of 2</span>
-            <span className="text-white/60 text-sm">{step === 1 ? 'Personal Info' : 'Setup Complete'}</span>
+            <span className="text-white/80 text-sm font-medium">
+              Step {step} of 3
+            </span>
+            <span className="text-white/60 text-sm">
+              {step === 1
+                ? 'Verify Email'
+                : step === 2
+                  ? 'Personal Info'
+                  : 'Setup Complete'}
+            </span>
           </div>
           <div className="w-full bg-white/20 rounded-full h-2">
             <div
               className="bg-gradient-to-r from-pink-400 to-purple-400 h-2 rounded-full transition-all duration-700 ease-out"
-              style={{ width: `${(step / 2) * 100}%` }}
+              style={{ width: `${(step / 3) * 100}%` }}
             ></div>
           </div>
         </div>
@@ -86,13 +113,58 @@ export default function App() {
         {/* Main card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 transform transition-all duration-500 hover:shadow-3xl">
           {step === 1 && (
-            <div className="space-y-6">
+            <form className="space-y-6" onSubmit={handleEmailSubmit}>
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
+                  <Mail className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white mb-2">
+                  Verify your email
+                </h2>
+                <p className="text-white/70">
+                  We'll send you a link to confirm it
+                </p>
+              </div>
+
+              <div className="relative">
+                <Mail className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                ) : (
+                  <>
+                    <span>Send Link</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {step === 2 && (
+            <form className="space-y-6" onSubmit={handleInfoSubmit}>
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
                   <User className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-white mb-2">Welcome!</h2>
-                <p className="text-white/70">Let's get you started with your account</p>
+                <h2 className="text-3xl font-bold text-white mb-2">
+                  Tell us about yourself
+                </h2>
+                <p className="text-white/70">We just need a few details</p>
               </div>
 
               <div className="space-y-4">
@@ -102,7 +174,9 @@ export default function App() {
                       type="text"
                       placeholder="First name"
                       value={info.firstName}
-                      onChange={(e) => setInfo({ ...info, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setInfo({ ...info, firstName: e.target.value })
+                      }
                       required
                       className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                     />
@@ -112,23 +186,13 @@ export default function App() {
                       type="text"
                       placeholder="Last name"
                       value={info.lastName}
-                      onChange={(e) => setInfo({ ...info, lastName: e.target.value })}
+                      onChange={(e) =>
+                        setInfo({ ...info, lastName: e.target.value })
+                      }
                       required
                       className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                     />
                   </div>
-                </div>
-
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    value={info.email}
-                    onChange={(e) => setInfo({ ...info, email: e.target.value })}
-                    required
-                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
-                  />
                 </div>
 
                 <div className="relative">
@@ -137,7 +201,9 @@ export default function App() {
                     type="text"
                     placeholder="Phone number"
                     value={info.phone}
-                    onChange={(e) => setInfo({ ...info, phone: e.target.value })}
+                    onChange={(e) =>
+                      setInfo({ ...info, phone: e.target.value })
+                    }
                     required
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
@@ -145,7 +211,7 @@ export default function App() {
               </div>
 
               <button
-                onClick={handleFirstSubmit}
+                type="submit"
                 disabled={isLoading}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -158,25 +224,32 @@ export default function App() {
                   </>
                 )}
               </button>
-            </div>
+            </form>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <div className="space-y-6">
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mb-4">
                   <Calendar className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-white mb-2">Almost Done!</h2>
-                <p className="text-white/70">Connect your calendar to finish setup</p>
+                <h2 className="text-3xl font-bold text-white mb-2">
+                  Almost Done!
+                </h2>
+                <p className="text-white/70">
+                  Connect your calendar to finish setup
+                </p>
               </div>
 
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
-                <h3 className="text-lg font-semibold text-white mb-3">Connect Google Calendar</h3>
+                <h3 className="text-lg font-semibold text-white mb-3">
+                  Connect Google Calendar
+                </h3>
                 <p className="text-white/60 text-sm mb-4">
-                  Make sure you're logged into the correct Google account. If you encounter issues, try using an incognito window.
+                  Make sure you're logged into the correct Google account. If
+                  you encounter issues, try using an incognito window.
                 </p>
-                
+
                 <button
                   type="button"
                   onClick={handleCalendarLink}

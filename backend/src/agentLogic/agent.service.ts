@@ -85,7 +85,7 @@ export class AgentService {
         case 'list_available_times':
           if (isAvailArgs(args)) {
             const { realtor_id, date } = args as {
-              realtor_id: number;
+              realtor_id: string;
               date: string;
             };
             const booked = await this.calendar.getBookedSlots(realtor_id, date);
@@ -142,7 +142,7 @@ function isBookArgs(args: unknown): args is BookingInput {
 
 function isAvailArgs(
   args: unknown,
-): args is { realtor_id: number; date: string } {
+): args is { realtor_id: string; date: string } {
   return (
     typeof args === 'object' &&
     args !== null &&

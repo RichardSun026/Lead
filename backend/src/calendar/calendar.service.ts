@@ -18,20 +18,20 @@ export class CalendarService {
     private readonly scheduler: SchedulerService,
   ) {}
 
-  generateAuthUrl(realtorId: number) {
+  generateAuthUrl(realtorId: string) {
     const params = new URLSearchParams({
       client_id: process.env.GOOGLE_CLIENT_ID as string,
       redirect_uri: process.env.GOOGLE_REDIRECT_URI as string,
       response_type: 'code',
       access_type: 'offline',
       scope: 'https://www.googleapis.com/auth/calendar',
-      state: realtorId.toString(),
+      state: realtorId,
       prompt: 'consent',
     });
     return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
   }
 
-  async handleOAuthCallback(code: string, realtorId: number) {
+  async handleOAuthCallback(code: string, realtorId: string) {
     const params = new URLSearchParams({
       code,
       client_id: process.env.GOOGLE_CLIENT_ID as string,
@@ -52,7 +52,7 @@ export class CalendarService {
     await this.supabase.insertCredentials(realtorId, json);
   }
 
-  private async refreshAccessToken(realtorId: number, refreshToken: string) {
+  private async refreshAccessToken(realtorId: string, refreshToken: string) {
     const params = new URLSearchParams({
       client_id: process.env.GOOGLE_CLIENT_ID as string,
       client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -72,7 +72,7 @@ export class CalendarService {
     return json.access_token;
   }
 
-  private async getAccessToken(realtorId: number) {
+  private async getAccessToken(realtorId: string) {
     const creds = await this.supabase.getCredentials(realtorId);
     if (!creds) throw new Error('No Google credentials');
     if (new Date(creds.token_expires) <= new Date()) {
@@ -81,7 +81,7 @@ export class CalendarService {
     return creds.access_token;
   }
 
-  async addEvent(realtorId: number, input: EventInput) {
+  async addEvent(realtorId: string, input: EventInput) {
     const accessToken = await this.getAccessToken(realtorId);
     const res = await fetch(
       `https://www.googleapis.com/calendar/v3/calendars/${input.calendarId}/events`,
@@ -110,7 +110,7 @@ export class CalendarService {
   }
 
   async updateEvent(
-    realtorId: number,
+    realtorId: string,
     calendarId: string,
     eventId: string,
     update: Partial<Omit<EventInput, 'calendarId' | 'phone'>>,
@@ -140,7 +140,7 @@ export class CalendarService {
     });
   }
 
-  async removeEvent(realtorId: number, calendarId: string, eventId: string) {
+  async removeEvent(realtorId: string, calendarId: string, eventId: string) {
     const accessToken = await this.getAccessToken(realtorId);
     await fetch(
       `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events/${eventId}`,
@@ -152,7 +152,7 @@ export class CalendarService {
     await this.supabase.removeEvent(eventId);
   }
 
-  async getBookedSlots(realtorId: number, date: string) {
+  async getBookedSlots(realtorId: string, date: string) {
     const start = `${date}T00:00:00`;
     const end = `${date}T23:59:59`;
     const booked = await this.supabase.query(
@@ -185,7 +185,7 @@ export class CalendarService {
     return { booked: Array.from(times) };
   }
 
-  async getOpenSlots(realtorId: number, date: string) {
+  async getOpenSlots(realtorId: string, date: string) {
     const booked = await this.getBookedSlots(realtorId, date);
     const slots: string[] = [];
     for (let h = 9; h < 17; h++) {
