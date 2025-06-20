@@ -278,9 +278,10 @@ export default function App() {
       console.log('[frontend/survey/src/App.jsx]DEFAULT MESSAGE')
       if (sendToSite) {
         const siteUrl = new URL(window.location.href);
-        siteUrl.port = '4177';
-        console.log(`Redirecting to site: ${siteUrl.origin}/${realtorId}/${encodeURIComponent(phone)}`);
-        window.location.href = `${siteUrl.origin}/${realtorId}/${encodeURIComponent(phone)}`;
+        siteUrl.port = '';
+        siteUrl.pathname = '/s';
+        console.log(`Redirecting to site: ${siteUrl.origin}${siteUrl.pathname}/${realtorId}/${encodeURIComponent(phone)}`);
+        window.location.href = `${siteUrl.origin}${siteUrl.pathname}/${realtorId}/${encodeURIComponent(phone)}`;
         document.getElementById('successMessage').textContent =
         'Thank you for filling out the survey! You will be redirected to our website.';
       }
