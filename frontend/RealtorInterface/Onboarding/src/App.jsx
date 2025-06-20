@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   Mail,
@@ -28,6 +28,15 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
+
+  useEffect(() => {
+    const logInitialSession = async () => {
+      console.log('Location on load', window.location.href);
+      const { data, error } = await supabase.auth.getSession();
+      console.log('Initial session', data, error);
+    };
+    logInitialSession();
+  }, []);
   const videoValid =
     info.video === '' || info.video.includes('player.vimeo.com');
 
@@ -35,10 +44,12 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    await supabase.auth.signInWithOtp({
+    console.log('Sending OTP to', email);
+    const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}/onboarding/` },
     });
+    console.log('signInWithOtp result', { data, error });
 
     setIsLoading(false);
     setStep(2);
@@ -54,7 +65,8 @@ export default function App() {
       return;
     }
 
-    const { data: userData } = await supabase.auth.getUser();
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    console.log('getUser result', { userData, userError });
     const user = userData?.user;
     if (!user) {
       alert('Please open the verification link sent to your email before continuing.');
@@ -72,6 +84,7 @@ export default function App() {
         videoUrl: info.video,
       }),
     });
+    console.log('POST /api/realtor response', res.status);
 
     if (!res.ok) {
       alert('Failed to save your info. Please try again.');
@@ -86,6 +99,7 @@ export default function App() {
       video_url: info.video,
     });
     setIsLoading(false);
+    console.log('Realtor saved, advancing to step 3');
     setStep(3);
   };
 
