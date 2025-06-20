@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-export default function BookingForm({ details, realtorUuid, onBooked, user }) {
+export default function BookingForm({ details, onBooked, user }) {
   const [form, setForm] = useState({
     name: user?.full_name || '',
     phone: user?.phone || '',

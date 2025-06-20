@@ -7,7 +7,7 @@ export default function App() {
     const url = new URL(window.location.href);
     const parts = url.pathname.split('/').filter(Boolean);
     const idx = parts[0] === 'survey' ? 1 : 0;
-    const realtorUuid = parts[idx] || '';
+    const realtorId = parts[idx] || '';
 
     const form = document.getElementById('surveyForm');
     const prevBtn = document.getElementById('prevBtn');
@@ -258,7 +258,7 @@ export default function App() {
             name,
             phone,
             email,
-            realtorUuid,
+            realtorId,
             zipcode,
             homeType,
             bedrooms,
@@ -279,8 +279,8 @@ export default function App() {
       if (sendToSite) {
         const siteUrl = new URL(window.location.href);
         siteUrl.port = '4177';
-        console.log(`Redirecting to site: ${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`);
-        window.location.href = `${siteUrl.origin}/${realtorUuid}/${encodeURIComponent(phone)}`;
+        console.log(`Redirecting to site: ${siteUrl.origin}/${realtorId}/${encodeURIComponent(phone)}`);
+        window.location.href = `${siteUrl.origin}/${realtorId}/${encodeURIComponent(phone)}`;
         document.getElementById('successMessage').textContent =
         'Thank you for filling out the survey! You will be redirected to our website.';
       }

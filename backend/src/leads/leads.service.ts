@@ -6,7 +6,7 @@ interface LeadInput {
   name: string;
   phone: string;
   email: string;
-  realtorUuid: string;
+  realtorId: string;
   zipcode?: string;
   homeType?: string;
   bedrooms?: string;
@@ -34,34 +34,25 @@ export class LeadsService {
   async createLead(input: LeadInput): Promise<void> {
     console.debug('[LeadsService] createLead called with', input);
 
-    if (!this.uuidRe.test(input.realtorUuid)) {
+    if (!this.uuidRe.test(input.realtorId)) {
       console.error(
-        '[LeadsService] invalid realtor uuid format',
-        input.realtorUuid,
+        '[LeadsService] invalid realtor id format',
+        input.realtorId,
       );
       throw new Error('Invalid realtor');
     }
 
-    const { data, error: realtorErr } = await this.client
+    const { error: realtorErr } = await this.client
       .from('realtor')
       .select('realtor_id')
-      .eq('uuid', input.realtorUuid)
+      .eq('realtor_id', input.realtorId)
       .maybeSingle();
     if (realtorErr) {
       console.error('[LeadsService] failed to fetch realtor', realtorErr);
       throw realtorErr;
     }
 
-    const realtorId = (data as { realtor_id: string } | null)?.realtor_id;
-    console.debug('[LeadsService] realtorId', realtorId);
-
-    if (!realtorId) {
-      console.error(
-        '[LeadsService] invalid realtor for uuid',
-        input.realtorUuid,
-      );
-      throw new Error('Invalid realtor');
-    }
+    const realtorId = input.realtorId;
 
     const [firstName, ...rest] = input.name.trim().split(' ');
     const lastName = rest.join(' ');
@@ -126,16 +117,16 @@ export class LeadsService {
     };
   }
 
-  async findRealtor(uuid: string) {
-    console.debug('[LeadsService] fetching realtor', uuid);
-    if (!this.uuidRe.test(uuid)) {
-      console.debug('[LeadsService] invalid uuid format', uuid);
+  async findRealtor(realtorId: string) {
+    console.debug('[LeadsService] fetching realtor', realtorId);
+    if (!this.uuidRe.test(realtorId)) {
+      console.debug('[LeadsService] invalid uuid format', realtorId);
       return null;
     }
     const { data, error } = await this.client
       .from('realtor')
       .select('realtor_id,f_name,e_name,video_url,website_url')
-      .eq('uuid', uuid)
+      .eq('realtor_id', realtorId)
       .maybeSingle();
     if (error) {
       console.error('[LeadsService] Supabase error', error);
@@ -149,7 +140,7 @@ export class LeadsService {
       website_url: string;
     } | null;
     if (!realtor) {
-      console.debug('[LeadsService] no realtor found for', uuid);
+      console.debug('[LeadsService] no realtor found for', realtorId);
       return null;
     }
     console.debug('[LeadsService] found realtor id', realtor.realtor_id);

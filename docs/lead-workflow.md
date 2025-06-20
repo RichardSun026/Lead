@@ -4,14 +4,14 @@ This guide follows a prospect from the initial survey through booking and follow
 
 ## 1. Completing the Survey
 
-1. The visitor opens `/survey/<realtorUuid>` and fills out the questions.
+1. The visitor opens `/survey/<realtorId>` and fills out the questions.
 2. On submission the front‑end sends a `POST /api/leads` request with the contact information and survey answers.
-3. `LeadsService.createLead` verifies the realtor UUID and upserts the record into the `leads` table. The phone number is normalised before storage.
+3. `LeadsService.createLead` verifies the realtor ID and upserts the record into the `leads` table. The phone number is normalised before storage.
 4. A welcome message can be scheduled via `POST /api/schedule` which writes to `scheduled_messages`.
 5. Depending on answers the user is either redirected to the booking site or shown a thank you message.
 
 Possible errors:
-- Missing or malformed `realtorUuid` returns `400`.
+- Missing or malformed `realtorId` returns `400`.
 - Supabase failures when inserting the lead result in a `500` from the API.
 
 ## 2. Booking a Meeting
