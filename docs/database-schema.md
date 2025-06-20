@@ -2,7 +2,6 @@
 
 This document summarizes the main tables used by the Lead Management System.
 The table definitions can be found in [`database/postgres.sql`](../database/postgres.sql).
-Example data for local development is provided in [`database/seed.sql`](../database/seed.sql).
 
 ## Tables
 
@@ -89,21 +88,10 @@ Example data for local development is provided in [`database/seed.sql`](../datab
 - `start_time`, `end_time`
 - `created_at`
 
-## Example Data
-The seed script inserts two sample leads and a booked appointment:
-```sql
-INSERT INTO Leads (...)
-    ('555-0001', 1, 'Eve', 'Example', '123 Main St', ...),
-    ('555-0002', 2, 'John', 'Doe', '456 Oak Ave', ...);
-INSERT INTO Bookings (phone, realtor_id, appointment_time, google_calendar_id, google_event_id)
-VALUES ('555-0001', 1, NOW(), 'primary', 'abc123');
-```
-See [`database/seed.sql`](../database/seed.sql) for the full statements.
-
 ## Loading the Schema
 Run `scripts/load_supabase.sh` with the `SUPABASE_DB_URL` environment variable set to your Postgres connection string:
 ```bash
 export SUPABASE_DB_URL="postgres://user:pass@host:port/db"
 ./scripts/load_supabase.sh
 ```
-The script loads `database/postgres.sql` and `database/seed.sql` into the target database.
+The script loads `database/postgres.sql` into the target database.

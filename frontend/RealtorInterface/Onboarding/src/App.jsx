@@ -18,12 +18,19 @@ const supabase = createClient(
 export default function App() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-  const [info, setInfo] = useState({ firstName: '', lastName: '', phone: '' });
+  const [info, setInfo] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    website: '',
+    video: '',
+  });
   const [realtor, setRealtor] = useState(null);
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
+  const videoValid = info.video.includes('player.vimeo.com');
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -39,11 +46,19 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
+    if (!info.video.includes('player.vimeo.com')) {
+      alert('Video link must be a player.vimeo.com URL');
+      setIsLoading(false);
+      return;
+    }
+
     // Simulate API call
     setTimeout(() => {
       const mockData = {
         realtor_id: 'realtor_123',
         name: `${info.firstName} ${info.lastName}`.trim(),
+        website_url: info.website,
+        video_url: info.video,
       };
       setRealtor(mockData);
       setIsLoading(false);
@@ -208,11 +223,41 @@ export default function App() {
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                 </div>
+
+                <div className="relative">
+                  <input
+                    type="url"
+                    placeholder="Website URL"
+                    value={info.website}
+                    onChange={(e) =>
+                      setInfo({ ...info, website: e.target.value })
+                    }
+                    required
+                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                  />
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="url"
+                    placeholder="Video link from player.vimeo.com"
+                    value={info.video}
+                    onChange={(e) =>
+                      setInfo({ ...info, video: e.target.value })
+                    }
+                    required
+                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                  />
+                  <p className="text-xs text-white/60 mt-1">
+                    Paste the share URL that begins with
+                    {' '}<code>https://player.vimeo.com</code>
+                  </p>
+                </div>
               </div>
 
               <button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || !videoValid || !info.website}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
