@@ -19,3 +19,15 @@ The admin dashboard exposes a **Link Google Calendar** button during the onboard
 Once this flow is completed, the application can create, update and delete
 calendar events without asking for permission again. Tokens are refreshed
 automatically.
+
+## Adding your website and intro video
+
+During step 2 of the onboarding you will be asked for two additional fields:
+
+1. **Website URL** – paste the link to your personal site or listings page.
+2. **Video link** – copy the share URL from Vimeo and ensure it begins with
+   `https://player.vimeo.com`.
+
+If you are unable to add these details, email
+`admin@myrealvaluation.com` and we will assist you or add them on your
+behalf.

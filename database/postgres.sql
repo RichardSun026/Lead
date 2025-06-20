@@ -164,31 +164,3 @@ create table public.google_calendar_events (
 );
 create index on public.google_calendar_events(google_event_id);
 
--- ─────────────────────────────────────────────────────────────
--- 3. Seed data – four realtors
---    (HTML in video_url is quoted with $$ to avoid escaping hell)
--- ─────────────────────────────────────────────────────────────
-insert into public.realtor
-    (realtor_id, f_name, e_name, video_url, website_url)
-values
-    ('11111111-1111-1111-1111-111111111111',
-     'Alice','Johnson',null,null),
-
-    ('22222222-2222-2222-2222-222222222222',
-     'Bob','Smith',null,null),
-
-    ('33333333-3333-3333-3333-333333333333',
-     'Carol','Davis',$$
-<iframe src="https://player.vimeo.com/video/1068770376?h=fb9b1d993b&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-        style="position:absolute;top:0;left:0;width:100%;height:100%;"
-        title="IMG_5159"></iframe>$$,
-     'https://www.audi.com/en/'),
-
-    ('44444444-4444-4444-4444-444444444444',
-     'Alfonso','Mac',$$
-<iframe src="https://player.vimeo.com/video/1068770376?h=fb9b1d993b&amp;title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-        frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-        style="position:absolute;top:0;left:0;width:100%;height:100%;"
-        title="IMG_5159"></iframe>$$,
-     'https://www.ferrari.com/en-BR');

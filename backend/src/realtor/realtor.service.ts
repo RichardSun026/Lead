@@ -21,6 +21,8 @@ export class RealtorService {
         realtor_id: input.userId,
         f_name: first,
         e_name: last,
+        website_url: input.websiteUrl ?? null,
+        video_url: input.videoUrl ?? null,
       });
     if (error) throw error;
     return { realtor_id: input.userId };
