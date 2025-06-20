@@ -30,7 +30,8 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
-  const videoValid = info.video.includes('player.vimeo.com');
+  const videoValid =
+    info.video === '' || info.video.includes('player.vimeo.com');
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +47,7 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (!info.video.includes('player.vimeo.com')) {
+    if (info.video && !info.video.includes('player.vimeo.com')) {
       alert('Video link must be a player.vimeo.com URL');
       setIsLoading(false);
       return;
@@ -235,7 +236,6 @@ export default function App() {
                     onChange={(e) =>
                       setInfo({ ...info, website: e.target.value })
                     }
-                    required
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                 </div>
@@ -248,7 +248,6 @@ export default function App() {
                     onChange={(e) =>
                       setInfo({ ...info, video: e.target.value })
                     }
-                    required
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                   <p className="text-xs text-white/60 mt-1">
@@ -271,7 +270,7 @@ export default function App() {
 
               <button
                 type="submit"
-                disabled={isLoading || !videoValid || !info.website}
+                disabled={isLoading || !videoValid}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (

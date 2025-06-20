@@ -26,7 +26,7 @@ automatically.
 
 ## Adding your website and intro video
 
-During step 2 of the onboarding you will be asked for two additional fields:
+During step 2 of the onboarding you can optionally provide two additional fields:
 
 1. **Website URL** – paste the link to your personal site or listings page.
 2. **Video link** – copy the share URL from Vimeo and ensure it begins with
