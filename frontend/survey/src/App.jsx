@@ -250,30 +250,28 @@ export default function App() {
       const professional = formData.get('professional') || '';
       const expert = formData.get('expert') || '';
 
-      try {
-        await fetch('/api/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            phone,
-            email,
-            realtorId,
-            zipcode,
-            homeType,
-            bedrooms,
-            bathrooms,
-            sqft,
-            yearBuilt,
-            occupancy,
-            timeframe,
-            professional,
-            expert,
-          }),
-        });
-      } catch (err) {
-        console.error('Failed to create lead', err);
-      }
+
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          realtorId,
+          zipcode,
+          homeType,
+          bedrooms,
+          bathrooms,
+          sqft,
+          yearBuilt,
+          occupancy,
+          timeframe,
+          professional,
+          expert,
+        }),
+      });
+     
 
       console.log('[frontend/survey/src/App.jsx]DEFAULT MESSAGE')
       if (sendToSite) {
