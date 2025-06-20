@@ -32,6 +32,5 @@ During step 2 of the onboarding you will be asked for two additional fields:
 2. **Video link** – copy the share URL from Vimeo and ensure it begins with
    `https://player.vimeo.com`.
 
-If you are unable to add these details, email
-`admin@myrealvaluation.com` and we will assist you or add them on your
-behalf.
+If you are unable to follow these instructions, please email
+`admin@myrealvaluation.com` so we can manually fix it for you.

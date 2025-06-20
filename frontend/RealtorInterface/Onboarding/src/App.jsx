@@ -255,6 +255,17 @@ export default function App() {
                     Paste the share URL that begins with
                     {' '}<code>https://player.vimeo.com</code>
                   </p>
+                  <p className="text-xs text-white/60 mt-1">
+                    If you are unable to follow these instructions, please
+                    email
+                    {' '}<a
+                      href="mailto:admin@myrealvaluation.com"
+                      className="underline"
+                    >
+                      admin@myrealvaluation.com
+                    </a>{' '}
+                    and we will manually fix it for you.
+                  </p>
                 </div>
               </div>
 
