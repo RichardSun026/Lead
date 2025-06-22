@@ -17,7 +17,9 @@ export default function LeadsList() {
 
   useEffect(() => {
     async function load() {
-      const { data } = await supabase.from('leads').select('phone,first_name,last_name,address');
+      const { data } = await supabase
+        .from('leads')
+        .select('phone,first_name,last_name,address,lead_state');
       setLeads(data || []);
     }
     load();
@@ -116,14 +118,19 @@ export default function LeadsList() {
               to={`reports/${encodeURIComponent(lead.phone)}`}
               className="lead-card block bg-white rounded-xl p-4 shadow hover:shadow-lg transition"
             >
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <div>
                   <div className="font-semibold text-gray-800">
                     {lead.first_name} {lead.last_name}
                   </div>
                   <div className="text-sm text-gray-600">{lead.address}</div>
                 </div>
-                <div className="font-mono text-blue-600">{lead.phone}</div>
+                <div className="text-right">
+                  <div className="font-mono text-blue-600">{lead.phone}</div>
+                  <div className="text-xs capitalize text-gray-500">
+                    {lead.lead_state}
+                  </div>
+                </div>
               </div>
             </Link>
           ))}

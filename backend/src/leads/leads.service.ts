@@ -31,6 +31,30 @@ export class LeadsService {
     this.client = createClient(url, key);
   }
 
+  async markHotIfCold(phone: string): Promise<void> {
+    const sanitized = normalizePhone(phone);
+    const { data, error } = await this.client
+      .from('leads')
+      .select('lead_state')
+      .eq('phone', sanitized)
+      .maybeSingle();
+    if (error) {
+      console.error('[LeadsService] failed to fetch lead state', error);
+      return;
+    }
+    const lead = data as { lead_state?: string } | null;
+    if (!lead) return;
+    if (lead.lead_state === 'cold') {
+      const { error: updErr } = await this.client
+        .from('leads')
+        .update({ lead_state: 'hot' })
+        .eq('phone', sanitized);
+      if (updErr) {
+        console.error('[LeadsService] failed to update lead state', updErr);
+      }
+    }
+  }
+
   async createLead(input: LeadInput): Promise<void> {
     console.debug('[LeadsService] createLead called with', input);
 
