@@ -26,7 +26,7 @@ export class CalendarController {
   ) {
     const realtorId = state;
     await this.calendar.handleOAuthCallback(code, realtorId);
-    return res.redirect('/onboarding?connected=1');
+    return res.redirect('/console');
   }
 
   @Get('oauth/:realtorId')
