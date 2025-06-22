@@ -185,9 +185,6 @@ export default function App() {
     }
   };
 
-  const handleFinish = () => {
-    window.location.href = '/console';
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-800 flex items-center justify-center p-4">
@@ -436,20 +433,6 @@ export default function App() {
                 </button>
               </div>
 
-              <button
-                onClick={handleFinish}
-                disabled={isLoading || !calendarConnected}
-                className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                ) : (
-                  <>
-                    <CheckCircle className="w-5 h-5" />
-                    <span>Finish Setup</span>
-                  </>
-                )}
-              </button>
             </div>
           )}
         </div>
