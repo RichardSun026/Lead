@@ -54,11 +54,11 @@ export default function App() {
       }
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('Auth state change', event, session);
-      },
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state change', event, session);
+    });
 
     logInitialSession();
     setSessionFromHash();
@@ -86,6 +86,7 @@ export default function App() {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `https://www.myrealvaluation.com/onboarding/2` },
+
     });
     console.log('signInWithOtp result', { data, error });
 
@@ -112,7 +113,9 @@ export default function App() {
     const user = userData?.user;
     console.debug('Retrieved user for Step 2', user);
     if (!user) {
-      alert('Please open the verification link sent to your email before continuing.');
+      alert(
+        'Please open the verification link sent to your email before continuing.',
+      );
       setIsLoading(false);
       return;
     }
@@ -248,8 +251,14 @@ export default function App() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-2">Check your email</h2>
-              <p className="text-white/70">Open the verification link we sent to {email}. You won't need to return to this page. the sender is Supabase Auth with the email: noreply@mail.app.supabase.io</p>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                Check your email
+              </h2>
+              <p className="text-white/70">
+                We just sent a verification link to {email}. Look for a message
+                from "Supabase Auth" (noreply@mail.app.supabase.io) and click
+                the link&mdash;there&apos;s no need to come back here.
+              </p>
             </div>
           )}
 
@@ -263,9 +272,6 @@ export default function App() {
                   Tell us about yourself
                 </h2>
                 <p className="text-white/70">We just need a few details</p>
-                <p className="text-white/60 text-sm mt-1">
-                  Open the verification link sent to your email, then return here to continue.
-                </p>
               </div>
 
               <div className="space-y-4">
@@ -333,13 +339,12 @@ export default function App() {
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                   <p className="text-xs text-white/60 mt-1">
-                    Paste the share URL that begins with
-                    {' '}<code>https://player.vimeo.com</code>
+                    Paste the share URL that begins with{' '}
+                    <code>https://player.vimeo.com</code>
                   </p>
                   <p className="text-xs text-white/60 mt-1">
-                    If you are unable to follow these instructions, please
-                    email
-                    {' '}<a
+                    If you are unable to follow these instructions, please email{' '}
+                    <a
                       href="mailto:admin@myrealvaluation.com"
                       className="underline"
                     >
@@ -410,7 +415,6 @@ export default function App() {
                     </>
                   )}
                 </button>
-
               </div>
 
               <button
