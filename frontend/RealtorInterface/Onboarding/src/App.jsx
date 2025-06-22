@@ -124,20 +124,20 @@ export default function App() {
       id: user.id,
       email: user.email,
     });
-    const res = await fetch('/api/realtor', {
+    const res = await fetch('http://localhost:3000/api/realtor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: `${info.firstName} ${info.lastName}`.trim(),
         userId: user.id,
-        websiteUrl: info.website,
-        videoUrl: info.video,
+        websiteUrl: info.website || null,
+        videoUrl: info.video || null,
       }),
     });
     console.log('POST /api/realtor response', res.status);
 
     if (!res.ok) {
-      alert('Failed to save your info. Please try again.');
+      alert('Failed to save your info. Please contact us.');
       setIsLoading(false);
       return;
     }
