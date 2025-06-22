@@ -34,8 +34,7 @@ export class ReportsService {
     return {
       name: lead.name,
       phone: lead.phone,
-      address: lead.address,
-      zipcode: lead.address,
+      zipcode: lead.zipcode,
       surveySummary,
       messageSummary,
     };
