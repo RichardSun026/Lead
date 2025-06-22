@@ -16,8 +16,8 @@ The admin dashboard exposes a **Link Google Calendar** button during the onboard
    ```
    The response contains a `url` field. Open it in your browser.
 3. Grant access to the requested Google account and confirm the consent screen.
-4. After approval you will be redirected back to the callback endpoint. At this
-   point the server automatically saves your Google refresh token in the
+4. After approval you will be redirected back to `/onboarding?connected=1`. At
+   this point the server automatically saves your Google refresh token in the
    database so future calendar calls work without any additional steps.
 
 Once this flow is completed, the application can create, update and delete

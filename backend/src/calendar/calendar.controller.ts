@@ -26,12 +26,17 @@ export class CalendarController {
   ) {
     const realtorId = state;
     await this.calendar.handleOAuthCallback(code, realtorId);
-    return res.redirect('/realtor');
+    return res.redirect('/onboarding?connected=1');
   }
 
   @Get('oauth/:realtorId')
   getAuthUrl(@Param('realtorId') realtorId: string) {
     return { url: this.calendar.generateAuthUrl(realtorId) };
+  }
+
+  @Get(':realtorId/credentials')
+  checkCreds(@Param('realtorId') realtorId: string) {
+    return this.calendar.hasCredentials(realtorId);
   }
 
   @Post(':realtorId/events')
