@@ -84,7 +84,8 @@ export default function App() {
 
     console.log('Sending OTP to', email);
     const { data, error } = await supabase.auth.signInWithOtp({
-      email
+      email,
+      options: { emailRedirectTo: `https://www.myrealvaluation.com/onboarding/2` },
     });
     console.log('signInWithOtp result', { data, error });
 
