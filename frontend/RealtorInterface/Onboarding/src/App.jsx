@@ -63,6 +63,14 @@ export default function App() {
     logInitialSession();
     setSessionFromHash();
 
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('connected') === '1') {
+      setStep(3);
+      setCalendarConnected(true);
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
+    }
+
     const checkPathStep = () => {
       if (window.location.pathname.endsWith('/2')) {
         setStep(2);
@@ -75,6 +83,15 @@ export default function App() {
       subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    if (!realtor) return;
+    fetch(`/api/calendar/${realtor.realtor_id}/credentials`)
+      .then((r) => r.ok ? r.json() : { connected: false })
+      .then((d) => {
+        if (d.connected) setCalendarConnected(true);
+      });
+  }, [realtor]);
   const videoValid =
     info.video === '' || info.video.includes('player.vimeo.com');
 
@@ -156,14 +173,16 @@ export default function App() {
   const handleCalendarLink = async () => {
     if (!realtor) return;
     setIsLoading(true);
-
-    // Simulate calendar connection
-    setTimeout(() => {
+    try {
+      const r = await fetch(`/api/calendar/oauth/${realtor.realtor_id}`);
+      const d = await r.json();
+      if (d.url) {
+        window.location.href = d.url;
+        return;
+      }
+    } finally {
       setIsLoading(false);
-      setShowSuccess(true);
-      setCalendarConnected(true);
-      setTimeout(() => setShowSuccess(false), 2000);
-    }, 1000);
+    }
   };
 
   const handleFinish = () => {

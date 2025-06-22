@@ -52,6 +52,11 @@ export class CalendarService {
     await this.supabase.insertCredentials(realtorId, json);
   }
 
+  async hasCredentials(realtorId: string) {
+    const creds = await this.supabase.getCredentials(realtorId);
+    return { connected: !!creds };
+  }
+
   private async refreshAccessToken(realtorId: string, refreshToken: string) {
     const params = new URLSearchParams({
       client_id: process.env.GOOGLE_CLIENT_ID as string,
