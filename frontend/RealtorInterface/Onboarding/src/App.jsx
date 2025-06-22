@@ -124,7 +124,7 @@ export default function App() {
       id: user.id,
       email: user.email,
     });
-    const res = await fetch('http://localhost:3000/api/realtor', {
+    const res = await fetch('/api/realtor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
