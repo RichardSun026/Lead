@@ -65,7 +65,7 @@ export class LeadsService {
       first_name: firstName,
       last_name: lastName,
       email: input.email,
-      address: input.zipcode,
+      zipcode: input.zipcode,
       lead_state: 'cold',
       home_type: input.homeType,
       home_built: input.yearBuilt,
@@ -160,13 +160,13 @@ export class LeadsService {
     const { data } = await this.client
       .from('leads')
       .select(
-        `address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
+        `zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
       )
       .eq('phone', sanitized)
       .maybeSingle();
     const lead =
       (data as {
-        address?: string;
+        zipcode?: string;
         home_type?: string;
         bedrooms?: string;
         bathrooms?: string;
@@ -194,7 +194,7 @@ export class LeadsService {
     };
 
     const answers = [
-      { question: 'ZIP code', answer: lead.address ?? '' },
+      { question: 'ZIP code', answer: lead.zipcode ?? '' },
       { question: 'Home type', answer: lead.home_type ?? '' },
       { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
       { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
@@ -218,14 +218,14 @@ export class LeadsService {
   async getLeadReport(phone: string): Promise<{
     name: string;
     phone: string;
-    address: string | null;
+    zipcode: string | null;
     answers: { question: string; answer: string }[];
   } | null> {
     const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select(
-        `first_name,last_name,phone,address,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
+        `first_name,last_name,phone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
       )
       .eq('phone', sanitized)
       .maybeSingle();
@@ -234,7 +234,7 @@ export class LeadsService {
         first_name?: string;
         last_name?: string;
         phone: string;
-        address?: string;
+        zipcode?: string;
         home_type?: string;
         bedrooms?: string;
         bathrooms?: string;
@@ -257,7 +257,7 @@ export class LeadsService {
     };
 
     const answers = [
-      { question: 'ZIP code', answer: lead.address ?? '' },
+      { question: 'ZIP code', answer: lead.zipcode ?? '' },
       { question: 'Home type', answer: lead.home_type ?? '' },
       { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
       { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
@@ -275,7 +275,7 @@ export class LeadsService {
     return {
       name: `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim(),
       phone: lead.phone,
-      address: lead.address ?? null,
+      zipcode: lead.zipcode ?? null,
       answers,
     };
   }
