@@ -28,6 +28,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     const logInitialSession = async () => {
@@ -62,6 +63,14 @@ export default function App() {
     logInitialSession();
     setSessionFromHash();
 
+    const checkPathStep = () => {
+      if (window.location.pathname.endsWith('/2')) {
+        setStep(2);
+      }
+    };
+
+    checkPathStep();
+
     return () => {
       subscription.unsubscribe();
     };
@@ -76,12 +85,12 @@ export default function App() {
     console.log('Sending OTP to', email);
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `https://www.myrealvaluation.com/onboarding/` },
+      options: { emailRedirectTo: `https://www.myrealvaluation.com/onboarding/2` },
     });
     console.log('signInWithOtp result', { data, error });
 
     setIsLoading(false);
-    setStep(2);
+    setEmailSent(true);
   };
 
   const handleInfoSubmit = async (e) => {
@@ -192,7 +201,7 @@ export default function App() {
 
         {/* Main card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 transform transition-all duration-500 hover:shadow-3xl">
-          {step === 1 && (
+          {step === 1 && !emailSent && (
             <form className="space-y-6" onSubmit={handleEmailSubmit}>
               <div className="text-center mb-8">
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
@@ -233,6 +242,15 @@ export default function App() {
                 )}
               </button>
             </form>
+          )}
+          {step === 1 && emailSent && (
+            <div className="space-y-6 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
+                <CheckCircle className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Check your email</h2>
+              <p className="text-white/70">Open the verification link sent to your email to continue.</p>
+            </div>
           )}
 
           {step === 2 && (
