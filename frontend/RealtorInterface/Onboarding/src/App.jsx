@@ -248,7 +248,7 @@ export default function App() {
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-3xl font-bold text-white mb-2">Check your email</h2>
-              <p className="text-white/70">Open the verification link sent to your email to continue.</p>
+              <p className="text-white/70">Open the verification link we sent to {email}. You won't need to return to this page. the sender is Supabase Auth with the email: noreply@mail.app.supabase.io</p>
             </div>
           )}
 
