@@ -15,6 +15,7 @@ curl -X POST http://134.199.198.237:3000/api/leads \
     "email": "jane@example.com",
     "realtorId": "f957761b-104e-416e-a550-25e010ca9302",
     "zipcode": "90210",
+    "timeZone": "America/Chicago",
     "homeType": "single-family",
     "bedrooms": "3",
     "bathrooms": "2",

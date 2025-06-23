@@ -17,6 +17,7 @@ interface LeadInput {
   timeframe?: string;
   professional?: string;
   expert?: string;
+  timeZone?: string;
 }
 
 @Injectable()
@@ -90,6 +91,7 @@ export class LeadsService {
       last_name: lastName,
       email: input.email,
       zipcode: input.zipcode,
+      time_zone: input.timeZone,
       lead_state: 'cold',
       home_type: input.homeType,
       home_built: input.yearBuilt,
