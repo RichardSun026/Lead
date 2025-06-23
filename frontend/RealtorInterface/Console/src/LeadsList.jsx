@@ -14,6 +14,7 @@ export default function LeadsList() {
   const [email, setEmail] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     async function load() {
@@ -66,6 +67,12 @@ export default function LeadsList() {
     setMenuOpen(false);
   };
 
+  const filteredLeads = leads.filter((lead) =>
+    `${lead.first_name} ${lead.last_name}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   if (!session) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center p-6">
@@ -110,9 +117,16 @@ export default function LeadsList() {
             </div>
           )}
           <h1 className="title text-2xl font-bold text-center">Leads Console</h1>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="absolute right-4 top-4 rounded px-2 py-1 text-black w-40"
+          />
         </div>
         <div className="content p-6 grid gap-4">
-          {leads.map((lead) => (
+          {filteredLeads.map((lead) => (
             <Link
               key={lead.phone}
               to={`reports/${encodeURIComponent(lead.phone)}`}
