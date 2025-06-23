@@ -249,6 +249,7 @@ export default function App() {
       const timeframe = formData.get('timeframe') || '';
       const professional = formData.get('professional') || '';
       const expert = formData.get('expert') || '';
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 
       await fetch('/api/leads', {
@@ -260,6 +261,7 @@ export default function App() {
           email,
           realtorId,
           zipcode,
+          timeZone,
           homeType,
           bedrooms,
           bathrooms,

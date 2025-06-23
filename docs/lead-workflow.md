@@ -5,7 +5,7 @@ This guide follows a prospect from the initial survey through booking and follow
 ## 1. Completing the Survey
 
 1. The visitor opens `/survey/<realtorId>` and fills out the questions.
-2. On submission the front‑end sends a `POST /api/leads` request with the contact information and survey answers.
+2. On submission the front‑end sends a `POST /api/leads` request with the contact information, the browser's time zone and survey answers.
 3. `LeadsService.createLead` verifies the realtor ID and upserts the record into the `leads` table. The phone number is normalised before storage.
 4. A welcome message can be scheduled via `POST /api/schedule` which writes to `scheduled_messages`.
 5. Depending on answers the user is either redirected to the booking site or shown a thank you message.
