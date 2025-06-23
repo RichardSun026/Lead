@@ -29,3 +29,4 @@ This page summarises the variables defined in `.env.example` and what they are u
 
 ## Miscellaneous
 - `WEBHOOK_URL` – endpoint that receives lead data (used by the Facebook form utilities).
+- `MESSAGE_LIMIT` – maximum number of messages a user can receive before further texts are ignored.

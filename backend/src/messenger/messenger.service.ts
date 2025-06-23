@@ -7,6 +7,7 @@ import { ConversationService } from '../clientRedis/conversation.service';
 export class MessengerService {
   private readonly log = new Logger('MessengerService');
   private readonly supabase: SupabaseClient<any>;
+  private readonly limit = Number(process.env.MESSAGE_LIMIT ?? '10');
 
   constructor(
     private readonly conversation: ConversationService,
@@ -18,12 +19,37 @@ export class MessengerService {
     );
   }
 
+  async countSent(phone: string): Promise<number> {
+    const { count, error } = await this.supabase
+      .from('message_logs')
+      .select('*', { count: 'exact', head: true })
+      .eq('phone', phone)
+      .eq('status', 'sent');
+    if (error) {
+      this.log.error('Failed to count messages', error as Error);
+      return 0;
+    }
+    return count ?? 0;
+  }
+
   async sendSms(
     phone: string,
     text: string,
     storeMessage = true,
   ): Promise<void> {
     try {
+      const sentCount = await this.countSent(phone);
+      if (sentCount >= this.limit) {
+        this.log.warn(`Message limit reached for ${phone}`);
+        if (storeMessage) {
+          await this.conversation.store(phone, {
+            role: 'assistant',
+            content: text,
+          });
+        }
+        return;
+      }
+
       await this.twilio.sendWhatsApp(phone, text);
       await this.supabase.from('message_logs').insert({
         phone,
