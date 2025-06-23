@@ -257,7 +257,7 @@ export default function App() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                  className="w-full bg-gray-700 border border-gray-500 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                 />
               </div>
 
@@ -316,7 +316,7 @@ export default function App() {
                         setInfo({ ...info, firstName: e.target.value })
                       }
                       required
-                      className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                      className="w-full bg-gray-700 border border-gray-500 rounded-xl px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                     />
                   </div>
                   <div className="relative">
@@ -328,7 +328,7 @@ export default function App() {
                         setInfo({ ...info, lastName: e.target.value })
                       }
                       required
-                      className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                      className="w-full bg-gray-700 border border-gray-500 rounded-xl px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                     />
                   </div>
                 </div>
@@ -344,7 +344,7 @@ export default function App() {
                     }
                     maxLength={14}
                     required
-                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                    className="w-full bg-gray-700 border border-gray-500 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                 </div>
 
@@ -356,7 +356,7 @@ export default function App() {
                     onChange={(e) =>
                       setInfo({ ...info, website: e.target.value })
                     }
-                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                    className="w-full bg-gray-700 border border-gray-500 rounded-xl px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                 </div>
 
@@ -368,7 +368,7 @@ export default function App() {
                     onChange={(e) =>
                       setInfo({ ...info, video: e.target.value })
                     }
-                    className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
+                    className="w-full bg-gray-700 border border-gray-500 rounded-xl px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                   <p className="text-xs text-white/60 mt-1">
                     Paste the iframe code that begins with{' '}
