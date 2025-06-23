@@ -14,6 +14,15 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY,
 );
 
+const formatPhone = (value) => {
+  const digits = value.replace(/\D/g, '').slice(0, 10);
+  let out = '';
+  if (digits.length > 0) out += '(' + digits.slice(0, 3);
+  if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
+  if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+  return out;
+};
+
 export default function App() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
@@ -146,6 +155,7 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: `${info.firstName} ${info.lastName}`.trim(),
+        phone: '+1' + info.phone.replace(/\D/g, '').slice(-10),
         userId: user.id,
         websiteUrl: info.website || null,
         videoUrl: info.video || null,
@@ -162,6 +172,7 @@ export default function App() {
     setRealtor({
       realtor_id: user.id,
       name: `${info.firstName} ${info.lastName}`.trim(),
+      phone: '+1' + info.phone.replace(/\D/g, '').slice(-10),
       website_url: info.website,
       video_url: info.video,
     });
@@ -325,8 +336,9 @@ export default function App() {
                     placeholder="Phone number"
                     value={info.phone}
                     onChange={(e) =>
-                      setInfo({ ...info, phone: e.target.value })
+                      setInfo({ ...info, phone: formatPhone(e.target.value) })
                     }
+                    maxLength={14}
                     required
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
