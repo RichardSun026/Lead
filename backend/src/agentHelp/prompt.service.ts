@@ -98,21 +98,10 @@ This is the survey the user filled out:`;
         parameters: {
           type: 'object',
           properties: {
-            phone: { type: 'string' },
-            full_name: { type: 'string' },
             booked_date: { type: 'string', description: 'YYYY-MM-DD' },
             booked_time: { type: 'string', description: 'HH:mm' },
-            time_zone: { type: 'string' },
-            realtor_id: { type: 'number' },
           },
-          required: [
-            'phone',
-            'full_name',
-            'booked_date',
-            'booked_time',
-            'time_zone',
-            'realtor_id',
-          ],
+          required: ['booked_date', 'booked_time'],
         },
       },
     };
