@@ -88,8 +88,8 @@ export class AgentService {
               realtor_id: string;
               date: string;
             };
-            const booked = await this.calendar.getBookedSlots(realtor_id, date);
-            result = { booked: booked.booked };
+            const open = await this.calendar.getOpenSlots(realtor_id, date);
+            result = { open: open.open };
           } else {
             result = { error: 'invalid availability args' };
           }
