@@ -29,8 +29,8 @@ automatically.
 During step 2 of the onboarding you can optionally provide two additional fields:
 
 1. **Website URL** – paste the link to your personal site or listings page.
-2. **Video link** – copy the share URL from Vimeo and ensure it begins with
-   `https://player.vimeo.com`.
+2. **Video embed** – copy the iframe embed code from Vimeo. It should start
+   with `<iframe src="https://player.vimeo.com`.
 
 If you are unable to follow these instructions, please email
 `admin@myrealvaluation.com` so we can manually fix it for you.
