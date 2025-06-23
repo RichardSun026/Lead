@@ -17,5 +17,5 @@ jobs:
             cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
             ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
             nginx -t
-            # systemctl restart nginx
+            systemctl restart nginx
 
