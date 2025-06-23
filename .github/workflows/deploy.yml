@@ -8,6 +8,7 @@ jobs:
           host: ${{ secrets.SERVER_IP }}
           username: root
           password: ${{ secrets.SERVER_PASSWORD }}
+          timeout: 30m
           command_timeout: 30m
           script: |
             cd /home/Lead
