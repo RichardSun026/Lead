@@ -1,9 +1,15 @@
-on: { push: { branches: [main] } }
+name: Deploy
+on:
+  push:
+    branches: [main]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: appleboy/ssh-action@v1
+      - uses: actions/checkout@v4
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_IP }}
           username: root
@@ -19,4 +25,3 @@ jobs:
             ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
             nginx -t
             systemctl restart nginx
-
