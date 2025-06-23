@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConversationService } from '../clientRedis/conversation.service';
 import { PromptService } from '../agentHelp/prompt.service';
 import { OpenAiService } from '../agentHelp/openai.service';
-import { BookingService, BookingInput } from '../booking/booking.service';
+import { BookingService } from '../booking/booking.service';
 import { CalendarService } from '../calendar/calendar.service';
 import { SchedulerService } from '../scheduler/scheduler.service';
 import { MessengerService } from '../messenger/messenger.service';
@@ -76,7 +76,13 @@ export class AgentService {
           break;
         case 'book_time':
           if (isBookArgs(args)) {
-            await this.booking.createOrUpdate(args);
+            const details = await this.leads.getBookingInfo(phone);
+            if (!details) {
+              result = { error: 'lead not found' };
+              break;
+            }
+            const booking = { ...details, ...args };
+            await this.booking.createOrUpdate(booking);
             result = { status: 'booked' };
           } else {
             result = { error: 'invalid booking args' };
@@ -127,16 +133,14 @@ function isSearchArgs(args: unknown): args is { query: string } {
   );
 }
 
-function isBookArgs(args: unknown): args is BookingInput {
+function isBookArgs(
+  args: unknown,
+): args is { booked_date: string; booked_time: string } {
   return (
     typeof args === 'object' &&
     args !== null &&
-    'phone' in args &&
-    'full_name' in args &&
     'booked_date' in args &&
-    'booked_time' in args &&
-    'time_zone' in args &&
-    'realtor_id' in args
+    'booked_time' in args
   );
 }
 

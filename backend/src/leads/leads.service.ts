@@ -176,6 +176,35 @@ export class LeadsService {
     };
   }
 
+  async getBookingInfo(phone: string): Promise<{
+    phone: string;
+    full_name: string;
+    time_zone: string;
+    realtor_id: string;
+  } | null> {
+    const sanitized = normalizePhone(phone);
+    const { data } = await this.client
+      .from('leads')
+      .select('first_name,last_name,phone,time_zone,realtor_id')
+      .eq('phone', sanitized)
+      .maybeSingle();
+    const lead =
+      (data as {
+        first_name?: string;
+        last_name?: string;
+        phone: string;
+        time_zone: string;
+        realtor_id: string;
+      } | null) ?? null;
+    if (!lead) return null;
+    return {
+      phone: lead.phone,
+      full_name: `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim(),
+      time_zone: lead.time_zone,
+      realtor_id: lead.realtor_id,
+    };
+  }
+
   async getInfoForAgent(phone: string): Promise<{
     realtorName: string;
     answers: { question: string; answer: string }[];
