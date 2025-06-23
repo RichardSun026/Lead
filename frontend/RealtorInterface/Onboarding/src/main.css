@@ -10,3 +10,13 @@ input {
 input::placeholder {
   @apply text-white/70;
 }
+
+
+@layer utilities {
+  /* Only browsers that DON’T understand rgb(... / ...) will use this */
+  @supports not (background-color: rgb(0 0 0 / .5)) {
+    .bg-white\/10 {
+      background-color: rgba(255, 255, 255, 0.10);
+    }
+  }
+}
