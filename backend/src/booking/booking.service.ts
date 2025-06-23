@@ -66,7 +66,7 @@ export class BookingService {
     if (openings.booked.includes(start.toFormat('HH:mm')))
       throw new Error('Time slot already booked');
 
-    await this.calendar.addEvent(input.realtor_id, {
+    const event = await this.calendar.addEvent(input.realtor_id, {
       summary: `Meeting with ${input.full_name}`,
       description: `Phone: ${phone}`,
       start: startIso,
@@ -77,9 +77,10 @@ export class BookingService {
 
     await this.supabase.from('bookings').upsert({
       phone,
-      name: input.full_name,
       appointment_time: start.toISO(),
       realtor_id: input.realtor_id,
+      google_calendar_id: 'primary',
+      google_event_id: event.id,
     });
 
     const msg = `Thanks ${input.full_name}, your appointment is confirmed for ${start.toISO()}.`;
