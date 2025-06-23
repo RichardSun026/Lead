@@ -16,6 +16,10 @@ export class CreateRealtorDto {
   userId!: string;
 
   @IsString()
+  @IsNotEmpty()
+  phone!: string;
+
+  @IsString()
   @IsOptional()
   websiteUrl?: string;
 

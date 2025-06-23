@@ -78,6 +78,7 @@ create type booking_status_t as enum ('pending','confirmed','canceled');
 /* 2-a  Realtors */
 create table public.realtor (
     realtor_id   uuid primary key references auth.users(id),
+    phone        varchar(50) not null,
     f_name       varchar(125) not null,
     e_name       varchar(125) not null,
     video_url    varchar(600),
