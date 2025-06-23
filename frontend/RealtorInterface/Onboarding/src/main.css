@@ -4,7 +4,7 @@
 
 /* Ensure input text and placeholders remain visible */
 input {
-  @apply text-white;
+  @apply bg-gray-700 text-white;
 }
 
 input::placeholder {
