@@ -102,7 +102,8 @@ export default function App() {
       });
   }, [realtor]);
   const videoValid =
-    info.video === '' || info.video.includes('player.vimeo.com');
+    info.video === '' ||
+    (info.video.includes('player.vimeo.com') && info.video.includes('<iframe'));
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
@@ -125,8 +126,11 @@ export default function App() {
     setIsLoading(true);
     console.debug('Step 2 continue clicked', { email, info });
 
-    if (info.video && !info.video.includes('player.vimeo.com')) {
-      alert('Video link must be a player.vimeo.com URL');
+    if (
+      info.video &&
+      (!info.video.includes('player.vimeo.com') || !info.video.includes('<iframe'))
+    ) {
+      alert('Video embed must contain an <iframe> with a player.vimeo.com source');
       setIsLoading(false);
       return;
     }
@@ -358,8 +362,8 @@ export default function App() {
 
                 <div className="relative">
                   <input
-                    type="url"
-                    placeholder="Video link from player.vimeo.com"
+                    type="text"
+                    placeholder="Vimeo embed iframe code"
                     value={info.video}
                     onChange={(e) =>
                       setInfo({ ...info, video: e.target.value })
@@ -367,8 +371,8 @@ export default function App() {
                     className="w-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                   <p className="text-xs text-white/60 mt-1">
-                    Paste the share URL that begins with{' '}
-                    <code>https://player.vimeo.com</code>
+                    Paste the iframe code that begins with{' '}
+                    <code>&lt;iframe src="https://player.vimeo.com"</code>
                   </p>
                   <p className="text-xs text-white/60 mt-1">
                     If you are unable to follow these instructions, please email{' '}
