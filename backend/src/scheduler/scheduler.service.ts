@@ -36,23 +36,39 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     content: string,
   ): Promise<void> {
     const sanitized = normalizePhone(phone);
-    const { data: lead, error } = await this.client
-      .from('leads')
-      .select('realtor_id')
-      .eq('phone', sanitized)
-      .maybeSingle();
+    this.log.log(
+      `scheduleMessage called: phone=${sanitized}, time=${time}, content=${content}`,
+    );
 
-    if (error) throw error;
-    const realtorId = (lead as { realtor_id: string } | null)?.realtor_id;
-    if (!realtorId) throw new Error('Invalid phone number');
+    try {
+      const { data: lead, error } = await this.client
+        .from('leads')
+        .select('realtor_id')
+        .eq('phone', sanitized)
+        .maybeSingle();
 
-    await this.client.from('scheduled_messages').insert({
-      phone: sanitized,
-      realtor_id: realtorId,
-      scheduled_time: time,
-      message_type: 'text',
-      message_text: content,
-    });
+      if (error) {
+        this.log.error('Failed to fetch realtor_id', error as Error);
+        throw error;
+      }
+      const realtorId = (lead as { realtor_id: string } | null)?.realtor_id;
+      if (!realtorId) {
+        this.log.warn(`No realtor_id found for phone ${sanitized}`);
+        throw new Error('Invalid phone number');
+      }
+
+      await this.client.from('scheduled_messages').insert({
+        phone: sanitized,
+        realtor_id: realtorId,
+        scheduled_time: time,
+        message_type: 'text',
+        message_text: content,
+      });
+      this.log.log(`Message scheduled for ${sanitized} at ${time}`);
+    } catch (err) {
+      this.log.error('scheduleMessage failed', err as Error);
+      throw err;
+    }
   }
 
   async scheduleFollowUps(phone: string, appointment: string): Promise<void> {
