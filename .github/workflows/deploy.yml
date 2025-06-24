@@ -12,7 +12,7 @@ jobs:
             cd /home/Lead
             git pull
             docker compose down
-            docker compose up -d --build --no-cache console
+            docker compose up -d --build
             # Copy new host-level vhost and reload Ubuntu Nginx
             cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
             ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
