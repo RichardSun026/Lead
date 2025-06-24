@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRedis } from '@nestjs-modules/ioredis';
-import { Redis } from 'ioredis';
 import { LeadsService } from '../leads/leads.service';
 import { ConversationService } from '../clientRedis/conversation.service';
 import { OpenAiService } from '../agentHelp/openai.service';
+import { supabase } from '../lib/supabase';
 
 @Injectable()
 export class ReportsService {
@@ -11,18 +10,7 @@ export class ReportsService {
     private readonly leads: LeadsService,
     private readonly conversation: ConversationService,
     private readonly openai: OpenAiService,
-    @InjectRedis() private readonly redis: Redis,
   ) {}
-
-  private surveyKey(phone: string) {
-    return `report:${phone}:survey`;
-  }
-  private messageKey(phone: string) {
-    return `report:${phone}:messages`;
-  }
-  private messageCountKey(phone: string) {
-    return `report:${phone}:msgcount`;
-  }
 
   async getReport(phone: string) {
     const lead = await this.leads.getLeadReport(phone);
@@ -31,8 +19,11 @@ export class ReportsService {
     const surveySummary = await this.getSurveySummary(phone, lead.answers);
     const messageSummary = await this.getMessageSummary(phone);
 
+    await this.leads.updateSummaries(phone, surveySummary, messageSummary);
+
     return {
       name: lead.name,
+      email: lead.email,
       phone: lead.phone,
       zipcode: lead.zipcode,
       surveySummary,
@@ -44,9 +35,14 @@ export class ReportsService {
     phone: string,
     answers: { question: string; answer: string }[],
   ): Promise<string> {
-    const key = this.surveyKey(phone);
-    const cached = await this.redis.get(key);
-    if (cached) return cached;
+    const { data } = await supabase
+      .from('leads')
+      .select('survey_summary')
+      .eq('phone', phone)
+      .maybeSingle();
+    const existing = (data as { survey_summary?: string } | null)
+      ?.survey_summary;
+    if (existing) return existing;
 
     if (answers.length === 0) return '';
     const content =
@@ -57,21 +53,26 @@ export class ReportsService {
       'gpt-4.1-nano',
     );
     const summary = reply.content ?? '';
-    await this.redis.set(key, summary);
+    await this.leads.updateSummaries(phone, summary);
     return summary;
   }
 
-  private async getMessageSummary(phone: string): Promise<string> {
+  private async getMessageSummary(
+    phone: string,
+  ): Promise<{ number: number; content: string }> {
     const currentLen = await this.conversation.length(phone);
-    const [cached, countRaw] = await this.redis.mget(
-      this.messageKey(phone),
-      this.messageCountKey(phone),
-    );
-    const cachedCount = countRaw ? parseInt(countRaw, 10) : 0;
-    if (cached && cachedCount === currentLen) return cached;
+    const { data } = await supabase
+      .from('leads')
+      .select('message_summary')
+      .eq('phone', phone)
+      .maybeSingle();
+    const existing = (
+      data as { message_summary?: { number: number; content: string } } | null
+    )?.message_summary;
+    if (existing && existing.number === currentLen) return existing;
 
     const history = await this.conversation.fetchAll(phone);
-    if (history.length === 0) return '';
+    if (history.length === 0) return { number: currentLen, content: '' };
     const text = history
       .map((m) => {
         const c =
@@ -85,12 +86,8 @@ export class ReportsService {
       'gpt-4.1-nano',
     );
     const summary = reply.content ?? '';
-    await this.redis.mset(
-      this.messageKey(phone),
-      summary,
-      this.messageCountKey(phone),
-      String(currentLen),
-    );
-    return summary;
+    const result = { number: currentLen, content: summary };
+    await this.leads.updateSummaries(phone, undefined, result);
+    return result;
   }
 }

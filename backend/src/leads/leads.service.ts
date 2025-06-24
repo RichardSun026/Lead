@@ -314,6 +314,7 @@ export class LeadsService {
 
   async getLeadReport(phone: string): Promise<{
     name: string;
+    email: string | null;
     phone: string;
     zipcode: string | null;
     answers: { question: string; answer: string }[];
@@ -322,7 +323,7 @@ export class LeadsService {
     const { data } = await supabase
       .from('leads')
       .select(
-        `first_name,last_name,phone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
+        `first_name,last_name,email,phone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
       )
       .eq('phone', sanitized)
       .maybeSingle();
@@ -330,6 +331,7 @@ export class LeadsService {
       (data as {
         first_name?: string;
         last_name?: string;
+        email?: string;
         phone: string;
         zipcode?: string;
         home_type?: string;
@@ -371,9 +373,25 @@ export class LeadsService {
 
     return {
       name: `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim(),
+      email: lead.email ?? null,
       phone: lead.phone,
       zipcode: lead.zipcode ?? null,
       answers,
     };
+  }
+
+  async updateSummaries(
+    phone: string,
+    survey?: string,
+    message?: { number: number; content: string },
+  ): Promise<void> {
+    const updates: Record<string, unknown> = {};
+    if (survey !== undefined) updates.survey_summary = survey;
+    if (message !== undefined) updates.message_summary = message;
+    if (Object.keys(updates).length === 0) return;
+    await supabase
+      .from('leads')
+      .update(updates)
+      .eq('phone', normalizePhone(phone));
   }
 }
