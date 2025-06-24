@@ -144,23 +144,7 @@ export default function LeadReport() {
 
             <div className="space-y-4">
               <div className="group">
-                <label className="block text-sm font-medium text-gray-600 mb-2">Address</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={leadData.address}
-                    onChange={(e) => handleInputChange('address', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                ) : (
-                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800">
-                    {leadData.address}
-                  </div>
-                )}
-              </div>
-
-              <div className="group">
-                <label className="block text-sm font-medium text-gray-600 mb-2">Zipcode</label>
+                <label className="block text-sm font-medium text-gray-600 mb-2">ZIP code</label>
                 {isEditing ? (
                   <input
                     type="text"

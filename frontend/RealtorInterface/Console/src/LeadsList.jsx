@@ -20,7 +20,7 @@ export default function LeadsList() {
     async function load() {
       const { data } = await supabase
         .from('leads')
-        .select('phone,first_name,last_name,address,lead_state')
+        .select('phone,first_name,last_name,zipcode,lead_state')
         .in('lead_state', ['booked', 'hot']);
       setLeads(data || []);
     }
@@ -138,7 +138,7 @@ export default function LeadsList() {
                   <div className="font-semibold text-gray-800">
                     {lead.first_name} {lead.last_name}
                   </div>
-                  <div className="text-sm text-gray-600">{lead.address}</div>
+                  <div className="text-sm text-gray-600">{lead.zipcode}</div>
                 </div>
                 <div className="text-right">
                   <div className="font-mono text-blue-600">{lead.phone}</div>

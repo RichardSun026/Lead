@@ -21,7 +21,7 @@ The table definitions can be found in [`database/postgres.sql`](../database/post
 - `realtor_id` – references `Realtor`
 - `first_name`
 - `last_name`
-- `address` – typically ZIP code
+- `zipcode`
 - `time_zone`
 - `lead_state` – `lead_state_enum` (`cold`, `hot`, `booked`)
 - `home_type` – `home_type_enum`
