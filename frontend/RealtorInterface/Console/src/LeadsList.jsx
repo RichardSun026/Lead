@@ -83,7 +83,7 @@ export default function LeadsList() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-red-400 to-purple-600 flex items-center justify-center p-6">
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
           {emailSent ? (
             <p className="text-center">Check your email ({email}) for a login link.</p>
