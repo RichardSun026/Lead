@@ -18,11 +18,20 @@ export default function LeadsList() {
 
   useEffect(() => {
     async function load() {
-      const res = await fetch('/api/leads');
-      const data = await res.json();
+      const { data, error } = await supabase
+        .from('leads')
+        .select(
+          'phone, first_name, last_name, address, zipcode, lead_state'
+        );
+
+      if (error) {
+        console.error('Supabase leads error:', error);
+        return;
+      }
       setLeads(data || []);
     }
     load();
+
   }, []);
 
   useEffect(() => {

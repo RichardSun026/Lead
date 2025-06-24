@@ -19,8 +19,16 @@ export default function LeadReport() {
 
   useEffect(() => {
     async function fetchReport() {
-      const res = await fetch(`/api/reports/${encodeURIComponent(phone)}`);
-      const data = await res.json();
+      const { data, error } = await supabase
+        .from('leads')
+        .select('*')
+        .eq('phone', phone)
+        .single();          // one row expected
+
+      if (error) {
+        console.error('Supabase report error:', error);
+        return;
+      }
       setLeadData(data);
     }
     fetchReport();
