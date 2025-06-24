@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
 import {
   User,
   Phone,
@@ -12,6 +13,11 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useParams, Link } from 'react-router-dom';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 export default function LeadReport() {
   const { phone } = useParams();
   const [leadData, setLeadData] = useState(null);
