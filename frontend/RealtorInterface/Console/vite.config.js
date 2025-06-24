@@ -6,7 +6,7 @@ import { resolve } from 'path';
 // Load environment variables from the backend .env so local development
 // has access to the Supabase credentials without requiring a separate
 // .env file inside this package.
-config({ path: resolve(__dirname, '../../backend/.env') });
+config({ path: resolve(__dirname, '../../../backend/.env') });
 
 // Vite only exposes variables prefixed with `VITE_`. Mirror the backend
 // variables using that prefix so `import.meta.env` works as expected.
