@@ -75,25 +75,7 @@ export default function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        if (!bookingConfirmed && user?.phone) {
-          fetch('/api/schedule', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              phone: user.phone,
-              time: new Date().toISOString(),
-              content: 'Need help booking? Reply BOOK to schedule now.',
-            }),
-          });
-        }
-      },
-      5 * 60 * 1000,
-    );
-    return () => clearTimeout(timer);
-  }, [bookingConfirmed, user]);
+  // Removed the scheduled reminder text message
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
