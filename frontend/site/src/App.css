@@ -225,6 +225,12 @@ body {
   height: 40px;
 }
 
+.calendar-nav.disabled {
+  color: #555;
+  cursor: default;
+  pointer-events: none;
+}
+
 .calendar-nav:hover {
   background: #404040;
 }
@@ -278,6 +284,12 @@ body {
 
 .calendar-day.other-month {
   color: #555;
+}
+
+.calendar-day.past {
+  color: #555;
+  cursor: default;
+  pointer-events: none;
 }
 
 .calendar-day.today {
