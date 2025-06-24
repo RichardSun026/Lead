@@ -56,6 +56,17 @@ export class LeadsService {
     }
   }
 
+  async markBooked(phone: string): Promise<void> {
+    const sanitized = normalizePhone(phone);
+    const { error } = await this.client
+      .from('leads')
+      .update({ lead_state: 'booked' })
+      .eq('phone', sanitized);
+    if (error) {
+      console.error('[LeadsService] failed to mark booked', error);
+    }
+  }
+
   async createLead(input: LeadInput): Promise<void> {
     console.debug('[LeadsService] createLead called with', input);
 
