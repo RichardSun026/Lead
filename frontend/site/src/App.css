@@ -280,6 +280,11 @@ body {
   color: #555;
 }
 
+.calendar-day.past {
+  color: #555;
+  cursor: not-allowed;
+}
+
 .calendar-day.today {
   background: rgba(0, 122, 255, 0.15);
   border: 1px solid #007AFF;

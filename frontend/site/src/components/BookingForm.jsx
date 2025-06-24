@@ -15,7 +15,11 @@ export default function BookingForm({ details, onBooked, user }) {
   }, [user]);
 
   const formatPhone = (value) => {
-    const digits = value.replace(/\D/g, '').slice(0, 10);
+    let digits = value.replace(/\D/g, '');
+    if (digits.length === 11 && digits.startsWith('1')) {
+      digits = digits.slice(1);
+    }
+    digits = digits.slice(0, 10);
     let out = '';
     if (digits.length > 0) out += '(' + digits.slice(0, 3);
     if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
