@@ -18,10 +18,11 @@ export default function LeadsList() {
 
   useEffect(() => {
     async function load() {
+      console.debug('Fetching leads for current user');
       const { data, error } = await supabase
         .from('leads')
         .select('phone, first_name, last_name, zipcode, lead_state');
-
+      console.debug('Supabase response', { data, error });
       if (error) {
         console.error('Supabase leads error:', error);
         return;
@@ -45,6 +46,7 @@ export default function LeadsList() {
       }
 
       const { data } = await supabase.auth.getSession();
+      console.debug('Supabase session', data);
       setSession(data.session);
 
       const {
