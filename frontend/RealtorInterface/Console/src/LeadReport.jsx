@@ -18,6 +18,10 @@ export default function LeadReport() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    console.log('the app has started');
+  }, []);
+
+  useEffect(() => {
     async function fetchReport() {
       const { data, error } = await supabase
         .from('leads')
