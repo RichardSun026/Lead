@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body {
-  background: #ffef09; /* dev-only sanity check */
-}
-
 @layer utilities {
   /* Fallback for browsers that lack CSS Color 4 support */
   @supports not (background-color: rgb(0 0 0 / .5)) {
