@@ -11,7 +11,7 @@ jobs:
           script: |
             cd /home/Lead
             git pull
-            docker compose down
+            docker compose down --remove-orphans
             docker compose build --no-cache
             docker compose up -d
             # Copy new host-level vhost and reload Ubuntu Nginx
