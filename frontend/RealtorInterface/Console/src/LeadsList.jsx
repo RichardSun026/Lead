@@ -83,7 +83,7 @@ export default function LeadsList() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center p-6">
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
           {emailSent ? (
             <p className="text-center">Check your email ({email}) for a login link.</p>
@@ -98,7 +98,7 @@ export default function LeadsList() {
                 placeholder="Email"
                 className="w-full border rounded p-2"
               />
-              <button type="submit" className="w-full bg-red-600 text-white rounded p-2">
+              <button type="submit" className="w-full bg-blue-600 text-white rounded p-2">
                 Send Magic Link
               </button>
             </form>
@@ -109,9 +109,9 @@ export default function LeadsList() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-400 to-red-600 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-400 to-purple-600 p-6">
       <div className="container mx-auto bg-white/90 backdrop-blur rounded-2xl shadow-xl overflow-hidden">
-        <div className="header bg-gradient-to-r from-slate-700 to-red-500 text-white p-6 relative">
+        <div className="header bg-gradient-to-r from-slate-700 to-blue-500 text-white p-6 relative">
           <Settings
             className="settings-cog absolute left-4 top-4 w-6 h-6 cursor-pointer"
             onClick={() => setMenuOpen((v) => !v)}
@@ -148,7 +148,7 @@ export default function LeadsList() {
                   <div className="text-sm text-gray-600">{lead.zipcode}</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-mono text-red-600">{lead.phone}</div>
+                  <div className="font-mono text-blue-600">{lead.phone}</div>
                   <div className="text-xs capitalize text-gray-500">
                     {lead.lead_state}
                   </div>
