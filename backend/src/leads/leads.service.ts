@@ -25,13 +25,15 @@ export class LeadsService {
   private readonly uuidRe =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-  async listLeads(states: string[]): Promise<{
-    phone: string;
-    first_name: string;
-    last_name: string;
-    zipcode: string | null;
-    lead_state: string;
-  }[]> {
+  async listLeads(states: string[]): Promise<
+    {
+      phone: string;
+      first_name: string;
+      last_name: string;
+      zipcode: string | null;
+      lead_state: string;
+    }[]
+  > {
     const { data, error } = await supabase
       .from('leads')
       .select('phone,first_name,last_name,zipcode,lead_state')
@@ -40,7 +42,15 @@ export class LeadsService {
       console.error('[LeadsService] failed to list leads', error);
       throw error;
     }
-    return (data as any) || [];
+    return (
+      (data as {
+        phone: string;
+        first_name: string;
+        last_name: string;
+        zipcode: string | null;
+        lead_state: string;
+      }[]) || []
+    );
   }
 
   async markHotIfCold(phone: string): Promise<void> {

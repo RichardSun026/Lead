@@ -20,9 +20,7 @@ export default function LeadsList() {
     async function load() {
       const { data, error } = await supabase
         .from('leads')
-        .select(
-          'phone, first_name, last_name, address, zipcode, lead_state'
-        );
+        .select('phone, first_name, last_name, zipcode, lead_state');
 
       if (error) {
         console.error('Supabase leads error:', error);
