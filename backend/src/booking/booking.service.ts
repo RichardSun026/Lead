@@ -53,6 +53,14 @@ export class BookingService {
         zone: input.time_zone,
       },
     );
+    const now = DateTime.now().setZone(input.time_zone);
+    const today = now.toISODate();
+    const startDate = start.toISODate();
+    if (!startDate || !today) throw new Error('Invalid booking time');
+    if (startDate < today)
+      throw new Error(
+        `today is ${today} day and you are not allowed to book for days that has already passed`,
+      );
     const end = start.plus({ minutes: 30 });
     const startIso = start.toISO();
     const endIso = end.toISO();

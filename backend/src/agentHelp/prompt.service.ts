@@ -10,8 +10,11 @@ export class PromptService {
   systemMessage(
     realtorName = 'the realtor',
     surveyAnswers: { question: string; answer: string }[] = [],
+    leadName = '',
+    phone = '',
+    now = new Date().toISOString(),
   ): string {
-    let systemMessage = `You are acting as a friendly assistant on behalf of the real estate agent ${realtorName}. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
+    let systemMessage = `You are acting as a friendly assistant on behalf of the real estate agent ${realtorName}. The user's name is ${leadName} and their phone number is ${phone}. The current date and time is ${now}. The user has recently filled out a home valuation survey, and you’ve been provided their contact information and survey responses.
 
 Your goal is to:
 
