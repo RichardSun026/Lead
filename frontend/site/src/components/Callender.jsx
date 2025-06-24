@@ -71,6 +71,7 @@ export default function Callender({ realtorId, onSelect }) {
 
     const cells = [];
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const prevMonth = month === 0 ? 11 : month - 1;
     const prevYear = month === 0 ? year - 1 : year;
 
@@ -96,16 +97,19 @@ export default function Callender({ realtorId, onSelect }) {
 
     return cells.map((c, idx) => {
       const date = new Date(c.year, c.month, c.day);
-      const isToday =
-        date.toDateString() === today.toDateString();
+      const isToday = date.toDateString() === today.toDateString();
+      const isPast = date < today;
       const selected =
         selectedDate && date.toDateString() === selectedDate.toDateString();
       return (
         <div
           key={idx}
-          className={`calendar-day${c.other ? ' other-month' : ' '}$
-            {isToday ? ' today' : ''}${selected ? ' selected' : ''}`}
-          onClick={!c.other ? () => selectDate(c.year, c.month, c.day) : undefined}
+          className={`calendar-day${c.other ? ' other-month' : ''}${
+            isToday ? ' today' : ''
+          }${selected ? ' selected' : ''}${isPast ? ' past' : ''}`}
+          onClick={
+            !c.other && !isPast ? () => selectDate(c.year, c.month, c.day) : undefined
+          }
         >
           {c.day}
         </div>
