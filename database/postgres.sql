@@ -111,6 +111,8 @@ create table public.leads (
     looking_to_buy       public.looking_to_buy_enum,
     ad_id                varchar(50),
     sent_schedule_reminder boolean default false,
+    survey_summary       text,
+    message_summary      jsonb,
     created_at           timestamptz default now()
 );
 

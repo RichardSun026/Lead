@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import {
   User,
   Phone,
+  Mail,
   MapPin,
   Hash,
   FileText,
@@ -13,11 +13,6 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { useParams, Link } from 'react-router-dom';
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
 export default function LeadReport() {
   const { phone } = useParams();
   const [leadData, setLeadData] = useState(null);
@@ -25,17 +20,14 @@ export default function LeadReport() {
 
   useEffect(() => {
     async function fetchReport() {
-      const { data, error } = await supabase
-        .from('leads')
-        .select('*')
-        .eq('phone', phone)
-        .single();          // one row expected
-
-      if (error) {
-        console.error('Supabase report error:', error);
-        return;
+      try {
+        const res = await fetch(`/api/reports/${encodeURIComponent(phone)}`);
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setLeadData(data);
+      } catch (err) {
+        console.error('Report fetch error:', err);
       }
-      setLeadData(data);
     }
     fetchReport();
   }, [phone]);
@@ -147,6 +139,23 @@ export default function LeadReport() {
                   </div>
                 )}
               </div>
+
+              <div className="group">
+                <label className="block text-sm font-medium text-gray-600 mb-2">Email</label>
+                {isEditing ? (
+                  <input
+                    type="email"
+                    value={leadData.email || ''}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  />
+                ) : (
+                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
+                    <Mail size={16} className="text-blue-600" />
+                    {leadData.email || 'N/A'}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -207,14 +216,16 @@ export default function LeadReport() {
 
             {isEditing ? (
               <textarea
-                value={leadData.messageSummary}
-                onChange={(e) => handleInputChange('messageSummary', e.target.value)}
+                value={leadData.messageSummary?.content || ''}
+                onChange={(e) =>
+                  handleInputChange('messageSummary', { ...leadData.messageSummary, content: e.target.value })
+                }
                 rows="6"
                 className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
               />
             ) : (
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
-                {leadData.messageSummary}
+                {leadData.messageSummary?.content}
               </div>
             )}
           </div>
