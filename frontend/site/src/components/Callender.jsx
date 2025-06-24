@@ -14,6 +14,8 @@ function generateSlots() {
 
 export default function Callender({ realtorId, onSelect }) {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [booked, setBooked] = useState([]);
@@ -70,7 +72,6 @@ export default function Callender({ realtorId, onSelect }) {
     const daysInPrevMonth = new Date(year, month, 0).getDate();
 
     const cells = [];
-    const today = new Date();
     const prevMonth = month === 0 ? 11 : month - 1;
     const prevYear = month === 0 ? year - 1 : year;
 
@@ -96,16 +97,17 @@ export default function Callender({ realtorId, onSelect }) {
 
     return cells.map((c, idx) => {
       const date = new Date(c.year, c.month, c.day);
-      const isToday =
-        date.toDateString() === today.toDateString();
+      const isToday = date.toDateString() === today.toDateString();
       const selected =
         selectedDate && date.toDateString() === selectedDate.toDateString();
+      const isPast = date < today;
       return (
         <div
           key={idx}
-          className={`calendar-day${c.other ? ' other-month' : ' '}$
-            {isToday ? ' today' : ''}${selected ? ' selected' : ''}`}
-          onClick={!c.other ? () => selectDate(c.year, c.month, c.day) : undefined}
+          className={`calendar-day${c.other ? ' other-month' : ''}$
+            {isToday ? ' today' : ''}${selected ? ' selected' : ''}$
+            {isPast && !isToday ? ' past' : ''}`}
+          onClick={!c.other && !isPast ? () => selectDate(c.year, c.month, c.day) : undefined}
         >
           {c.day}
         </div>
@@ -117,7 +119,12 @@ export default function Callender({ realtorId, onSelect }) {
   return (
     <div className="calendar">
       <div className="calendar-header">
-        <button className="calendar-nav" onClick={() => changeMonth(-1)}>
+        <button
+          className={`calendar-nav${
+            currentDate <= today ? ' disabled' : ''
+          }`}
+          onClick={currentDate > today ? () => changeMonth(-1) : undefined}
+        >
           ‹
         </button>
         <div className="calendar-month">
