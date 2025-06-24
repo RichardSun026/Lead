@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { MessengerService } from '../messenger/messenger.service';
 import { CalendarService } from '../calendar/calendar.service';
+import { LeadsService } from '../leads/leads.service';
 import { DateTime } from 'luxon';
 import { normalizePhone } from '../utils/phone';
 
@@ -21,6 +22,7 @@ export class BookingService {
   constructor(
     private readonly messenger: MessengerService,
     private readonly calendar: CalendarService,
+    private readonly leads: LeadsService,
   ) {
     this.supabase = createClient<any>(
       process.env.SUPABASE_URL ?? '',
@@ -90,6 +92,8 @@ export class BookingService {
       google_calendar_id: 'primary',
       google_event_id: event.id,
     });
+
+    await this.leads.markBooked(phone);
 
     const msg = `Thanks ${input.full_name}, your appointment is confirmed for ${start.toISO()}.`;
     await this.messenger.sendSms(phone, msg);

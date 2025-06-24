@@ -24,6 +24,7 @@ drop type if exists public.professional_enum cascade;
 drop type if exists public.expert_enum cascade;
 drop type if exists public.working_with_agent_enum cascade;
 drop type if exists public.looking_to_buy_enum cascade;
+drop type if exists public.lead_state_enum cascade;
 drop type if exists booking_status_t cascade;
 
 
@@ -69,6 +70,7 @@ create type public.timeframe_enum as enum (
 );
 create type public.working_with_agent_enum as enum ('yes','no','');
 create type public.looking_to_buy_enum as enum ('yes','no','');
+create type public.lead_state_enum as enum ('cold','hot','booked');
 
 create type booking_status_t as enum ('pending','confirmed','canceled');
 -- ─────────────────────────────────────────────────────────────
@@ -96,7 +98,7 @@ create table public.leads (
     email                varchar(127),
     zipcode             varchar(20),
     time_zone           varchar(50),
-    lead_state           varchar(20),
+    lead_state           public.lead_state_enum default 'cold',
     home_type            public.home_type_enum,
     bedrooms             public.bedrooms_enum,
     bathrooms            public.bathrooms_enum,

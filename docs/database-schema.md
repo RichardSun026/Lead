@@ -23,7 +23,7 @@ The table definitions can be found in [`database/postgres.sql`](../database/post
 - `last_name`
 - `address` – typically ZIP code
 - `time_zone`
-- `lead_state` – booked/hot/warm/cold
+- `lead_state` – `lead_state_enum` (`cold`, `hot`, `booked`)
 - `home_type` – `home_type_enum`
 - `bedrooms` – `bedrooms_enum`
 - `bathrooms` – `bathrooms_enum`
