@@ -17,7 +17,7 @@ During onboarding the backend creates a row in the `realtor` table containing th
 
 ## 3. Console
 - Located at `/console` and implemented with React Router.
-- Loads lead data from the `leads` table to display a list of phone numbers and names.
+- The console fetches lead data from `/api/leads`, which queries the `leads` table, to display phone numbers and names.
 - Selecting a lead opens `/console/reports/<phone>` which retrieves a summary from `/api/reports/:phone`.
 - Each report includes contact info, survey answers and message summaries. These summaries are cached in Redis and stored in `message_logs`.
 

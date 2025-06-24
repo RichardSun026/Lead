@@ -14,6 +14,11 @@ import { LeadsService } from './leads.service';
 export class LeadsController {
   constructor(private readonly leads: LeadsService) {}
 
+  @Get('leads')
+  async list() {
+    return this.leads.listLeads(['booked', 'hot']);
+  }
+
   @Post('leads')
   @HttpCode(201)
   async create(

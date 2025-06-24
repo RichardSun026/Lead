@@ -10,6 +10,8 @@ This guide follows a prospect from the initial survey through booking and follow
 4. A welcome message can be scheduled via `POST /api/schedule` which writes to `scheduled_messages`.
 5. Depending on answers the user is either redirected to the booking site or shown a thank you message.
 
+Realtors can later view submitted leads through the console, which calls `GET /api/leads` to return entries marked as `booked` or `hot`.
+
 Possible errors:
 - Missing or malformed `realtorId` returns `400`.
 - Supabase failures when inserting the lead result in a `500` from the API.
