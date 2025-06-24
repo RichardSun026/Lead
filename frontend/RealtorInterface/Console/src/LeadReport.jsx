@@ -24,6 +24,10 @@ export default function LeadReport() {
         const res = await fetch(`/api/reports/${encodeURIComponent(phone)}`);
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
+        // older API versions returned first_name/last_name
+        if (!data.name && (data.first_name || data.last_name)) {
+          data.name = `${data.first_name ?? ''} ${data.last_name ?? ''}`.trim();
+        }
         setLeadData(data);
       } catch (err) {
         console.error('Report fetch error:', err);
