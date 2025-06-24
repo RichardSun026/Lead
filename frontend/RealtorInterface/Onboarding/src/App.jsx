@@ -168,7 +168,22 @@ export default function App() {
     console.log('POST /api/realtor response', res.status);
 
     if (!res.ok) {
-      alert('Failed to save your info. Please contact us.');
+      let errorMsg = 'Failed to save your info. Please contact us.';
+      try {
+        const data = await res.json();
+        console.log('Create realtor error', data);
+        if (res.status === 400 && data && Array.isArray(data.message)) {
+          if (data.message.some((m) => m.includes('videoUrl'))) {
+            errorMsg =
+              'Invalid video embed. Please paste the entire <iframe> snippet from Vimeo.';
+          } else {
+            errorMsg = data.message.join(' ');
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to parse error response', err);
+      }
+      alert(errorMsg);
       setIsLoading(false);
       return;
     }
