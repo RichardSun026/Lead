@@ -32,6 +32,24 @@ export class LeadsService {
     this.client = createClient(url, key);
   }
 
+  async listLeads(states: string[]): Promise<{
+    phone: string;
+    first_name: string;
+    last_name: string;
+    zipcode: string | null;
+    lead_state: string;
+  }[]> {
+    const { data, error } = await this.client
+      .from('leads')
+      .select('phone,first_name,last_name,zipcode,lead_state')
+      .in('lead_state', states);
+    if (error) {
+      console.error('[LeadsService] failed to list leads', error);
+      throw error;
+    }
+    return (data as any) || [];
+  }
+
   async markHotIfCold(phone: string): Promise<void> {
     const sanitized = normalizePhone(phone);
     const { data, error } = await this.client
