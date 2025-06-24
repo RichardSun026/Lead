@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { supabase } from '../lib/supabase';
 import { normalizePhone } from '../utils/phone';
 
 interface LeadInput {
@@ -22,15 +22,8 @@ interface LeadInput {
 
 @Injectable()
 export class LeadsService {
-  private readonly client: SupabaseClient<any>;
   private readonly uuidRe =
     /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-  constructor() {
-    const url = process.env.SUPABASE_URL ?? '';
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
-    this.client = createClient(url, key);
-  }
 
   async listLeads(states: string[]): Promise<{
     phone: string;
@@ -39,7 +32,7 @@ export class LeadsService {
     zipcode: string | null;
     lead_state: string;
   }[]> {
-    const { data, error } = await this.client
+    const { data, error } = await supabase
       .from('leads')
       .select('phone,first_name,last_name,zipcode,lead_state')
       .in('lead_state', states);
@@ -52,7 +45,7 @@ export class LeadsService {
 
   async markHotIfCold(phone: string): Promise<void> {
     const sanitized = normalizePhone(phone);
-    const { data, error } = await this.client
+    const { data, error } = await supabase
       .from('leads')
       .select('lead_state')
       .eq('phone', sanitized)
@@ -64,7 +57,7 @@ export class LeadsService {
     const lead = data as { lead_state?: string } | null;
     if (!lead) return;
     if (lead.lead_state === 'cold') {
-      const { error: updErr } = await this.client
+      const { error: updErr } = await supabase
         .from('leads')
         .update({ lead_state: 'hot' })
         .eq('phone', sanitized);
@@ -76,7 +69,7 @@ export class LeadsService {
 
   async markBooked(phone: string): Promise<void> {
     const sanitized = normalizePhone(phone);
-    const { error } = await this.client
+    const { error } = await supabase
       .from('leads')
       .update({ lead_state: 'booked' })
       .eq('phone', sanitized);
@@ -96,7 +89,7 @@ export class LeadsService {
       throw new Error('Invalid realtor');
     }
 
-    const { error: realtorErr } = await this.client
+    const { error: realtorErr } = await supabase
       .from('realtor')
       .select('realtor_id')
       .eq('realtor_id', input.realtorId)
@@ -142,7 +135,7 @@ export class LeadsService {
     };
     console.debug('[LeadsService] upserting lead', leadRecord);
 
-    const { error: upsertError } = await this.client
+    const { error: upsertError } = await supabase
       .from('leads')
       .upsert(leadRecord);
     if (upsertError) {
@@ -155,7 +148,7 @@ export class LeadsService {
 
   async findByPhone(phone: string) {
     const sanitized = normalizePhone(phone);
-    const { data } = await this.client
+    const { data } = await supabase
       .from('leads')
       .select('first_name,last_name,phone')
       .eq('phone', sanitized)
@@ -178,7 +171,7 @@ export class LeadsService {
       console.debug('[LeadsService] invalid uuid format', realtorId);
       return null;
     }
-    const { data, error } = await this.client
+    const { data, error } = await supabase
       .from('realtor')
       .select('realtor_id,f_name,e_name,video_url,website_url')
       .eq('realtor_id', realtorId)
@@ -214,7 +207,7 @@ export class LeadsService {
     realtor_id: string;
   } | null> {
     const sanitized = normalizePhone(phone);
-    const { data } = await this.client
+    const { data } = await supabase
       .from('leads')
       .select('first_name,last_name,phone,time_zone,realtor_id')
       .eq('phone', sanitized)
@@ -244,7 +237,7 @@ export class LeadsService {
     timeZone: string | null;
   } | null> {
     const sanitized = normalizePhone(phone);
-    const { data } = await this.client
+    const { data } = await supabase
       .from('leads')
       .select(
         `first_name,last_name,phone,time_zone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
@@ -316,7 +309,7 @@ export class LeadsService {
     answers: { question: string; answer: string }[];
   } | null> {
     const sanitized = normalizePhone(phone);
-    const { data } = await this.client
+    const { data } = await supabase
       .from('leads')
       .select(
         `first_name,last_name,phone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy`,
