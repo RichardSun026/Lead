@@ -53,19 +53,19 @@ export default function LeadReport() {
   if (!leadData) return <div className="p-4">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-red-50 to-red-100 p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-6">
+          <div className="bg-gradient-to-r from-red-600 to-red-700 px-8 py-6">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-4">
-                <Link to="/" className="text-white hover:text-blue-200">
+                <Link to="/" className="text-white hover:text-red-200">
                   <ArrowLeft />
                 </Link>
                 <div>
                   <h1 className="text-3xl font-bold text-white mb-2">Lead Report</h1>
-                  <p className="text-blue-100">Comprehensive lead information and analysis</p>
+                  <p className="text-red-100">Comprehensive lead information and analysis</p>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -104,7 +104,7 @@ export default function LeadReport() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              <User className="text-blue-600" size={24} />
+              <User className="text-red-600" size={24} />
               Contact Information
             </h2>
 
@@ -116,7 +116,7 @@ export default function LeadReport() {
                     type="text"
                     value={leadData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                   />
                 ) : (
                   <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800">
@@ -132,11 +132,11 @@ export default function LeadReport() {
                     type="tel"
                     value={leadData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                   />
                 ) : (
                   <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
-                    <Phone size={16} className="text-blue-600" />
+                    <Phone size={16} className="text-red-600" />
                     {leadData.phone}
                   </div>
                 )}
@@ -146,7 +146,7 @@ export default function LeadReport() {
 
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              <MapPin className="text-blue-600" size={24} />
+              <MapPin className="text-red-600" size={24} />
               Location Details
             </h2>
 
@@ -158,11 +158,11 @@ export default function LeadReport() {
                     type="text"
                     value={leadData.zipcode}
                     onChange={(e) => handleInputChange('zipcode', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                   />
                 ) : (
                   <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
-                    <Hash size={16} className="text-blue-600" />
+                    <Hash size={16} className="text-red-600" />
                     {leadData.zipcode}
                   </div>
                 )}
@@ -175,7 +175,7 @@ export default function LeadReport() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              <FileText className="text-blue-600" size={24} />
+              <FileText className="text-red-600" size={24} />
               Survey Summary
             </h2>
 
@@ -184,10 +184,10 @@ export default function LeadReport() {
                 value={leadData.surveySummary}
                 onChange={(e) => handleInputChange('surveySummary', e.target.value)}
                 rows="6"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 resize-none"
               />
             ) : (
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
+              <div className="bg-gradient-to-br from-red-50 to-red-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
                 {leadData.surveySummary}
               </div>
             )}
@@ -195,7 +195,7 @@ export default function LeadReport() {
 
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-              <MessageSquare className="text-blue-600" size={24} />
+              <MessageSquare className="text-red-600" size={24} />
               Message Summary
             </h2>
 
@@ -204,7 +204,7 @@ export default function LeadReport() {
                 value={leadData.messageSummary}
                 onChange={(e) => handleInputChange('messageSummary', e.target.value)}
                 rows="6"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 resize-none"
               />
             ) : (
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
