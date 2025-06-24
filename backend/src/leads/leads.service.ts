@@ -210,17 +210,24 @@ export class LeadsService {
   async getInfoForAgent(phone: string): Promise<{
     realtorName: string;
     answers: { question: string; answer: string }[];
+    leadName: string;
+    phone: string;
+    timeZone: string | null;
   } | null> {
     const sanitized = normalizePhone(phone);
     const { data } = await this.client
       .from('leads')
       .select(
-        `zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
+        `first_name,last_name,phone,time_zone,zipcode,home_type,bedrooms,bathrooms,sqft,home_built,occupancy,sell_time,working_with_agent,looking_to_buy,realtor:realtor_id(f_name,e_name)`,
       )
       .eq('phone', sanitized)
       .maybeSingle();
     const lead =
       (data as {
+        first_name?: string;
+        last_name?: string;
+        phone: string;
+        time_zone?: string | null;
         zipcode?: string;
         home_type?: string;
         bedrooms?: string;
@@ -234,6 +241,9 @@ export class LeadsService {
         realtor?: { f_name?: string; e_name?: string } | null;
       } | null) ?? null;
     if (!lead) return null;
+
+    const leadName = `${lead.first_name ?? ''} ${lead.last_name ?? ''}`.trim();
+    const tz = lead.time_zone ?? null;
 
     const realtorName = lead.realtor
       ? `${lead.realtor.f_name ?? ''} ${lead.realtor.e_name ?? ''}`.trim()
@@ -267,7 +277,7 @@ export class LeadsService {
       },
     ].filter((a) => a.answer);
 
-    return { realtorName, answers };
+    return { realtorName, answers, leadName, phone: lead.phone, timeZone: tz };
   }
 
   async getLeadReport(phone: string): Promise<{

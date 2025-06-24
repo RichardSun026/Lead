@@ -35,9 +35,16 @@ export class AgentService {
   private async agentLoop(phone: string, model: string): Promise<string> {
     const history = await this.conversation.fetchAll(phone);
     const info = await this.leads.getInfoForAgent(phone);
+    const now = new Date().toISOString();
     const system = info
-      ? this.prompt.systemMessage(info.realtorName, info.answers)
-      : this.prompt.systemMessage();
+      ? this.prompt.systemMessage(
+          info.realtorName,
+          info.answers,
+          info.leadName,
+          info.phone,
+          now,
+        )
+      : this.prompt.systemMessage('the realtor', [], '', phone, now);
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       { role: 'system', content: system },
       ...history,
@@ -82,8 +89,13 @@ export class AgentService {
               break;
             }
             const booking = { ...details, ...args };
-            await this.booking.createOrUpdate(booking);
-            result = { status: 'booked' };
+            try {
+              await this.booking.createOrUpdate(booking);
+              result = { status: 'booked' };
+            } catch (err) {
+              const msg = err instanceof Error ? err.message : 'booking failed';
+              result = { error: msg };
+            }
           } else {
             result = { error: 'invalid booking args' };
           }

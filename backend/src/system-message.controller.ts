@@ -12,9 +12,16 @@ export class SystemMessageController {
   @Get(':phone')
   async getSystemMessage(@Param('phone') phone: string) {
     const info = await this.leads.getInfoForAgent(phone);
+    const now = new Date().toISOString();
     const message = info
-      ? this.prompt.systemMessage(info.realtorName, info.answers)
-      : this.prompt.systemMessage();
+      ? this.prompt.systemMessage(
+          info.realtorName,
+          info.answers,
+          info.leadName,
+          info.phone,
+          now,
+        )
+      : this.prompt.systemMessage('the realtor', [], '', phone, now);
     return { systemMessage: message };
   }
 }
