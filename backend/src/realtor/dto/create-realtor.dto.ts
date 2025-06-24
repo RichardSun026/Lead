@@ -25,6 +25,10 @@ export class CreateRealtorDto {
 
   @IsString()
   @IsOptional()
-  @Matches(/^https:\/\/player\.vimeo\.com/)
+  // Accept the full Vimeo iframe snippet copied from the embed dialog.
+  // Previous validation expected just the URL which caused a 400 error
+  // when the client submitted the entire <iframe> tag as instructed in
+  // the onboarding docs.
+  @Matches(/^<iframe.*player\.vimeo\.com/i)
   videoUrl?: string;
 }
