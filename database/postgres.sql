@@ -116,7 +116,7 @@ create table public.leads (
 
 alter table public.leads enable row level security;
 create policy "realtor leads" on public.leads for select
-  using (realtor_id = (auth.jwt() ->> 'realtorId')::uuid);
+  using (realtor_id = auth.uid());
 
 /* 2-c  Booked calls / appointments */
 create table public.bookings (
