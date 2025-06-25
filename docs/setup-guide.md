@@ -34,11 +34,11 @@ This guide explains how to configure the project for local development and how t
    npm --workspace frontend/RealtorInterface/Onboarding run preview -- --port 4175
    npm --workspace frontend/RealtorInterface/Console run preview -- --port 4176
    ```
-   - API: <https://www.myrealvaluation.com/api>
-   - Start page: <https://www.myrealvaluation.com/>
-   - Landing page: <https://www.myrealvaluation.com/s> (hosted at `/s`)
-  - Survey site: <https://www.myrealvaluation.com/survey>
-  - Console: <https://www.myrealvaluation.com/console>
+   - API: <https://br.myrealvaluation.com/api>
+   - Start page: <https://br.myrealvaluation.com/>
+   - Landing page: <https://br.myrealvaluation.com/s> (hosted at `/s`)
+  - Survey site: <https://br.myrealvaluation.com/survey>
+  - Console: <https://br.myrealvaluation.com/console>
 
 ## Docker Compose
 
@@ -52,4 +52,4 @@ scp /Users/peternyman/dev/Fon/Lead/backend/.env root@134.199.198.237:/home/Lead/
 ```
 
 
-Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `https://www.myrealvaluation.com:6379`.
+Make sure your environment variables from `backend/.env` are available when starting the containers. When running through Docker Compose the services will be accessible at the same ports listed above and Redis will listen on `https://br.myrealvaluation.com:6379`.
