@@ -27,11 +27,20 @@ export default function App() {
       return digits.slice(0, 5) + '-' + digits.slice(5);
     };
     const formatPhone = (value) => {
-      const digits = value.replace(/\D/g, '').slice(0, 10);
+      let digits = value.replace(/\D/g, '');
+      if (digits.startsWith('55')) {
+        digits = digits.slice(2);
+      }
+      digits = digits.slice(0, 11);
       let out = '';
-      if (digits.length > 0) out += '(' + digits.slice(0, 3);
-      if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
-      if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+      if (digits.length > 0) out += '(' + digits.slice(0, Math.min(2, digits.length));
+      if (digits.length >= 3) out += ') ';
+      const rest = digits.slice(2);
+      if (rest.length > 4) {
+        out += rest.slice(0, rest.length - 4) + '-' + rest.slice(-4);
+      } else {
+        out += rest;
+      }
       return out;
     };
     if (zipInput) {
@@ -237,7 +246,7 @@ export default function App() {
       const formData = new FormData(form);
       const name = formData.get('fullName');
       const rawPhone = formData.get('phone');
-      const phone = '+1' + String(rawPhone).replace(/\D/g, '').slice(-10);
+      const phone = '+55' + String(rawPhone).replace(/\D/g, '').replace(/^55/, '').slice(-11);
       const email = formData.get('email') || '';
       const zipcode = formData.get('zipcode') || '';
       const homeType = formData.get('homeType') || '';
