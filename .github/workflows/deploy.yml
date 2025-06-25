@@ -5,7 +5,7 @@ jobs:
     steps:
       - uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SERVER_IP_pt-BR }}
+          host: ${{ secrets.SERVER_IP_pt_BR }}
           username: root
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
