@@ -21,7 +21,7 @@ import { SchedulerService } from './scheduler/scheduler.service';
 
 import { LeadsService } from './leads/leads.service';
 import { MessengerService } from './messenger/messenger.service';
-import { TwilioService } from './twilio/twilio.service';
+import { WhatsAppService } from './whatsapp/whatsapp.service';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
 import { SystemMessageController } from './system-message.controller';
@@ -29,7 +29,7 @@ import { RealtorController } from './realtor/realtor.controller';
 import { RealtorService } from './realtor/realtor.service';
 import { ReportsController } from './reports/reports.controller';
 import { ReportsService } from './reports/reports.service';
-import { TwilioController } from './twilio/twilio.controller';
+import { WhatsAppController } from './whatsapp/whatsapp.controller';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -92,7 +92,7 @@ import { PromptService } from './agentHelp/prompt.service';
     RealtorController,
     SystemMessageController,
     ReportsController,
-    TwilioController,
+    WhatsAppController,
   ],
   providers: [
     AppService,
@@ -105,7 +105,7 @@ import { PromptService } from './agentHelp/prompt.service';
     SupabaseService,
     LeadsService,
     MessengerService,
-    TwilioService,
+    WhatsAppService,
     BookingService,
     RealtorService,
     ReportsService,

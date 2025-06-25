@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { TwilioService } from '../twilio/twilio.service';
+import { WhatsAppService } from '../whatsapp/whatsapp.service';
 import Redis from 'ioredis';
 
 const supabase = createClient<any>(
@@ -7,7 +7,7 @@ const supabase = createClient<any>(
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
 );
 
-const twilio = new TwilioService();
+const whatsapp = new WhatsAppService();
 const redis = new Redis(process.env.REDIS_URL ?? '');
 const LIST = (phone: string) => `phone:${phone}:json`;
 
@@ -41,7 +41,7 @@ export async function handler(): Promise<void> {
       continue;
     }
     try {
-      await twilio.sendWhatsApp(raw.phone, raw.message_text ?? '');
+      await whatsapp.sendMessage(raw.phone, raw.message_text ?? '');
       console.log(`Sent message ${raw.id} to ${raw.phone}`);
       await supabase
         .from('scheduled_messages')

@@ -4,7 +4,7 @@ This guide explains how the survey site connects with the microservices to deliv
 
 ## 1. Survey Entry
 1. The user opens the survey and answers the questions.
-2. All data from the survey is stored in **Supabase** and logged to **Twilio**.
+2. All data from the survey is stored in **Supabase** and logged to the WhatsApp Cloud API.
 3. Depending on the answers the flow splits:
    - **[1a\*] Qualified** – the user is redirected to the booking site at `ip:port/realtor_id/user_marker`. The `user_marker` pre-fills the name and phone fields.
    - **[1b\*] Needs Follow-up** – the user is shown a message that a realtor will soon contact them. A separate system message is queued for the AI assistant.
@@ -24,19 +24,19 @@ Users who remain in the messaging flow can interact via three commands:
 2. **See availability** – list open time slots.
 3. **Stop** – opt out of future messages.
 
-The Messenger service receives incoming WhatsApp messages through Twilio, generates a response using OpenAI, and sends the reply immediately.
+The Messenger service receives incoming WhatsApp messages through the Cloud API, generates a response using OpenAI, and sends the reply immediately.
 
 ## 4. Microservice Connections
 ```mermaid
 flowchart TD
     Survey -->|store lead| Supabase
-    Survey -->|log| Twilio
+    Survey -->|log| WhatsApp
     Survey -->|redirect| Site
     Site -->|create event| Calendar
     Calendar -->|write link| Supabase
     Site -->|schedule reminder| Scheduler
     Scheduler -->|send message| Messenger
-    Messenger -->|reply| Twilio
+    Messenger -->|reply| WhatsApp
 ```
 
 Supabase acts as the central database while each microservice (Calendar, Scheduler, Messenger) focuses on a single responsibility. OpenAI is invoked by Messenger whenever a user sends a message so responses are immediate and contextual.

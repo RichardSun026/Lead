@@ -34,12 +34,12 @@ Possible errors:
 
 Users who do not book immediately—or anyone replying to WhatsApp messages—interact through the Messenger service.
 
-1. Incoming messages are received from Twilio and passed to `MessengerService.sendSms` after generating a reply with OpenAI.
+1. Incoming messages are received from the WhatsApp Cloud API at `/webhook/whatsapp` and passed to `MessengerService.sendSms` after generating a reply with OpenAI.
 2. Conversations are stored in Redis for context. Each outbound or failed message inserts a row in `message_logs`.
 3. The Scheduler cron processes rows in `scheduled_messages` whose `scheduled_time` is due, sending SMS and marking the row as `sent` or `failed`.
 
 Common problems include:
-- Expired Twilio credentials causing send failures.
+- Invalid Meta credentials causing send failures.
 - The scheduler not running if `SCHEDULER_INTERVAL_MS` is misconfigured.
 
 ## 4. Database Tables Involved

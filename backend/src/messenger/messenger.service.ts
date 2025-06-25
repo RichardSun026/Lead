@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { TwilioService } from '../twilio/twilio.service';
+import { WhatsAppService } from '../whatsapp/whatsapp.service';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { ConversationService } from '../clientRedis/conversation.service';
 
@@ -11,7 +11,7 @@ export class MessengerService {
 
   constructor(
     private readonly conversation: ConversationService,
-    private readonly twilio: TwilioService,
+    private readonly whatsapp: WhatsAppService,
   ) {
     this.supabase = createClient<any>(
       process.env.SUPABASE_URL ?? '',
@@ -50,7 +50,7 @@ export class MessengerService {
         return;
       }
 
-      await this.twilio.sendWhatsApp(phone, text);
+      await this.whatsapp.sendMessage(phone, text);
       await this.supabase.from('message_logs').insert({
         phone,
         message_type: 'text',

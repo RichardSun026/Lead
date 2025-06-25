@@ -1,12 +1,12 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Query } from '@nestjs/common';
 import { AgentService } from '../agentLogic/agent.service';
 import { LeadsService } from '../leads/leads.service';
 import { SchedulerService } from '../scheduler/scheduler.service';
 import { MessengerService } from '../messenger/messenger.service';
 
 @Controller('webhook')
-export class TwilioController {
-  private readonly log = new Logger('TwilioWebhook');
+export class WhatsAppController {
+  private readonly log = new Logger('WhatsAppWebhook');
 
   constructor(
     private readonly agent: AgentService,
@@ -15,27 +15,36 @@ export class TwilioController {
     private readonly messenger: MessengerService,
   ) {}
 
-  @Post('twilio')
-  async handleWebhook(@Body() body: Record<string, unknown>) {
-    this.log.log(`Received Twilio webhook: ${JSON.stringify(body)}`);
-    const from = typeof body.From === 'string' ? body.From : undefined;
-    const message = typeof body.Body === 'string' ? body.Body : undefined;
-    if (typeof from === 'string' && typeof message === 'string') {
-      const phone = from.replace(/^whatsapp:/, '');
-      const trimmed = message.trim().toUpperCase();
+  @Get('whatsapp')
+  verify(@Query('hub.mode') mode: string, @Query('hub.challenge') challenge: string, @Query('hub.verify_token') token: string) {
+    if (mode === 'subscribe' && token === process.env.WA_VERIFY_TOKEN) {
+      return challenge;
+    }
+    return 'error';
+  }
+
+  @Post('whatsapp')
+  async handleWebhook(@Body() body: any) {
+    this.log.log(`Received Meta webhook: ${JSON.stringify(body)}`);
+    const entry = body.entry?.[0];
+    const changes = entry?.changes?.[0];
+    const message = changes?.value?.messages?.[0];
+    const from = message?.from;
+    const text = message?.text?.body;
+    if (typeof from === 'string' && typeof text === 'string') {
+      const phone = from;
+      const trimmed = text.trim().toUpperCase();
       if (trimmed === 'STOP') {
         await this.scheduler.cancelMessages(phone);
         return { status: 'stopped' };
       }
-
       const sentCount = await this.messenger.countSent(phone);
       if (sentCount >= 10) {
         this.log.warn(`Message limit reached for ${phone}`);
         return { status: 'limit-reached' };
       }
-
       await this.leads.markHotIfCold(phone);
-      await this.agent.send(phone, message);
+      await this.agent.send(phone, text);
     } else {
       this.log.warn('Invalid webhook payload');
     }

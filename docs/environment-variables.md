@@ -7,10 +7,11 @@ This page summarises the variables defined in `.env.example` and what they are u
 - `SUPABASE_ANON_KEY` – public API key allowing anonymous access to Supabase.
 - `SUPABASE_SERVICE_ROLE_KEY` – service role key for privileged operations in Supabase.
 
-## Twilio
-- `TWILIO_ACCOUNT_SID` – account identifier for sending WhatsApp messages via Twilio.
-- `TWILIO_AUTH_TOKEN` – authentication token used with the SID.
-- `TWILIO_PHONE_NUMBER` – WhatsApp-enabled phone number used to send messages. The server logs an error during startup if this value is not provided.
+## WhatsApp Cloud API
+- `WA_PHONE_NUMBER_ID` – phone number identifier used when sending WhatsApp messages.
+- `WA_TOKEN` – bearer token for authenticating requests to Meta's Graph API.
+- `WA_VERIFY_TOKEN` – secret used to validate webhook calls.
+  Incoming webhook requests should target `/webhook/whatsapp`.
 
 ## Third‑party APIs
 - `OPENAI_API_KEY` – key for generating AI responses via OpenAI.
