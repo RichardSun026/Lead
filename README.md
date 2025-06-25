@@ -15,6 +15,7 @@ This repository contains a small NestJS backend and two React front ends used to
   - Landing page: <https://www.myrealvaluation.com/s>
   - Survey site: <https://www.myrealvaluation.com/survey>
   - Console: <https://www.myrealvaluation.com/console>
+  - SMS Terms: <https://www.myrealvaluation.com/sms-terms>
 
 ## Running with Docker Compose
 
