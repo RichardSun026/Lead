@@ -43,4 +43,3 @@ If you see “address already in use,” stop any legacy proxy containers:
 ```bash
 docker rm -f lead-proxy || true
 ```
-.
