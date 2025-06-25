@@ -9,9 +9,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SERVER_IP_PT_BR }}
+          host: ${{ secrets.SERVER_IP_pt_BR }}
           username: root
-          key: ${{ secrets.SERVER_KEY_PT_BR }}
+          password: ${{ secrets.SERVER_PASSWORD }}
 
           # expose the three secrets to the remote shell
           envs: SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY
@@ -36,4 +36,8 @@ jobs:
               --build-arg VITE_SUPABASE_ANON_KEY
             docker compose up -d
 
-            nginx -t && nginx -s reload
+            # Copy new host-level vhost and reload Ubuntu Nginx
+            cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
+            ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
+            nginx -t
+            systemctl restart nginx
