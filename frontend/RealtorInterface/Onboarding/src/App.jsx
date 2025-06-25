@@ -15,11 +15,20 @@ const supabase = createClient(
 );
 
 const formatPhone = (value) => {
-  const digits = value.replace(/\D/g, '').slice(0, 10);
+  let digits = value.replace(/\D/g, '');
+  if (digits.startsWith('55')) {
+    digits = digits.slice(2);
+  }
+  digits = digits.slice(0, 11);
   let out = '';
-  if (digits.length > 0) out += '(' + digits.slice(0, 3);
-  if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
-  if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+  if (digits.length > 0) out += '(' + digits.slice(0, Math.min(2, digits.length));
+  if (digits.length >= 3) out += ') ';
+  const rest = digits.slice(2);
+  if (rest.length > 4) {
+    out += rest.slice(0, rest.length - 4) + '-' + rest.slice(-4);
+  } else {
+    out += rest;
+  }
   return out;
 };
 
@@ -159,7 +168,7 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: `${info.firstName} ${info.lastName}`.trim(),
-        phone: '+1' + info.phone.replace(/\D/g, '').slice(-10),
+        phone: '+55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
         userId: user.id,
         websiteUrl: info.website || null,
         videoUrl: info.video || null,
@@ -191,7 +200,7 @@ export default function App() {
     setRealtor({
       realtor_id: user.id,
       name: `${info.firstName} ${info.lastName}`.trim(),
-      phone: '+1' + info.phone.replace(/\D/g, '').slice(-10),
+      phone: '+55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
       website_url: info.website,
       video_url: info.video,
     });

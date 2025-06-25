@@ -16,14 +16,19 @@ export default function BookingForm({ details, onBooked, user }) {
 
   const formatPhone = (value) => {
     let digits = value.replace(/\D/g, '');
-    if (digits.length === 11 && digits.startsWith('1')) {
-      digits = digits.slice(1);
+    if (digits.startsWith('55')) {
+      digits = digits.slice(2);
     }
-    digits = digits.slice(0, 10);
+    digits = digits.slice(0, 11);
     let out = '';
-    if (digits.length > 0) out += '(' + digits.slice(0, 3);
-    if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
-    if (digits.length >= 7) out += '-' + digits.slice(6, 10);
+    if (digits.length > 0) out += '(' + digits.slice(0, Math.min(2, digits.length));
+    if (digits.length >= 3) out += ') ';
+    const rest = digits.slice(2);
+    if (rest.length > 4) {
+      out += rest.slice(0, rest.length - 4) + '-' + rest.slice(-4);
+    } else {
+      out += rest;
+    }
     return out;
   };
 
