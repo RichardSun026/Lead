@@ -83,3 +83,14 @@ services:
       - api
     ports:
       - "4176:80"
+
+  smsterms:
+    build:
+      context: .
+      dockerfile: frontend/sms-terms/Dockerfile
+    env_file:
+      - backend/.env
+    depends_on:
+      - api
+    ports:
+      - "4178:80"

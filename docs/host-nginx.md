@@ -10,6 +10,7 @@ owns ports **80/443** and forwards requests to Docker-mapped ports:
 | `/survey` | `survey` | `4174` |
 | `/onboarding` | `onboarding` | `4175` |
 | `/console` | `console` | `4176` |
+| `/sms-terms` | `smsterms` | `4178` |
 | `/api/` | `api` | `3000` |
 
 ## Deployment steps
