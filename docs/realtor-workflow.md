@@ -26,7 +26,7 @@ During onboarding the backend creates a row in the `realtor` table containing th
 - Follow‑up messages are scheduled in the `scheduled_messages` table and later sent by the Scheduler service.
 
 ## 5. Potential Issues
-- The server logs an error if `TWILIO_PHONE_NUMBER` is missing in the environment configuration.
+ - The server logs an error if `WA_PHONE_NUMBER_ID` is missing in the environment configuration.
 - Nginx must proxy each SPA path correctly or deep links will 404.
 - Time zone handling for bookings can lead to incorrect reminders if not configured consistently.
 - Missing Google OAuth tokens will prevent calendar updates until the realtor reconnects their account.

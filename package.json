@@ -17,7 +17,7 @@
     "start:debug": "nest start --debug --watch -c backend/nest-cli.json -p backend/tsconfig.build.json",
     "start:prod": "node backend/dist/main",
     "lint": "eslint \"{backend/src,frontend,libs,backend/test}/**/*.ts\" --fix",
-    "test": "jest",
+    "test": "vitest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -41,8 +41,7 @@
     "openai": "^4.96.0",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1",
-    "twilio": "^4.23.0"
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -57,23 +56,22 @@
     "@types/luxon": "^3.6.2",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
-    "@types/twilio": "^3.19.2",
     "concurrently": "^8.2.2",
     "eslint": "^9.18.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
-    "jest": "^29.7.0",
     "postcss-color-rgb": "^2.0.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.20.0",
+    "vitest": "^1.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -91,5 +89,7 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  }
+  },
+  "type": "module",
+  "packageManager": "pnpm@8.6.10"
 }

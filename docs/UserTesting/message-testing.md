@@ -1,11 +1,11 @@
 # Sending Test Messages
 
 This guide explains how to manually trigger the messaging flow using `curl`.
-It can be used to verify Twilio integration and the AI assistant's response.
+It can be used to verify the WhatsApp integration and the AI assistant's response.
 
 ## Prerequisites
  - The backend server must be running. By default it listens on `https://br.myrealvaluation.com/api`.
-- Environment variables for Twilio and Supabase need to be configured in `backend/.env`.
+- Environment variables for the WhatsApp Cloud API and Supabase need to be configured in `backend/.env`.
 
 ## Example Request
 Send a POST request to the `/message` endpoint with the target phone number and the message text:
