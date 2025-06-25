@@ -91,24 +91,24 @@ export default function LeadsList() {
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
           {emailSent ? (
             <p className="text-center">
-              Check your email ({email}) for a login link.
+              Verifique seu e-mail ({email}) para o link de acesso.
             </p>
           ) : (
             <form onSubmit={handleLogin} className="space-y-4">
-              <h1 className="text-xl font-bold text-center">Login</h1>
+              <h1 className="text-xl font-bold text-center">Entrar</h1>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
+                placeholder="E-mail"
                 className="w-full border rounded p-2"
               />
               <button
                 type="submit"
                 className="w-full bg-blue-600 text-white rounded p-2"
               >
-                Send Magic Link
+                Enviar link mágico
               </button>
             </form>
           )}
@@ -134,16 +134,16 @@ export default function LeadsList() {
                 onClick={handleLogout}
                 className="text-red-600 hover:underline"
               >
-                Log Out
+                Sair
               </button>
             </div>
           )}
           <h1 className="title text-2xl font-bold text-center">
-            Leads Console
+            Console de Leads
           </h1>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Pesquisar..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="absolute right-4 top-4 rounded px-2 py-1 text-black w-40"
