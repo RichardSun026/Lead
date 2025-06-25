@@ -6,8 +6,11 @@ SECRET.txt
 .trunk
 .DS_Store
 copy.py
+coordinate_finder.py
 
 # OLD_Lead
 obj/
 bin/
 __pycache__/
+venv/
+
