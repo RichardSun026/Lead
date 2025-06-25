@@ -95,9 +95,9 @@ export default function App() {
       progressFill.style.width = progress + '%';
 
       if (currentStep === 'contact') {
-        progressText.textContent = 'Almost Done!';
+        progressText.textContent = 'Quase pronto!';
       } else {
-        progressText.textContent = `Step ${currentPosition}`;
+        progressText.textContent = `Etapa ${currentPosition}`;
       }
     }
 
@@ -122,7 +122,7 @@ export default function App() {
         nextBtn.style.display = 'none';
         submitBtn.style.display = 'inline-block';
         progressFill.style.width = '100%';
-        progressText.textContent = 'Final Step';
+        progressText.textContent = 'Etapa Final';
       } else {
         nextBtn.style.display = 'inline-block';
         submitBtn.style.display = 'none';
@@ -196,7 +196,7 @@ export default function App() {
 
     nextBtn.addEventListener('click', () => {
       if (!canProceed()) {
-        alert('Please answer the question before proceeding.');
+        alert('Por favor, responda à pergunta antes de prosseguir.');
         return;
       }
 
@@ -227,11 +227,11 @@ export default function App() {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!canProceed()) {
-        alert('Please fill in all required fields.');
+        alert('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
 
-      submitBtn.innerHTML = 'Processing...';
+      submitBtn.innerHTML = 'Processando...';
       submitBtn.disabled = true;
 
       const formData = new FormData(form);
@@ -283,11 +283,11 @@ export default function App() {
         console.log(`Redirecting to site: ${siteUrl.origin}${siteUrl.pathname}/${realtorId}/${encodeURIComponent(phone)}`);
         window.location.href = `${siteUrl.origin}${siteUrl.pathname}/${realtorId}/${encodeURIComponent(phone)}`;
         document.getElementById('successMessage').textContent =
-        'Thank you for filling out the survey! You will be redirected to our website.';
+        'Obrigado por responder à pesquisa! Você será redirecionado para nosso site.';
       }
       else {
         document.getElementById('successMessage').textContent =
-        'Thank you! An agent will contact you soon.';
+        'Obrigado! Um agente entrará em contato em breve.';
       }
       document.getElementById('successMessage').style.display = 'block';
 

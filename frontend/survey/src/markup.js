@@ -1,22 +1,22 @@
 export const surveyMarkup = `
     <div class="survey-container">
         <div class="survey-header">
-            <h1>My Real Evaluation – Free Home Estimate Survey</h1>
+            <h1>Minha Avaliação Imobiliária – Pesquisa de Estimativa Gratuita</h1>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="progress-text" id="progressText">Getting Started</div>
+            <div class="progress-text" id="progressText">Iniciando</div>
         </div>
 
         <form class="survey-form" id="surveyForm">
             <!-- Question 1 -->
             <div class="question-group" id="q1">
-                <label class="question-label">What is your ZIP code? <span class="required">*</span></label>
+                <label class="question-label">Qual é o seu CEP? <span class="required">*</span></label>
                 <input
                     type="text"
                     name="zipcode"
                     required
-                    placeholder="Enter ZIP code"
+                    placeholder="Digite o CEP"
                     inputmode="numeric"
                     maxlength="10"
                 >
@@ -24,34 +24,34 @@ export const surveyMarkup = `
 
             <!-- Question 2 -->
             <div class="question-group hidden" id="q2">
-                <label class="question-label">What type of home is it?</label>
+                <label class="question-label">Que tipo de imóvel é?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="homeType" value="single-family">
-                        Single-family home
+                        Casa unifamiliar
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="homeType" value="condo">
-                        Condo or apartment
+                        Condomínio ou apartamento
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="homeType" value="townhouse">
-                        Townhouse
+                        Casa geminada
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="homeType" value="duplex">
-                        Duplex / Multi-unit
+                        Duplex / Multiunidade
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="homeType" value="other">
-                        Other
+                        Outro
                     </label>
                 </div>
             </div>
 
             <!-- Question 3 -->
             <div class="question-group hidden" id="q3">
-                <label class="question-label">How many bedrooms?</label>
+                <label class="question-label">Quantos quartos?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="bedrooms" value="1">
@@ -78,7 +78,7 @@ export const surveyMarkup = `
 
             <!-- Question 4 -->
             <div class="question-group hidden" id="q4">
-                <label class="question-label">How many bathrooms?</label>
+                <label class="question-label">Quantos banheiros?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="bathrooms" value="1">
@@ -105,42 +105,42 @@ export const surveyMarkup = `
 
             <!-- Question 5 -->
             <div class="question-group hidden" id="q5">
-                <label class="question-label">What is the approximate square footage?</label>
+                <label class="question-label">Qual é a metragem aproximada?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="under-1000">
-                        Under 1,000 sq ft
+                        Menos de 1.000 pés²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="1000-1499">
-                        1,000–1,499 sq ft
+                        1.000–1.499 pés²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="1500-1999">
-                        1,500–1,999 sq ft
+                        1.500–1.999 pés²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="2000-2499">
-                        2,000–2,499 sq ft
+                        2.000–2.499 pés²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="2500+">
-                        2,500+ sq ft
+                        Acima de 2.500 pés²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="not-sure">
-                        Not sure
+                        Não sei
                     </label>
                 </div>
             </div>
 
             <!-- Question 6 -->
             <div class="question-group hidden" id="q6">
-                <label class="question-label">When was the home built?</label>
+                <label class="question-label">Quando o imóvel foi construído?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="yearBuilt" value="before-1970">
-                        Before 1970
+                        Antes de 1970
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="yearBuilt" value="1970-1990">
@@ -152,126 +152,126 @@ export const surveyMarkup = `
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="yearBuilt" value="after-2010">
-                        After 2010
+                        Após 2010
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="yearBuilt" value="not-sure">
-                        Not sure
+                        Não sei
                     </label>
                 </div>
             </div>
 
             <!-- Question 7 -->
             <div class="question-group hidden" id="q7">
-                <label class="question-label">What is the current occupancy status?</label>
+                <label class="question-label">Qual é a situação de ocupação atual?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="occupancy" value="i-live">
-                        I live in the property
+                        Eu moro no imóvel
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="occupancy" value="rented">
-                        It is rented out
+                        Está alugado
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="occupancy" value="vacant">
-                        It is currently vacant
+                        Está desocupado
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="occupancy" value="other">
-                        Other
+                        Outro
                     </label>
                 </div>
             </div>
 
             <!-- Question 8 -->
             <div class="question-group hidden" id="q8">
-                <div class="section-header">Property Intent & Next Steps</div>
-                <label class="question-label">Do you see yourself selling this house in the foreseeable future?</label>
+                <div class="section-header">Intenção de Uso do Imóvel e Próximos Passos</div>
+                <label class="question-label">Você se vê vendendo esta casa em um futuro próximo?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="changes" value="yes">
-                        Yes
+                        Sim
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="changes" value="maybe">
-                        Maybe
+                        Talvez
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="changes" value="no">
-                        No
+                        Não
                     </label>
                 </div>
             </div>
 
             <!-- Question 9 -->
             <div class="question-group hidden" id="q9">
-                <label class="question-label">If so, what is your estimated timeframe for making a decision?</label>
+                <label class="question-label">Se sim, qual é o prazo estimado para sua decisão?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="timeframe" value="immediate">
-                        Immediately
+                        Imediatamente
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="timeframe" value="within-3-months">
-                        Within 3 months
+                        Em até 3 meses
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="timeframe" value="6-months">
-                        6 months
+                        6 meses
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="timeframe" value="year-plus">
-                        One year or more
+                        Um ano ou mais
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="timeframe" value="not-sure">
-                        Not sure yet
+                        Ainda não tenho certeza
                     </label>
                 </div>
             </div>
 
             <!-- Question 10 -->
             <div class="question-group hidden" id="q10">
-                <label class="question-label">Have you already spoken with a real estate professional about this property?</label>
+                <label class="question-label">Você já conversou com um profissional imobiliário sobre este imóvel?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="professional" value="yes">
-                        Yes
+                        Sim
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="professional" value="no">
-                        No
+                        Não
                     </label>
                 </div>
             </div>
 
             <!-- Question 11 -->
             <div class="question-group hidden" id="q11">
-                <label class="question-label">Would you be open to speaking with a trusted local expert for a more detailed home evaluation?</label>
+                <label class="question-label">Você toparia conversar com um especialista local de confiança para uma avaliação mais detalhada?</label>
                 <div class="radio-group">
                     <label class="radio-option">
                         <input type="radio" name="expert" value="yes">
-                        Yes
+                        Sim
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="expert" value="no">
-                        No
+                        Não
                     </label>
                 </div>
             </div>
 
             <!-- Contact Section -->
             <div class="question-group hidden" id="contactInfo">
-                <div class="section-header">Contact Information</div>
-                <p style="margin-bottom: 20px; color: #666; font-size: 1.1rem;">Please provide your details so we can send your free estimate:</p>
+                <div class="section-header">Informações de Contato</div>
+                <p style="margin-bottom: 20px; color: #666; font-size: 1.1rem;">Por favor, informe seus dados para enviarmos sua estimativa gratuita:</p>
                 <div class="contact-fields">
                     <div class="contact-field">
-                        <label>Full Name <span class="required">*</span></label>
-                        <input type="text" name="fullName" required placeholder="Enter your full name">
+                        <label>Nome completo <span class="required">*</span></label>
+                        <input type="text" name="fullName" required placeholder="Digite seu nome completo">
                     </div>
                     <div class="contact-field">
-                        <label>Phone Number <span class="required">*</span></label>
+                        <label>Telefone <span class="required">*</span></label>
                         <input
                             type="text"
                             name="phone"
@@ -282,22 +282,22 @@ export const surveyMarkup = `
                         >
                     </div>
                     <div class="contact-field">
-                        <label>Email Address (optional)</label>
-                        <input type="text" name="email" placeholder="your.email@example.com">
+                        <label>E-mail (opcional)</label>
+                        <input type="text" name="email" placeholder="seu.email@exemplo.com">
                     </div>
                 </div>
                     <div class="consent-field">
                     <label style="display:flex;align-items:flex-start;gap:8px;">
                         <input type="checkbox" name="consent" required style="margin-top:4px;">
-                        <span><span class="required">*</span>&nbsp;I agree to receive marketing text messages from My Real Evaluation at the number I provided. These may be sent using automated technology, and my consent is not required to make a purchase. Message &amp; data rates may apply. I can opt out at any time by replying STOP.</span>
+                        <span><span class="required">*</span>&nbsp;Concordo em receber mensagens de texto de marketing da My Real Evaluation no número que forneci. Elas podem ser enviadas por tecnologia automatizada e meu consentimento não é obrigatório para realizar uma compra. Tarifas de mensagem e dados podem ser aplicadas. Posso cancelar a qualquer momento respondendo PARAR.</span>
                     </label>
                 </div>
             </div>
 
             <div class="navigation-buttons">
-                <button type="button" class="nav-btn next-btn" id="nextBtn">Next</button>
-                <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">Get My Free Estimate</button>
-                <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>Previous</button>
+                <button type="button" class="nav-btn next-btn" id="nextBtn">Próximo</button>
+                <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">Obter minha estimativa gratuita</button>
+                <button type="button" class="nav-btn prev-btn" id="prevBtn" disabled>Anterior</button>
             </div>
 
             <div id="successMessage" class="success-message" style="display: none;"></div>
