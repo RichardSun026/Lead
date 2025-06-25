@@ -1,36 +1,36 @@
-# Realtor Onboarding
+# Cadastro do Corretor
 
-This short guide explains how to link a Google Calendar so that bookings created through the website and the AI are kept in sync.
+Este breve guia explica como vincular um Google Calendar para que as reservas criadas pelo site e pela IA permaneçam sincronizadas.
 
-## Verify your email
+## Verifique seu email
 
-On the first page you will be asked for your email address. After clicking **Send Link** check your inbox and open the verification URL. Once the email is confirmed, return to the onboarding page to continue with step 2.
+Na primeira página será solicitado seu endereço de email. Após clicar em **Enviar link**, verifique sua caixa de entrada e abra a URL de verificação. Depois de confirmar o email, volte para a página de cadastro para continuar com o passo 2.
 
-The admin dashboard exposes a **Link Google Calendar** button during the onboarding process. Clicking it will open the Google consent screen using the `/api/calendar/oauth/<realtorId>` endpoint. After granting access the backend receives a refresh token so future calendar calls work without additional prompts.
+O painel administrativo exibe um botão **Conectar Google Calendar** durante o processo de cadastro. Ao clicar, a tela de consentimento do Google é aberta usando o endpoint `/api/calendar/oauth/<realtorId>`. Após conceder acesso, o backend recebe um token de atualização para que as próximas chamadas de calendário funcionem sem novas solicitações.
 
-1. Ensure the backend is running and accessible. The `GOOGLE_REDIRECT_URI` environment variable must point to
-   `https://br.myrealvaluation.com/api/calendar/oauth/callback` (or your deployed URL).
-2. Obtain your personal authorization link by calling:
+1. Garanta que o backend esteja em execução e acessível. A variável de ambiente `GOOGLE_REDIRECT_URI` deve apontar para
+   `https://br.myrealvaluation.com/api/calendar/oauth/callback` (ou para a sua URL implantada).
+2. Obtenha seu link de autorização pessoal executando:
    ```bash
    curl https://br.myrealvaluation.com/api/calendar/oauth/<realtorId>
    ```
-   The response contains a `url` field. Open it in your browser.
-3. Grant access to the requested Google account and confirm the consent screen.
-4. After approval you will be redirected directly to `/console`. The backend
-   automatically saves your Google refresh token so future calendar calls work
-   without any additional steps.
+   A resposta contém um campo `url`. Abra-o no navegador.
+3. Conceda acesso à conta do Google solicitada e confirme a tela de consentimento.
+4. Após a aprovação você será redirecionado diretamente para `/console`. O backend
+   salva automaticamente seu token de atualização do Google para que futuras chamadas de calendário funcionem
+   sem etapas adicionais.
 
-Once this flow is completed, the application can create, update and delete
-calendar events without asking for permission again. Tokens are refreshed
-automatically.
+Após concluir esse fluxo, o aplicativo poderá criar, atualizar e excluir
+eventos de calendário sem solicitar permissão novamente. Os tokens são
+renovados automaticamente.
 
-## Adding your website and intro video
+## Adicionando seu site e vídeo de apresentação
 
-During step 2 of the onboarding you can optionally provide two additional fields:
+Durante o passo 2 do cadastro você pode fornecer opcionalmente dois campos extras:
 
-1. **Website URL** – paste the link to your personal site or listings page.
-2. **Video embed** – copy the iframe embed code from Vimeo. It should start
-   with `<iframe src="https://player.vimeo.com`.
+1. **URL do site** – cole o link para seu site pessoal ou página de anúncios.
+2. **Embed de vídeo** – copie o código de incorporação do Vimeo. Ele deve começar
+   com `<iframe src="https://player.vimeo.com`.
 
-If you are unable to follow these instructions, please email
-`admin@myrealvaluation.com` so we can manually fix it for you.
+Se não conseguir seguir estas instruções, envie um email para
+`admin@myrealvaluation.com` e corrigiremos manualmente para você.
