@@ -1,6 +1,6 @@
 # Testing the Survey with cURL
 
-The survey front‑end normally posts answers to the Nest backend at `https://www.myrealvaluation.com/api`. For quick testing you can mimic this step without a browser by sending the JSON payloads directly.
+The survey front‑end normally posts answers to the Nest backend at `https://br.myrealvaluation.com/api`. For quick testing you can mimic this step without a browser by sending the JSON payloads directly.
 
 ## Create a Lead
 

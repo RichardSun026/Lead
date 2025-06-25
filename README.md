@@ -10,11 +10,11 @@ This repository contains a small NestJS backend and two React front ends used to
 - **database/** – SQL schema and utilities
 - **docs/** – project documentation
 
-  - API: <https://www.myrealvaluation.com/api>
-  - Start page: <https://www.myrealvaluation.com/>
-  - Landing page: <https://www.myrealvaluation.com/s>
-  - Survey site: <https://www.myrealvaluation.com/survey>
-  - Console: <https://www.myrealvaluation.com/console>
+  - API: <https://br.myrealvaluation.com/api>
+  - Start page: <https://br.myrealvaluation.com/>
+  - Landing page: <https://br.myrealvaluation.com/s>
+  - Survey site: <https://br.myrealvaluation.com/survey>
+  - Console: <https://br.myrealvaluation.com/console>
 
 ## Running with Docker Compose
 
@@ -26,7 +26,7 @@ This brings up the API, both front ends and Redis using the same ports as above.
 
 ### Deployment (host Nginx)
 Ubuntu’s built-in Nginx now owns ports **80/443**. All Docker services expose
-high ports on `https://www.myrealvaluation.com/*`; the vhost file
+high ports on `https://br.myrealvaluation.com/*`; the vhost file
 `deploy/host-nginx/myrealvaluation.conf` maps paths to those ports.
 
 ```bash

@@ -67,7 +67,7 @@ export default function LeadsList() {
     e.preventDefault();
     await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: 'https://www.myrealvaluation.com/console/' },
+      options: { emailRedirectTo: 'https://br.myrealvaluation.com/console/' },
     });
     setEmailSent(true);
   };
