@@ -130,7 +130,7 @@ export default function App() {
       info.video &&
       (!info.video.includes('player.vimeo.com') || !info.video.includes('<iframe'))
     ) {
-      alert('Video embed must contain an <iframe> with a player.vimeo.com source');
+      alert('A incorporação do vídeo deve conter um <iframe> com origem player.vimeo.com');
       setIsLoading(false);
       return;
     }
@@ -144,7 +144,7 @@ export default function App() {
     console.debug('Retrieved user for Step 2', user);
     if (!user) {
       alert(
-        'Please open the verification link sent to your email before continuing.',
+        'Abra o link de verificação enviado para seu e-mail antes de continuar.',
       );
       setIsLoading(false);
       return;
@@ -168,14 +168,14 @@ export default function App() {
     console.log('POST /api/realtor response', res.status);
 
     if (!res.ok) {
-      let errorMsg = 'Failed to save your info. Please contact us.';
+      let errorMsg = 'Falha ao salvar suas informações. Por favor, entre em contato.';
       try {
         const data = await res.json();
         console.log('Create realtor error', data);
         if (res.status === 400 && data && Array.isArray(data.message)) {
           if (data.message.some((m) => m.includes('videoUrl'))) {
             errorMsg =
-              'Invalid video embed. Please paste the entire <iframe> snippet from Vimeo.';
+              'Incorporação de vídeo inválida. Cole o trecho completo <iframe> do Vimeo.';
           } else {
             errorMsg = data.message.join(' ');
           }
@@ -230,14 +230,14 @@ export default function App() {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
             <span className="text-white/80 text-sm font-medium">
-              Step {step} of 3
+              Etapa {step} de 3
             </span>
             <span className="text-white/60 text-sm">
               {step === 1
-                ? 'Verify Email'
+                ? 'Verificar Email'
                 : step === 2
-                  ? 'Personal Info'
-                  : 'Setup Complete'}
+                  ? 'Informações Pessoais'
+                  : 'Configuração Concluída'}
             </span>
           </div>
           <div className="w-full bg-white/20 rounded-full h-2">
@@ -257,10 +257,10 @@ export default function App() {
                   <Mail className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-2">
-                  Verify your email
+                  Verifique seu e-mail
                 </h2>
                 <p className="text-white/70">
-                  We'll send you a link to confirm it
+                  Enviaremos um link para confirmá-lo
                 </p>
               </div>
 
@@ -268,7 +268,7 @@ export default function App() {
                 <Mail className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
                 <input
                   type="email"
-                  placeholder="Email address"
+                  placeholder="Endereço de e-mail"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -285,7 +285,7 @@ export default function App() {
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 ) : (
                   <>
-                    <span>Send Link</span>
+                    <span>Enviar Link</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -298,12 +298,10 @@ export default function App() {
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-3xl font-bold text-white mb-2">
-                Check your email
+                Verifique seu e-mail
               </h2>
               <p className="text-white/70">
-                We just sent a verification link to {email}. Look for a message
-                from "Supabase Auth" (noreply@mail.app.supabase.io) and click
-                the link&mdash;there&apos;s no need to come back here.
+                Acabamos de enviar um link de verificação para {email}. Procure uma mensagem de "Supabase Auth" (noreply@mail.app.supabase.io) e clique no link&mdash;não é necessário voltar aqui.
               </p>
             </div>
           )}
@@ -315,9 +313,9 @@ export default function App() {
                   <User className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-2">
-                  Tell us about yourself
+                  Fale sobre você
                 </h2>
-                <p className="text-white/70">We just need a few details</p>
+                <p className="text-white/70">Precisamos de alguns detalhes</p>
               </div>
 
               <div className="space-y-4">
@@ -325,7 +323,7 @@ export default function App() {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="First name"
+                      placeholder="Nome"
                       value={info.firstName}
                       onChange={(e) =>
                         setInfo({ ...info, firstName: e.target.value })
@@ -337,7 +335,7 @@ export default function App() {
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="Last name"
+                      placeholder="Sobrenome"
                       value={info.lastName}
                       onChange={(e) =>
                         setInfo({ ...info, lastName: e.target.value })
@@ -352,7 +350,7 @@ export default function App() {
                   <Phone className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
                   <input
                     type="text"
-                    placeholder="Phone number"
+                    placeholder="Número de telefone"
                     value={info.phone}
                     onChange={(e) =>
                       setInfo({ ...info, phone: formatPhone(e.target.value) })
@@ -366,7 +364,7 @@ export default function App() {
                 <div className="relative">
                   <input
                     type="url"
-                    placeholder="Website URL"
+                    placeholder="URL do site"
                     value={info.website}
                     onChange={(e) =>
                       setInfo({ ...info, website: e.target.value })
@@ -378,7 +376,7 @@ export default function App() {
                 <div className="relative">
                   <input
                     type="text"
-                    placeholder="Vimeo embed iframe code"
+                    placeholder="Código iframe do Vimeo"
                     value={info.video}
                     onChange={(e) =>
                       setInfo({ ...info, video: e.target.value })
@@ -386,18 +384,18 @@ export default function App() {
                     className="w-full bg-gray-700 border border-gray-500 rounded-xl px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
                   <p className="text-xs text-white/60 mt-1">
-                    Paste the iframe code that begins with{' '}
+                    Cole o código iframe que começa com{' '}
                     <code>&lt;iframe src="https://player.vimeo.com"</code>
                   </p>
                   <p className="text-xs text-white/60 mt-1">
-                    If you are unable to follow these instructions, please email{' '}
+                    Se não conseguir seguir estas instruções, envie um e-mail{' '}
                     <a
                       href="mailto:admin@myrealvaluation.com"
                       className="underline"
                     >
                       admin@myrealvaluation.com
                     </a>{' '}
-                    and we will manually fix it for you.
+                    e faremos a correção manualmente.
                   </p>
                 </div>
               </div>
@@ -411,7 +409,7 @@ export default function App() {
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 ) : (
                   <>
-                    <span>Continue</span>
+                    <span>Continuar</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -426,20 +424,20 @@ export default function App() {
                   <Calendar className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-2">
-                  Almost Done!
+                  Quase pronto!
                 </h2>
                 <p className="text-white/70">
-                  Connect your calendar to finish setup
+                  Conecte seu calendário para finalizar a configuração
                 </p>
               </div>
 
               <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                 <h3 className="text-lg font-semibold text-white mb-3">
-                  Connect Google Calendar
+                  Conectar Google Agenda
                 </h3>
                 <p className="text-white/60 text-sm mb-4">
-                  Make sure you're logged into the correct Google account. If
-                  you encounter issues, try using an incognito window.
+                  Certifique-se de estar conectado à conta do Google correta. Se
+                  tiver problemas, tente usar uma janela anônima.
                 </p>
 
                 <button
@@ -453,12 +451,12 @@ export default function App() {
                   ) : calendarConnected || showSuccess ? (
                     <>
                       <CheckCircle className="w-5 h-5 text-green-400" />
-                      <span>Connected!</span>
+                      <span>Conectado!</span>
                     </>
                   ) : (
                     <>
                       <Calendar className="w-5 h-5" />
-                      <span>Connect Google Calendar</span>
+                      <span>Conectar Google Agenda</span>
                     </>
                   )}
                 </button>
@@ -471,7 +469,7 @@ export default function App() {
         {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-white/40 text-sm">
-            Secure • Private • Professional
+            Seguro • Privado • Profissional
           </p>
         </div>
       </div>
