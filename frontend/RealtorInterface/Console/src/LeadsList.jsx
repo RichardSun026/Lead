@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
 );
 
 export default function LeadsList() {
@@ -21,7 +21,10 @@ export default function LeadsList() {
       console.debug('Fetching leads for current user');
       const { data, error } = await supabase
         .from('leads')
-        .select('phone, first_name, last_name, zipcode, lead_state');
+        .select(
+          'phone, first_name, last_name, zipcode, lead_state, created_at, bookings(appointment_time)',
+        )
+        .order('created_at', { ascending: false });
       console.debug('Supabase response', { data, error });
       if (error) {
         console.error('Supabase leads error:', error);
@@ -30,7 +33,6 @@ export default function LeadsList() {
       setLeads(data || []);
     }
     load();
-
   }, []);
 
   useEffect(() => {
@@ -75,18 +77,22 @@ export default function LeadsList() {
     setMenuOpen(false);
   };
 
-  const filteredLeads = leads.filter((lead) =>
-    `${lead.first_name} ${lead.last_name}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const filteredLeads = leads.filter((lead) => {
+    const term = searchTerm.toLowerCase();
+    return (
+      `${lead.first_name} ${lead.last_name}`.toLowerCase().includes(term) ||
+      lead.phone.toLowerCase().includes(term)
+    );
+  });
 
   if (!session) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-red-400 to-yellow-600 flex items-center justify-center p-6">
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
           {emailSent ? (
-            <p className="text-center">Check your email ({email}) for a login link.</p>
+            <p className="text-center">
+              Check your email ({email}) for a login link.
+            </p>
           ) : (
             <form onSubmit={handleLogin} className="space-y-4">
               <h1 className="text-xl font-bold text-center">Login</h1>
@@ -98,7 +104,10 @@ export default function LeadsList() {
                 placeholder="Email"
                 className="w-full border rounded p-2"
               />
-              <button type="submit" className="w-full bg-blue-600 text-white rounded p-2">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white rounded p-2"
+              >
                 Send Magic Link
               </button>
             </form>
@@ -118,13 +127,20 @@ export default function LeadsList() {
           />
           {menuOpen && (
             <div className="absolute left-2 top-10 bg-white text-sm rounded shadow p-3 w-40">
-              <div className="mb-2 text-gray-700 break-words">{session.user.email}</div>
-              <button onClick={handleLogout} className="text-red-600 hover:underline">
+              <div className="mb-2 text-gray-700 break-words">
+                {session.user.email}
+              </div>
+              <button
+                onClick={handleLogout}
+                className="text-red-600 hover:underline"
+              >
                 Log Out
               </button>
             </div>
           )}
-          <h1 className="title text-2xl font-bold text-center">Leads Console</h1>
+          <h1 className="title text-2xl font-bold text-center">
+            Leads Console
+          </h1>
           <input
             type="text"
             placeholder="Search..."
@@ -152,6 +168,13 @@ export default function LeadsList() {
                   <div className="text-xs capitalize text-gray-500">
                     {lead.lead_state}
                   </div>
+                  {lead.bookings && lead.bookings.length > 0 && (
+                    <div className="text-xs text-gray-500">
+                      {new Date(
+                        lead.bookings[0].appointment_time,
+                      ).toLocaleString()}
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>
