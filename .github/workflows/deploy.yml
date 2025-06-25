@@ -1,21 +1,39 @@
-on: { push: { branches: [pt-BR] } }
+on:
+  push:
+    branches: [pt-BR]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: appleboy/ssh-action@v1
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
         with:
-          host: ${{ secrets.SERVER_IP_pt_BR }}
+          host: ${{ secrets.SERVER_IP_PT_BR }}
           username: root
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SERVER_KEY_PT_BR }}
+
+          # expose the three secrets to the remote shell
+          envs: SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY
+
           script: |
+            set -e
+
+            # 1️⃣ export Vite-prefixed copies for the frontend build
+            export VITE_SUPABASE_URL="$SUPABASE_URL"
+            export VITE_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+
             cd /home/Lead
-            git pull
+            git fetch --all --prune
+            git checkout pt-BR
+            git reset --hard origin/pt-BR
+
+            # 2️⃣ make sure Docker sees the same vars at build-time
+            export DOCKER_BUILDKIT=1
             docker compose down --remove-orphans
-            docker compose build --no-cache
+            docker compose build --pull \
+              --build-arg VITE_SUPABASE_URL \
+              --build-arg VITE_SUPABASE_ANON_KEY
             docker compose up -d
-            # Copy new host-level vhost and reload Ubuntu Nginx
-            cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
-            ln -sf /etc/nginx/sites-available/myrealvaluation.conf /etc/nginx/sites-enabled/
-            nginx -t
-            systemctl restart nginx
+
+            nginx -t && nginx -s reload
