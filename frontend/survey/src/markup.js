@@ -286,13 +286,12 @@ export const surveyMarkup = `
                         <input type="text" name="email" placeholder="your.email@example.com">
                     </div>
                 </div>
-            </div>
-
-            <div class="consent-field" style="margin: 20px 30px;">
-                <label style="display:flex;align-items:flex-start;gap:8px;">
-                    <input type="checkbox" required style="margin-top:4px;">
-                    <span>I agree to receive up to 10 automated text messages from My Real Evaluation about my free home-value estimate. Msg &amp; Data rates may apply. Reply STOP to cancel. <a href="/sms-terms" target="_blank">Read our SMS Terms</a>.</span>
-                </label>
+                    <div class="consent-field" style="margin: 20px 30px;">
+                    <label style="display:flex;align-items:flex-start;gap:8px;">
+                        <input type="checkbox" required style="margin-top:4px;">
+                        <span>I agree to receive up to 10 automated text messages from My Real Evaluation about my free home-value estimate. Msg &amp; Data rates may apply. Reply STOP to cancel. <a href="/sms-terms" target="_blank">Read our SMS Terms</a>.</span>
+                    </label>
+                </div>
             </div>
 
             <div class="navigation-buttons">
