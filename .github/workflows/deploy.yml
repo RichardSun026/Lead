@@ -8,11 +8,27 @@ jobs:
           host: ${{ secrets.SERVER_IP_pt_BR }}
           username: root
           password: ${{ secrets.SERVER_PASSWORD }}
+
+          envs: SUPABASE_URL,SUPABASE_ANON_KEY,SUPABASE_SERVICE_ROLE_KEY
+
           script: |
+            set -e
+            
+            export VITE_SUPABASE_URL="$SUPABASE_URL"
+            export VITE_SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY"
+
             cd /home/Lead
-            git pull
+
+            git fetch --all --prune
+            git checkout pt-BR
+            git reset --hard origin/pt-BR
+
             docker compose down --remove-orphans
-            docker compose build --no-cache
+            
+            docker compose build --pull --no-cache \
+              --build-arg VITE_SUPABASE_URL \
+              --build-arg VITE_SUPABASE_ANON_KEY
+
             docker compose up -d
             # Copy new host-level vhost and reload Ubuntu Nginx
             cp deploy/host-nginx/myrealvaluation.conf /etc/nginx/sites-available/
