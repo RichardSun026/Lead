@@ -19,7 +19,7 @@ export default function Callender({ realtorId, onSelect }) {
   const [booked, setBooked] = useState([]);
   const slots = generateSlots();
 
-  const headers = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const headers = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
   useEffect(() => {
     if (!selectedDate || !realtorId) return;
@@ -35,18 +35,18 @@ export default function Callender({ realtorId, onSelect }) {
   }, [selectedDate, realtorId]);
 
   const monthNames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro',
   ];
 
   function changeMonth(dir) {
