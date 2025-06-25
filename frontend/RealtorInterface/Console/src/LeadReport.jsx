@@ -66,8 +66,8 @@ export default function LeadReport() {
                   <ArrowLeft />
                 </Link>
                 <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">Lead Report</h1>
-                  <p className="text-blue-100">Comprehensive lead information and analysis</p>
+                  <h1 className="text-3xl font-bold text-white mb-2">Relatório de Lead</h1>
+                  <p className="text-blue-100">Informações e análise completas do lead</p>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -77,7 +77,7 @@ export default function LeadReport() {
                     className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
                   >
                     <Edit3 size={18} />
-                    Edit
+                    Editar
                   </button>
                 ) : (
                   <div className="flex gap-2">
@@ -86,14 +86,14 @@ export default function LeadReport() {
                       className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
                     >
                       <Save size={18} />
-                      Save
+                      Salvar
                     </button>
                     <button
                       onClick={handleCancel}
                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
                     >
                       <X size={18} />
-                      Cancel
+                      Cancelar
                     </button>
                   </div>
                 )}
@@ -107,7 +107,7 @@ export default function LeadReport() {
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
               <User className="text-blue-600" size={24} />
-              Contact Information
+              Informações de Contato
             </h2>
 
             <div className="space-y-4">
@@ -166,7 +166,7 @@ export default function LeadReport() {
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
               <MapPin className="text-blue-600" size={24} />
-              Location Details
+              Detalhes da Localização
             </h2>
 
             <div className="space-y-4">
@@ -195,7 +195,7 @@ export default function LeadReport() {
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
               <FileText className="text-blue-600" size={24} />
-              Survey Summary
+              Resumo da Pesquisa
             </h2>
 
             {isEditing ? (
@@ -215,7 +215,7 @@ export default function LeadReport() {
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
             <h2 className="text-xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
               <MessageSquare className="text-blue-600" size={24} />
-              Message Summary
+              Resumo das Mensagens
             </h2>
 
             {isEditing ? (
