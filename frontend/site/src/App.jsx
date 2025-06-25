@@ -33,7 +33,7 @@ export default function App() {
     const idx = parts[0] === 's' ? 1 : 0;
     console.debug('Parsed path parts', parts, 'using idx', idx);
     if (parts.length - idx < 1) {
-      setError('Missing realtor id');
+      setError('Corretor não identificado');
       setLoading(false);
       return;
     }
@@ -70,25 +70,25 @@ export default function App() {
       })
       .catch((err) => {
         console.error('Failed to load realtor', err);
-        setError('Failed to load realtor');
+        setError('Não foi possível carregar o corretor');
       })
       .finally(() => setLoading(false));
   }, []);
 
   // Removed the scheduled reminder text message
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
-  if (!realtor) return <p>No realtor found</p>;
+  if (!realtor) return <p>Corretor não encontrado</p>;
 
   return (
     <>
       <header className="header">
-        <h1>Thank you for filling out the survey!</h1>
+        <h1>Obrigado por responder à pesquisa!</h1>
         <p>
-          IMPORTANT!
+          IMPORTANTE!
           <br />
-          PLEASE WATCH THIS SHORT 1 MINUTE VIDEO
+          ASSISTA A ESTE VÍDEO DE 1 MINUTO
         </p>
       </header>
 
@@ -97,9 +97,9 @@ export default function App() {
       </div>
 
       <div className="contact-section">
-        <div className="contact-text">MY TEAM WILL BE IN CONTACT SHORTLY</div>
+        <div className="contact-text">MINHA EQUIPE ENTRARÁ EM CONTATO EM BREVE</div>
         <div className="skip-text">
-          OR Skip the line and schedule a call with me NOW
+          OU pule a fila e agende uma ligação comigo AGORA
         </div>
         <div className="calendar-section">
           <Callender
@@ -116,7 +116,7 @@ export default function App() {
               setBookingConfirmed(true);
               if (selection) {
                 alert(
-                  `Thank you for booking a meeting with ${realtor.name} at ${selection.date} ${selection.time}. ${realtor.name} will soon enter contact with you.`,
+                  `Obrigado por agendar uma reunião com ${realtor.name} em ${selection.date} ${selection.time}. ${realtor.name} entrará em contato em breve.`,
                 );
               }
             }}
@@ -131,7 +131,7 @@ export default function App() {
               rel="noreferrer"
               className="btn btn-website"
             >
-              🌐 Visit My Website!
+              🌐 Visite meu site!
             </a>
           )}
         </div>

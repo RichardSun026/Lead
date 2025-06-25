@@ -43,7 +43,7 @@ export default function BookingForm({ details, onBooked, user }) {
 
     if (!form.name || !form.phone) {
       console.debug('Attempted booking with missing fields', form);
-      setStatus('Name and phone are required');
+      setStatus('Nome e telefone são obrigatórios');
       return;
     }
 
@@ -53,7 +53,7 @@ export default function BookingForm({ details, onBooked, user }) {
       time: details.time,
     });
 
-    setStatus('Submitting...');
+    setStatus('Enviando...');
     const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -69,10 +69,10 @@ export default function BookingForm({ details, onBooked, user }) {
     console.debug('Booking response status', res.status);
 
     if (res.ok) {
-      setStatus('Booked!');
+      setStatus('Agendado!');
       onBooked();
     } else {
-      setStatus('Failed');
+      setStatus('Falha');
     }
   };
 
@@ -86,7 +86,7 @@ export default function BookingForm({ details, onBooked, user }) {
           name="name"
           value={form.name}
           onChange={handle}
-          placeholder="Name"
+          placeholder="Nome"
           required
         />
       </div>
@@ -96,7 +96,7 @@ export default function BookingForm({ details, onBooked, user }) {
           name="phone"
           value={form.phone}
           onChange={handle}
-          placeholder="Phone"
+          placeholder="Telefone"
           inputMode="tel"
           pattern="\(\d{3}\) ?\d{3}-\d{4}"
           maxLength="14"
@@ -104,7 +104,7 @@ export default function BookingForm({ details, onBooked, user }) {
         />
       </div>
       <button type="submit" className="btn-book">
-        Confirm {details.date} {details.time}
+        Confirmar {details.date} {details.time}
       </button>
       {status && <p>{status}</p>}
     </form>

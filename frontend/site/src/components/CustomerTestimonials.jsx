@@ -4,24 +4,24 @@ const testimonials = [
   {
     name: 'Sarah J.',
     rating: 5,
-    text: 'Absolutely incredible service! Highly recommend.'
+    text: 'Serviço absolutamente incrível! Recomendo muito.'
   },
   {
     name: 'Michael T.',
     rating: 4,
-    text: 'Very professional and knowledgeable.'
+    text: 'Muito profissional e experiente.'
   },
   {
     name: 'Jessica R.',
     rating: 5,
-    text: 'Top-notch expertise and responsiveness.'
+    text: 'Especialização e agilidade de primeira linha.'
   },
 ];
 
 export default function CustomerTestimonials() {
   return (
     <section className="testimonials-section">
-      <h3>Customer Testimonials</h3>
+      <h3>Depoimentos de Clientes</h3>
       <div className="testimonials-container">
         {testimonials.map((t, i) => (
           <div className="testimonial-card" key={i}>
