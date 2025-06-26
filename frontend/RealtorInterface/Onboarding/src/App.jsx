@@ -179,15 +179,21 @@ export default function App() {
     if (!res.ok) {
       let errorMsg = 'Falha ao salvar suas informações. Por favor, entre em contato conosco.';
       try {
-        const data = await res.json();
-        console.log('Create realtor error', data);
-        if (res.status === 400 && data && Array.isArray(data.message)) {
-          if (data.message.some((m) => m.includes('videoUrl'))) {
-            errorMsg =
-              'Embed do vídeo inválido. Cole o trecho completo do <iframe> do Vimeo.';
-          } else {
-            errorMsg = data.message.join(' ');
+        const contentType = res.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await res.json();
+          console.log('Create realtor error', data);
+          if (res.status === 400 && data && Array.isArray(data.message)) {
+            if (data.message.some((m) => m.includes('videoUrl'))) {
+              errorMsg =
+                'Embed do vídeo inválido. Cole o trecho completo do <iframe> do Vimeo.';
+            } else {
+              errorMsg = data.message.join(' ');
+            }
           }
+        } else {
+          const text = await res.text();
+          console.log('Create realtor error (non-JSON):', text);
         }
       } catch (err) {
         console.warn('Failed to parse error response', err);
