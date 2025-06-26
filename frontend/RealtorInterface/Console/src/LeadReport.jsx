@@ -19,6 +19,10 @@ export default function LeadReport() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    console.log('the app has started');
+  }, []);
+
+  useEffect(() => {
     async function fetchReport() {
       try {
         const res = await fetch(`/api/reports/${encodeURIComponent(phone)}`);
