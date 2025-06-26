@@ -177,19 +177,32 @@ export default function App() {
     console.log('POST /api/realtor response', res.status);
 
     if (!res.ok) {
-      let errorMsg = 'Falha ao salvar suas informações. Por favor, entre em contato conosco.';
+      let errorMsg =
+        'Falha ao salvar suas informações. Por favor, entre em contato conosco.';
+      if (res.status === 502) {
+        console.warn('Backend unavailable (502)');
+        alert(
+          'Não foi possível se comunicar com o servidor. Tente novamente mais tarde.',
+        );
+        setIsLoading(false);
+        return;
+      }
       try {
         const contentType = res.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
-          const data = await res.json();
-          console.log('Create realtor error', data);
-          if (res.status === 400 && data && Array.isArray(data.message)) {
-            if (data.message.some((m) => m.includes('videoUrl'))) {
-              errorMsg =
-                'Embed do vídeo inválido. Cole o trecho completo do <iframe> do Vimeo.';
-            } else {
-              errorMsg = data.message.join(' ');
+          try {
+            const data = await res.json();
+            console.log('Create realtor error', data);
+            if (res.status === 400 && data && Array.isArray(data.message)) {
+              if (data.message.some((m) => m.includes('videoUrl'))) {
+                errorMsg =
+                  'Embed do vídeo inválido. Cole o trecho completo do <iframe> do Vimeo.';
+              } else {
+                errorMsg = data.message.join(' ');
+              }
             }
+          } catch (err) {
+            console.warn('Failed to parse JSON error response', err);
           }
         } else {
           const text = await res.text();
