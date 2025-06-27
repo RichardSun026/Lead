@@ -108,24 +108,24 @@ export const surveyMarkup = `
                 <label class="question-label">Qual a metragem aproximada?</label>
                 <div class="radio-group">
                     <label class="radio-option">
-                        <input type="radio" name="sqft" value="under-1000">
-                        Menos de 1.000 pés²
+                        <input type="radio" name="sqft" value="under-50">
+                        Menos de 50 m²
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="sqft" value="1000-1499">
-                        1.000–1.499 pés²
+                        <input type="radio" name="sqft" value="50-99">
+                        50–99 m²
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="sqft" value="1500-1999">
-                        1.500–1.999 pés²
+                        <input type="radio" name="sqft" value="100-149">
+                        100–149 m²
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="sqft" value="2000-2499">
-                        2.000–2.499 pés²
+                        <input type="radio" name="sqft" value="150-199">
+                        150–199 m²
                     </label>
                     <label class="radio-option">
-                        <input type="radio" name="sqft" value="2500+">
-                        Acima de 2.500 pés²
+                        <input type="radio" name="sqft" value="200+">
+                        Acima de 200 m²
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="sqft" value="not-sure">
