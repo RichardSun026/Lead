@@ -2,9 +2,9 @@
 
 Este breve guia explica como vincular um Google Calendar para que as reservas criadas pelo site e pela IA permaneçam sincronizadas.
 
-## Verifique seu email
+## Sign in with Google
 
-Na primeira página será solicitado seu endereço de email. Após clicar em **Enviar link**, verifique sua caixa de entrada e abra a URL de verificação. Depois de confirmar o email, volte para a página de cadastro para continuar com o passo 2.
+The onboarding now starts by clicking **Sign in with Google**. After completing the Google consent screen you will be redirected back to the onboarding page to continue with step 2.
 
 O painel administrativo exibe um botão **Conectar Google Calendar** durante o processo de cadastro. Ao clicar, a tela de consentimento do Google é aberta usando o endpoint `/api/calendar/oauth/<realtorId>`. Após conceder acesso, o backend recebe um token de atualização para que as próximas chamadas de calendário funcionem sem novas solicitações.
 

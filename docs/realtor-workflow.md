@@ -7,9 +7,9 @@ This document describes the typical path a realtor follows through the system st
 - The button links to `/onboarding` for new realtors.
 
 ## 2. Onboarding Flow
-1. **Verify Email** – the onboarding app sends an OTP using `supabase.auth.signInWithOtp()`.
+1. **Google Login** – the onboarding app uses Google OAuth for authentication.
 2. **Personal Info** – the realtor enters name and phone number.
-3. **Create Account** – `supabase.auth.signUp()` registers the user and stores the generated `realtorId` in their profile.
+3. **Create Account** – a Supabase user is created automatically after Google sign in.
 4. **Connect Google Calendar** – a call to `/api/calendar/oauth/<realtorId>` opens Google's consent screen. After approval the backend stores tokens in the `google_credentials` table.
 5. After completion the realtor is redirected to the console at `/console`.
 
