@@ -103,8 +103,8 @@ export default function BookingForm({ details, onBooked, user }) {
           onChange={handle}
           placeholder="Telefone"
           inputMode="tel"
-          pattern="\(\d{3}\) ?\d{3}-\d{4}"
-          maxLength="14"
+          pattern="\(\d{2}\) \d{4,5}-\d{4}"
+          maxLength="15"
           required
         />
       </div>
