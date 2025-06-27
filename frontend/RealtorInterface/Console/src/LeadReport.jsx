@@ -23,7 +23,17 @@ export default function LeadReport() {
       try {
         const res = await fetch(`/api/reports/${encodeURIComponent(phone)}`);
         if (!res.ok) throw new Error('Failed to fetch');
-        const data = await res.json();
+
+        const contentType = res.headers.get('content-type') || '';
+        let data;
+        if (contentType.includes('application/json')) {
+          data = await res.json();
+        } else {
+          const text = await res.text();
+          throw new Error(
+            `Unexpected response: ${contentType || 'unknown'} ${text.slice(0, 100)}`,
+          );
+        }
         // older API versions returned first_name/last_name
         if (!data.name && (data.first_name || data.last_name)) {
           data.name = `${data.first_name ?? ''} ${data.last_name ?? ''}`.trim();
