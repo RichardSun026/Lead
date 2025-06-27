@@ -3,6 +3,7 @@ import { AgentService } from '../agentLogic/agent.service';
 import { LeadsService } from '../leads/leads.service';
 import { SchedulerService } from '../scheduler/scheduler.service';
 import { MessengerService } from '../messenger/messenger.service';
+import { WhatsAppService } from './whatsapp.service';
 
 @Controller('webhook')
 export class WhatsAppController {
@@ -13,6 +14,7 @@ export class WhatsAppController {
     private readonly leads: LeadsService,
     private readonly scheduler: SchedulerService,
     private readonly messenger: MessengerService,
+    private readonly whatsapp: WhatsAppService,
   ) {}
 
   @Get('whatsapp')
@@ -21,6 +23,11 @@ export class WhatsAppController {
       return challenge;
     }
     return 'error';
+  }
+
+  @Get('token')
+  async getToken() {
+    return this.whatsapp.sendToken();
   }
 
   @Post('whatsapp')
