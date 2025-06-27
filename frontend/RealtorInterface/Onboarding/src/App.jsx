@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   User,
-  Mail,
   Phone,
   Calendar,
   ArrowRight,
@@ -25,7 +24,6 @@ const formatPhone = (value) => {
 
 export default function App() {
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState('');
   const [info, setInfo] = useState({
     firstName: '',
     lastName: '',
@@ -37,7 +35,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [calendarConnected, setCalendarConnected] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     const logInitialSession = async () => {
@@ -105,26 +102,20 @@ export default function App() {
     info.video === '' ||
     (info.video.includes('player.vimeo.com') && info.video.includes('<iframe'));
 
-  const handleEmailSubmit = async (e) => {
-    e.preventDefault();
+  const handleGoogleLogin = async () => {
     setIsLoading(true);
-
-    console.log('Sending OTP to', email);
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: `https://www.myrealvaluation.com/onboarding/2` },
-
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: 'https://www.myrealvaluation.com/onboarding/2' },
     });
-    console.log('signInWithOtp result', { data, error });
-
+    if (error) console.error('Google login error', error.message);
     setIsLoading(false);
-    setEmailSent(true);
   };
 
   const handleInfoSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.debug('Step 2 continue clicked', { email, info });
+    console.debug('Step 2 continue clicked', { info });
 
     if (
       info.video &&
@@ -140,15 +131,13 @@ export default function App() {
 
     const { data: userData, error: userError } = await supabase.auth.getUser();
     console.log('getUser result', { userData, userError });
-    const user = userData?.user;
-    console.debug('Retrieved user for Step 2', user);
-    if (!user) {
-      alert(
-        'Please open the verification link sent to your email before continuing.',
-      );
-      setIsLoading(false);
-      return;
-    }
+      const user = userData?.user;
+      console.debug('Retrieved user for Step 2', user);
+      if (!user) {
+        alert('Please sign in with Google to continue.');
+        setIsLoading(false);
+        return;
+      }
 
     console.debug('Submitting realtor info for', {
       id: user.id,
@@ -232,13 +221,13 @@ export default function App() {
             <span className="text-white/80 text-sm font-medium">
               Step {step} of 3
             </span>
-            <span className="text-white/60 text-sm">
-              {step === 1
-                ? 'Verify Email'
-                : step === 2
-                  ? 'Personal Info'
-                  : 'Setup Complete'}
-            </span>
+              <span className="text-white/60 text-sm">
+                {step === 1
+                  ? 'Google Login'
+                  : step === 2
+                    ? 'Personal Info'
+                    : 'Setup Complete'}
+              </span>
           </div>
           <div className="w-full bg-white/20 rounded-full h-2">
             <div
@@ -250,34 +239,17 @@ export default function App() {
 
         {/* Main card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 transform transition-all duration-500 hover:shadow-3xl">
-          {step === 1 && !emailSent && (
-            <form className="space-y-6" onSubmit={handleEmailSubmit}>
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
-                  <Mail className="w-8 h-8 text-white" />
-                </div>
-                <h2 className="text-3xl font-bold text-white mb-2">
-                  Verify your email
-                </h2>
-                <p className="text-white/70">
-                  We'll send you a link to confirm it
-                </p>
+          {step === 1 && (
+            <div className="space-y-6 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
+                <CheckCircle className="w-8 h-8 text-white" />
               </div>
-
-              <div className="relative">
-                <Mail className="absolute left-3 top-3.5 w-5 h-5 text-white/50" />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full bg-gray-700 border border-gray-500 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
-                />
-              </div>
+              <h2 className="text-3xl font-bold text-white mb-2">Sign in</h2>
+              <p className="text-white/70">Use your Google account to continue</p>
 
               <button
-                type="submit"
+                type="button"
+                onClick={handleGoogleLogin}
                 disabled={isLoading}
                 className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -285,26 +257,11 @@ export default function App() {
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                 ) : (
                   <>
-                    <span>Send Link</span>
+                    <span>Sign in with Google</span>
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
               </button>
-            </form>
-          )}
-          {step === 1 && emailSent && (
-            <div className="space-y-6 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
-                <CheckCircle className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-3xl font-bold text-white mb-2">
-                Check your email
-              </h2>
-              <p className="text-white/70">
-                We just sent a verification link to {email}. Look for a message
-                from "Supabase Auth" (noreply@mail.app.supabase.io) and click
-                the link&mdash;there&apos;s no need to come back here.
-              </p>
             </div>
           )}
 

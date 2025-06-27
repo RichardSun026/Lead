@@ -11,8 +11,6 @@ const supabase = createClient(
 export default function LeadsList() {
   const [leads, setLeads] = useState([]);
   const [session, setSession] = useState(null);
-  const [email, setEmail] = useState('');
-  const [emailSent, setEmailSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -63,13 +61,11 @@ export default function LeadsList() {
     initAuth();
   }, []);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: 'https://www.myrealvaluation.com/console/' },
+  const handleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: 'https://www.myrealvaluation.com/console/' },
     });
-    setEmailSent(true);
   };
 
   const handleLogout = async () => {
@@ -89,29 +85,12 @@ export default function LeadsList() {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
-          {emailSent ? (
-            <p className="text-center">
-              Check your email ({email}) for a login link.
-            </p>
-          ) : (
-            <form onSubmit={handleLogin} className="space-y-4">
-              <h1 className="text-xl font-bold text-center">Login</h1>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-                className="w-full border rounded p-2"
-              />
-              <button
-                type="submit"
-                className="w-full bg-blue-600 text-white rounded p-2"
-              >
-                Send Magic Link
-              </button>
-            </form>
-          )}
+          <button
+            onClick={handleLogin}
+            className="w-full bg-blue-600 text-white rounded p-2"
+          >
+            Sign in with Google
+          </button>
         </div>
       </div>
     );
