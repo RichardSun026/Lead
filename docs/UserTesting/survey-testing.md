@@ -19,7 +19,7 @@ curl -X POST http://134.199.198.237:3000/api/leads \
     "homeType": "single-family",
     "bedrooms": "3",
     "bathrooms": "2",
-    "sqft": "1500-1999",
+    "sqft": "100-149",
     "yearBuilt": "1990-2010",
     "occupancy": "i-live",
     "timeframe": "within-3-months",

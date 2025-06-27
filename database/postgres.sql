@@ -44,11 +44,11 @@ create type public.home_type_enum as enum (
 create type public.bedrooms_enum as enum ('1','2','3','4','5+');
 create type public.bathrooms_enum as enum ('1','1.5','2','2.5','3+');
 create type public.sqft_enum as enum (
-    'under-1000',
-    '1000-1499',
-    '1500-1999',
-    '2000-2499',
-    '2500+',
+    'under-50',
+    '50-99',
+    '100-149',
+    '150-199',
+    '200+',
     'not-sure'
 );
 create type public.year_built_enum as enum (
