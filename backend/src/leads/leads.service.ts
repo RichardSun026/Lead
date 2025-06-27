@@ -279,32 +279,32 @@ export class LeadsService {
 
     const realtorName = lead.realtor
       ? `${lead.realtor.f_name ?? ''} ${lead.realtor.e_name ?? ''}`.trim()
-      : 'the realtor';
+      : 'o corretor';
 
     const bool = (v?: string) => {
       if (!v) return '';
       return v.toLowerCase() === 'yes'
-        ? 'Yes'
+        ? 'Sim'
         : v.toLowerCase() === 'no'
-          ? 'No'
+          ? 'Não'
           : '';
     };
 
     const answers = [
-      { question: 'ZIP code', answer: lead.zipcode ?? '' },
-      { question: 'Home type', answer: lead.home_type ?? '' },
-      { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
-      { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
-      { question: 'Square meters', answer: lead.sqft ?? '' },
-      { question: 'Year built', answer: lead.home_built ?? '' },
-      { question: 'Occupancy', answer: lead.occupancy ?? '' },
-      { question: 'Selling timeframe', answer: lead.sell_time ?? '' },
+      { question: 'Código Postal', answer: lead.zipcode ?? '' },
+      { question: 'Tipo de imóvel', answer: lead.home_type ?? '' },
+      { question: 'Quartos', answer: lead.bedrooms ?? '' },
+      { question: 'Banheiros', answer: lead.bathrooms ?? '' },
+      { question: 'Metros quadrados', answer: lead.sqft ?? '' },
+      { question: 'Ano de construção', answer: lead.home_built ?? '' },
+      { question: 'Ocupação', answer: lead.occupancy ?? '' },
+      { question: 'Prazo de venda', answer: lead.sell_time ?? '' },
       {
-        question: 'Working with an agent',
+        question: 'Trabalhando com um corretor',
         answer: bool(lead.working_with_agent),
       },
       {
-        question: 'Looking to buy',
+        question: 'Procurando comprar',
         answer: bool(lead.looking_to_buy),
       },
     ].filter((a) => a.answer);
