@@ -116,7 +116,7 @@ export default function App() {
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: 'https://www.myrealvaluation.com/onboarding/2' },
+      options: { redirectTo: 'https://br.myrealvaluation.com/onboarding/2' },
     });
     if (error) console.error('Google login error', error.message);
     setIsLoading(false);

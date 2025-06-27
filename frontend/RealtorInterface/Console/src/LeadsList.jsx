@@ -64,7 +64,7 @@ export default function LeadsList() {
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: 'https://www.myrealvaluation.com/console/' },
+      options: { redirectTo: 'https://br.myrealvaluation.com/console/' },
     });
   };
 
