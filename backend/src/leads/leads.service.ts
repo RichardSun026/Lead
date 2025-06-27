@@ -295,7 +295,7 @@ export class LeadsService {
       { question: 'Home type', answer: lead.home_type ?? '' },
       { question: 'Bedrooms', answer: lead.bedrooms ?? '' },
       { question: 'Bathrooms', answer: lead.bathrooms ?? '' },
-      { question: 'Square footage', answer: lead.sqft ?? '' },
+      { question: 'Square meters', answer: lead.sqft ?? '' },
       { question: 'Year built', answer: lead.home_built ?? '' },
       { question: 'Occupancy', answer: lead.occupancy ?? '' },
       { question: 'Selling timeframe', answer: lead.sell_time ?? '' },
