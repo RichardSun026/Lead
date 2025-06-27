@@ -91,6 +91,6 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "type": "module",
+  "type": "commonjs",
   "packageManager": "pnpm@8.6.10"
 }
