@@ -7,16 +7,12 @@ import {
   Hash,
   FileText,
   MessageSquare,
-  Edit3,
-  Save,
-  X,
   ArrowLeft,
 } from 'lucide-react';
 import { useParams, Link } from 'react-router-dom';
 export default function LeadReport() {
   const { phone } = useParams();
   const [leadData, setLeadData] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     async function fetchReport() {
@@ -46,22 +42,6 @@ export default function LeadReport() {
     fetchReport();
   }, [phone]);
 
-  const handleInputChange = (field, value) => {
-    setLeadData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-    // typically you would persist changes here
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
-
   if (!leadData) return <div className="p-4">Loading...</div>;
 
   return (
@@ -80,34 +60,7 @@ export default function LeadReport() {
                   <p className="text-blue-100">Informações e análise completas do lead</p>
                 </div>
               </div>
-              <div className="flex gap-3">
-                {!isEditing ? (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
-                  >
-                    <Edit3 size={18} />
-                    Editar
-                  </button>
-                ) : (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleSave}
-                      className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
-                    >
-                      <Save size={18} />
-                      Salvar
-                    </button>
-                    <button
-                      onClick={handleCancel}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-200"
-                    >
-                      <X size={18} />
-                      Cancelar
-                    </button>
-                  </div>
-                )}
-              </div>
+              <div/>
             </div>
           </div>
         </div>
@@ -123,52 +76,25 @@ export default function LeadReport() {
             <div className="space-y-4">
               <div className="group">
                 <label className="block text-sm font-medium text-gray-600 mb-2">Name</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={leadData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                ) : (
-                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800">
-                    {leadData.name}
-                  </div>
-                )}
+                <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800">
+                  {leadData.name}
+                </div>
               </div>
 
               <div className="group">
                 <label className="block text-sm font-medium text-gray-600 mb-2">Phone</label>
-                {isEditing ? (
-                  <input
-                    type="tel"
-                    value={leadData.phone}
-                    onChange={(e) => handleInputChange('phone', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                ) : (
-                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
-                    <Phone size={16} className="text-blue-600" />
-                    {leadData.phone}
-                  </div>
-                )}
+                <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
+                  <Phone size={16} className="text-blue-600" />
+                  {leadData.phone}
+                </div>
               </div>
 
               <div className="group">
                 <label className="block text-sm font-medium text-gray-600 mb-2">Email</label>
-                {isEditing ? (
-                  <input
-                    type="email"
-                    value={leadData.email || ''}
-                    onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                ) : (
-                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
-                    <Mail size={16} className="text-blue-600" />
-                    {leadData.email || 'N/A'}
-                  </div>
-                )}
+                <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
+                  <Mail size={16} className="text-blue-600" />
+                  {leadData.email || 'N/A'}
+                </div>
               </div>
             </div>
           </div>
@@ -182,19 +108,10 @@ export default function LeadReport() {
             <div className="space-y-4">
               <div className="group">
                 <label className="block text-sm font-medium text-gray-600 mb-2">ZIP code</label>
-                {isEditing ? (
-                  <input
-                    type="text"
-                    value={leadData.zipcode}
-                    onChange={(e) => handleInputChange('zipcode', e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  />
-                ) : (
-                  <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
-                    <Hash size={16} className="text-blue-600" />
-                    {leadData.zipcode}
-                  </div>
-                )}
+                <div className="bg-gray-50 px-4 py-3 rounded-xl font-medium text-gray-800 flex items-center gap-2">
+                  <Hash size={16} className="text-blue-600" />
+                  {leadData.zipcode}
+                </div>
               </div>
             </div>
           </div>
@@ -207,19 +124,10 @@ export default function LeadReport() {
               <FileText className="text-blue-600" size={24} />
               Resumo da Pesquisa
             </h2>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
+              {leadData.surveySummary}
+            </div>
 
-            {isEditing ? (
-              <textarea
-                value={leadData.surveySummary}
-                onChange={(e) => handleInputChange('surveySummary', e.target.value)}
-                rows="6"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-              />
-            ) : (
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
-                {leadData.surveySummary}
-              </div>
-            )}
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
@@ -227,21 +135,9 @@ export default function LeadReport() {
               <MessageSquare className="text-blue-600" size={24} />
               Resumo das Mensagens
             </h2>
-
-            {isEditing ? (
-              <textarea
-                value={leadData.messageSummary?.content || ''}
-                onChange={(e) =>
-                  handleInputChange('messageSummary', { ...leadData.messageSummary, content: e.target.value })
-                }
-                rows="6"
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-              />
-            ) : (
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
-                {leadData.messageSummary?.content}
-              </div>
-            )}
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 px-4 py-4 rounded-xl text-gray-700 leading-relaxed">
+              {leadData.messageSummary?.content}
+            </div>
           </div>
         </div>
 
