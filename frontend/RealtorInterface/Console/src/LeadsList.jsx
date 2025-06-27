@@ -87,7 +87,7 @@ export default function LeadsList() {
 
   if (!session) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-red-400 to-yellow-600 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-white flex items-center justify-center p-6">
         <div className="bg-white/90 backdrop-blur rounded-2xl shadow-xl p-8 w-full max-w-sm">
           {emailSent ? (
             <p className="text-center">
@@ -118,9 +118,9 @@ export default function LeadsList() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-400 to-yellow-600 p-6">
+    <div className="min-h-screen bg-white p-6">
       <div className="container mx-auto bg-white/90 backdrop-blur rounded-2xl shadow-xl overflow-hidden">
-        <div className="header bg-gradient-to-r from-slate-700 to-blue-500 text-white p-6 relative">
+        <div className="header bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6 relative">
           <Settings
             className="settings-cog absolute left-4 top-4 w-6 h-6 cursor-pointer"
             onClick={() => setMenuOpen((v) => !v)}
