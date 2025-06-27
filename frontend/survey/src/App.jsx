@@ -307,9 +307,9 @@ export default function App() {
           time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
           phone,
           content:
-            `Hi ${name}, thanks for taking the time to fill out the home valuation survey. To help refine your estimate, I’d like to ask a couple of quick questions.
+            `Olá ${name}, obrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.
 
-Could you tell me a bit about any recent updates or improvements you’ve made to the property? Things like kitchen remodels, new roofing, or updated flooring can really influence value.
+Você poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.
 `,
         }),
       });
