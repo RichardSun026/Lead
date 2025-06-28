@@ -11,6 +11,7 @@ owns ports **80/443** and forwards requests to Docker-mapped ports:
 | `/onboarding` | `onboarding` | `4175` |
 | `/console` | `console` | `4176` |
 | `/sms-terms` | `smsterms` | `4178` |
+| `/privacy` | `privacy` | `4179` |
 | `/api/` | `api` | `3000` |
 
 ## Deployment steps
