@@ -19,7 +19,7 @@ export class WhatsAppController {
 
   @Get('whatsapp')
   verify(@Query('hub.mode') mode: string, @Query('hub.challenge') challenge: string, @Query('hub.verify_token') token: string) {
-    if (mode === 'subscribe' && token === (process.env.WA_VERIFY_TOKEN ?? 'MRE_WhatsApp_5tkllkkjjuy5')) {
+    if (mode === 'subscribe' && token === process.env.WA_VERIFY_TOKEN ) {
       return challenge;
     }
     return 'error';
