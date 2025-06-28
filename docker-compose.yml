@@ -105,3 +105,14 @@ services:
       - api
     ports:
       - "4179:80"
+      
+  privacy:
+    build:
+      context: .
+      dockerfile: frontend/privacy/Dockerfile
+    env_file:
+      - backend/.env
+    depends_on:
+      - api
+    ports:
+      - "4180:80"

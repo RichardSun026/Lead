@@ -12,6 +12,7 @@ owns ports **80/443** and forwards requests to Docker-mapped ports:
 | `/console` | `console` | `4176` |
 | `/sms-terms` | `smsterms` | `4178` |
 | `/terms` | `terms` | `4179` |
+| `/privacy` | `privacy` | `4180` |
 | `/api/` | `api` | `3000` |
 
 ## Deployment steps
