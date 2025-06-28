@@ -94,3 +94,14 @@ services:
       - api
     ports:
       - "4178:80"
+
+  terms:
+    build:
+      context: .
+      dockerfile: frontend/terms/Dockerfile
+    env_file:
+      - backend/.env
+    depends_on:
+      - api
+    ports:
+      - "4179:80"
