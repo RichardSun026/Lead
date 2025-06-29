@@ -2,6 +2,11 @@ import { createClient } from '@supabase/supabase-js';
 import { TwilioService } from '../twilio/twilio.service';
 import Redis from 'ioredis';
 
+const TEMPLATE_TEXT: Record<string, string> = {
+  '[template:opt_in_pt]':
+    'Olá {{name}},\nobrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.\n\n\nVocê poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.',
+};
+
 const supabase = createClient<any>(
   process.env.SUPABASE_URL ?? '',
   process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
@@ -47,9 +52,10 @@ export async function handler(): Promise<void> {
         .from('scheduled_messages')
         .update({ message_status: 'sent' })
         .eq('id', raw.id);
+      const content = TEMPLATE_TEXT[raw.message_text ?? ''] ?? (raw.message_text ?? '');
       await redis.rpush(
         LIST(raw.phone),
-        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
+        JSON.stringify({ role: 'assistant', content }),
       );
     } catch (err) {
       console.error(`Send failed for ${raw.id}`, err);
@@ -57,9 +63,10 @@ export async function handler(): Promise<void> {
         .from('scheduled_messages')
         .update({ message_status: 'failed' })
         .eq('id', raw.id);
+      const content = TEMPLATE_TEXT[raw.message_text ?? ''] ?? (raw.message_text ?? '');
       await redis.rpush(
         LIST(raw.phone),
-        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
+        JSON.stringify({ role: 'assistant', content }),
       );
     }
   }

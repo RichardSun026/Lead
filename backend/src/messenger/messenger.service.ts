@@ -3,6 +3,10 @@ import { TwilioService } from '../twilio/twilio.service';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { ConversationService } from '../clientRedis/conversation.service';
 
+const TEMPLATE_TEXT: Record<string, string> = {
+  '[template:opt_in_pt]':
+    'Olá {{name}},\nobrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.\n\n\nVocê poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.',
+};
 @Injectable()
 export class MessengerService {
   private readonly log = new Logger('MessengerService');
@@ -44,7 +48,7 @@ export class MessengerService {
         if (storeMessage) {
           await this.conversation.store(phone, {
             role: 'assistant',
-            content: text,
+            content: TEMPLATE_TEXT[text] ?? text,
           });
         }
         return;
@@ -60,7 +64,7 @@ export class MessengerService {
       if (storeMessage) {
         await this.conversation.store(phone, {
           role: 'assistant',
-          content: text,
+          content: TEMPLATE_TEXT[text] ?? text,
         });
       }
     } catch (err) {
@@ -74,7 +78,7 @@ export class MessengerService {
       if (storeMessage) {
         await this.conversation.store(phone, {
           role: 'assistant',
-          content: text,
+          content: TEMPLATE_TEXT[text] ?? text,
         });
       }
     }
