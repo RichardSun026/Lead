@@ -30,7 +30,6 @@ import { RealtorService } from './realtor/realtor.service';
 import { ReportsController } from './reports/reports.controller';
 import { ReportsService } from './reports/reports.service';
 import { WhatsAppController } from './whatsapp/whatsapp.controller';
-import { WhatsAppTestController } from './whatsapp/test-send.controller';
 
 import { OpenAiService } from './agentHelp/openai.service';
 import { PromptService } from './agentHelp/prompt.service';
@@ -94,7 +93,6 @@ import { PromptService } from './agentHelp/prompt.service';
     SystemMessageController,
     ReportsController,
     WhatsAppController,
-    WhatsAppTestController,
   ],
   providers: [
     AppService,
