@@ -3,7 +3,7 @@
 Before publishing the Lead Management System, verify that the following features work as expected:
 
 ## Backend
-- [ ] Database migrations run successfully and data persists across restarts.<br>_Redis dose not persits._
+- [ ] Database migrations run successfully and data persists across restarts.<br>-_Redis dose not persits._
 - [ ] Background jobs and queues (BullMQ) process tasks correctly.
 - [ ] Environment variables are loaded and validated.
 - [ ] Make this github is private.
