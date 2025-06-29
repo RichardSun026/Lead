@@ -7,5 +7,5 @@ export function normalizePhone(phone: string): string {
   if (cleaned.length > 11) {
     cleaned = cleaned.slice(cleaned.length - 11);
   }
-  return '+55' + cleaned;
+  return '55' + cleaned;
 }

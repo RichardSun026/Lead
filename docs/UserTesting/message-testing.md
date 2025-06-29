@@ -13,7 +13,7 @@ Send a POST request to the `/message` endpoint with the target phone number and 
 ```bash
 curl -X POST http://134.199.198.237:3000/api/message \
   -H "Content-Type: application/json" \
-  -d '{"phone": "+5511999999999", "message": "Hello thank you for the message, yes i am instrested in selling my house"}'
+  -d '{"phone": "5511999999999", "message": "Hello thank you for the message, yes i am instrested in selling my house"}'
 ```
 
 The server replies with the assistant's message in JSON:

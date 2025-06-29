@@ -159,7 +159,7 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: `${info.firstName} ${info.lastName}`.trim(),
-        phone: '+55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
+        phone: '55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
         userId: user.id,
         websiteUrl: info.website || null,
         videoUrl: info.video || null,
@@ -191,7 +191,7 @@ export default function App() {
     setRealtor({
       realtor_id: user.id,
       name: `${info.firstName} ${info.lastName}`.trim(),
-      phone: '+55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
+      phone: '55' + info.phone.replace(/\D/g, '').replace(/^55/, '').slice(-11),
       website_url: info.website,
       video_url: info.video,
     });
