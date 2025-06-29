@@ -246,7 +246,7 @@ export default function App() {
       const formData = new FormData(form);
       const name = formData.get('fullName');
       const rawPhone = formData.get('phone');
-      const phone = '+55' + String(rawPhone).replace(/\D/g, '').replace(/^55/, '').slice(-11);
+      const phone = '55' + String(rawPhone).replace(/\D/g, '').replace(/^55/, '').slice(-11);
       const email = formData.get('email') || '';
       const zipcode = formData.get('zipcode') || '';
       const homeType = formData.get('homeType') || '';
