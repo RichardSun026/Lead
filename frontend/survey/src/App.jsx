@@ -5,6 +5,7 @@ import './App.css';
 export default function App() {
   useEffect(() => {
     const url = new URL(window.location.href);
+    const isBrazil = url.hostname.startsWith('br.');
     const parts = url.pathname.split('/').filter(Boolean);
     const idx = parts[0] === 'survey' ? 1 : 0;
     const realtorId = parts[idx] || '';
@@ -27,12 +28,17 @@ export default function App() {
       return digits.slice(0, 5) + '-' + digits.slice(5);
     };
     const formatPhone = (value) => {
-      const digits = value.replace(/\D/g, '').slice(0, 10);
-      let out = '';
-      if (digits.length > 0) out += '(' + digits.slice(0, 3);
-      if (digits.length >= 4) out += ') ' + digits.slice(3, 6);
-      if (digits.length >= 7) out += '-' + digits.slice(6, 10);
-      return out;
+      const digits = value.replace(/\D/g, '');
+      if (isBrazil) {
+        const d = digits.slice(0, 11);
+        if (d.length <= 2) return '(' + d;
+        if (d.length <= 7) return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+        return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+      }
+      const d = digits.slice(0, 10);
+      if (d.length <= 3) return '(' + d;
+      if (d.length <= 6) return '(' + d.slice(0, 3) + ') ' + d.slice(3);
+      return '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
     };
     if (zipInput) {
       zipInput.addEventListener('input', (e) => {
@@ -40,6 +46,10 @@ export default function App() {
       });
     }
     if (phoneInput) {
+      if (isBrazil) {
+        phoneInput.placeholder = '(11) 91234-5678';
+        phoneInput.maxLength = 15;
+      }
       phoneInput.addEventListener('input', (e) => {
         e.target.value = formatPhone(e.target.value);
       });
@@ -237,7 +247,10 @@ export default function App() {
       const formData = new FormData(form);
       const name = formData.get('fullName');
       const rawPhone = formData.get('phone');
-      const phone = '+1' + String(rawPhone).replace(/\D/g, '').slice(-10);
+      const digits = String(rawPhone).replace(/\D/g, '');
+      const phone = isBrazil
+        ? '+55' + digits.slice(-11)
+        : '+1' + digits.slice(-10);
       const email = formData.get('email') || '';
       const zipcode = formData.get('zipcode') || '';
       const homeType = formData.get('homeType') || '';
