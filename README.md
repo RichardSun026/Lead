@@ -23,6 +23,8 @@ All services can be started with Docker:
 docker-compose up --build
 ```
 This brings up the API, both front ends and Redis using the same ports as above.
+Redis uses a named Docker volume (`redis-data`) so conversation history
+persists across container restarts.
 
 ### Deployment (host Nginx)
 Ubuntu’s built-in Nginx now owns ports **80/443**. All Docker services expose
