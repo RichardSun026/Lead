@@ -325,7 +325,7 @@ export default function App() {
                     onChange={(e) =>
                       setInfo({ ...info, phone: formatPhone(e.target.value) })
                     }
-                    maxLength={14}
+                    maxLength={15}
                     required
                     className="w-full bg-gray-700 border border-gray-500 rounded-xl pl-12 pr-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-pink-400/50 focus:border-transparent transition-all duration-300"
                   />
