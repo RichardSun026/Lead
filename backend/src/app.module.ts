@@ -22,6 +22,7 @@ import { SchedulerService } from './scheduler/scheduler.service';
 import { LeadsService } from './leads/leads.service';
 import { MessengerService } from './messenger/messenger.service';
 import { WhatsAppService } from './whatsapp/whatsapp.service';
+import { WhatsAppTestController } from './whatsapp/test.controller';
 import { BookingService } from './booking/booking.service';
 import { BookingController } from './booking/booking.controller';
 import { SystemMessageController } from './system-message.controller';
@@ -93,6 +94,7 @@ import { PromptService } from './agentHelp/prompt.service';
     SystemMessageController,
     ReportsController,
     WhatsAppController,
+    WhatsAppTestController,
   ],
   providers: [
     AppService,
