@@ -12,3 +12,4 @@ Guides and references for working with the Lead Management System.
 - [Sending Test Messages](UserTesting/message-testing.md)
 - [Open Questions](open-questions.md)
 - [Host-level Nginx Setup](host-nginx.md)
+- [Release Testing Checklist](release-checklist.md)
