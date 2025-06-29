@@ -9,6 +9,10 @@ export class MessengerService {
   private readonly supabase: SupabaseClient<any>;
   private readonly limit = Number(process.env.MESSAGE_LIMIT ?? '10');
 
+  private optInPtText(name: string): string {
+    return `Olá ${name},\nobrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.\n\nVocê poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.`;
+  }
+
   constructor(
     private readonly conversation: ConversationService,
     private readonly whatsapp: WhatsAppService,
@@ -96,9 +100,25 @@ export class MessengerService {
         status: 'sent',
       });
       if (storeMessage) {
+        let content = `[template:${name}]`;
+        if (name === 'opt_in_pt') {
+          let userName = '{{name}}';
+          if (Array.isArray(components)) {
+            const header = components.find(
+              (c: any) => c && c.type === 'HEADER',
+            ) as any;
+            if (header && Array.isArray(header.parameters)) {
+              const param = header.parameters.find(
+                (p: any) => p && p.type === 'TEXT' && typeof p.text === 'string',
+              ) as any;
+              if (param) userName = param.text;
+            }
+          }
+          content = this.optInPtText(userName);
+        }
         await this.conversation.store(phone, {
           role: 'assistant',
-          content: `[template:${name}]`,
+          content,
         });
       }
     } catch (err) {
@@ -110,9 +130,25 @@ export class MessengerService {
         status: 'failed',
       });
       if (storeMessage) {
+        let content = `[template:${name}]`;
+        if (name === 'opt_in_pt') {
+          let userName = '{{name}}';
+          if (Array.isArray(components)) {
+            const header = components.find(
+              (c: any) => c && c.type === 'HEADER',
+            ) as any;
+            if (header && Array.isArray(header.parameters)) {
+              const param = header.parameters.find(
+                (p: any) => p && p.type === 'TEXT' && typeof p.text === 'string',
+              ) as any;
+              if (param) userName = param.text;
+            }
+          }
+          content = this.optInPtText(userName);
+        }
         await this.conversation.store(phone, {
           role: 'assistant',
-          content: `[template:${name}]`,
+          content,
         });
       }
     }
