@@ -255,8 +255,8 @@ export default function App() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-pink-400 to-purple-400 rounded-full mb-4">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white mb-2">Sign in</h2>
-              <p className="text-white/70">Use your Google account to continue</p>
+              <h2 className="text-3xl font-bold text-white mb-2">Cadastre-se</h2>
+              <p className="text-white/70">Use sua conta do Google para continuar</p>
 
               <button
                 type="button"
