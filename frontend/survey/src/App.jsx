@@ -304,7 +304,7 @@ export default function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
+          time: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
           phone,
           name: 'opt_in_pt',
           language: 'pt_BR',
