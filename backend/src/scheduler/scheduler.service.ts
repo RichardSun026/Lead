@@ -18,6 +18,7 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     id: number;
     phone: string;
     message_text?: string | null;
+    message_type?: string | null;
   } {
     return (
       typeof row === 'object' && row !== null && 'id' in row && 'phone' in row
@@ -71,6 +72,40 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
     }
   }
 
+  async scheduleTemplate(
+    phone: string,
+    time: string,
+    name: string,
+    language: string,
+    components?: unknown[],
+  ): Promise<void> {
+    const sanitized = normalizePhone(phone);
+    try {
+      const { data: lead, error } = await this.client
+        .from('leads')
+        .select('realtor_id')
+        .eq('phone', sanitized)
+        .maybeSingle();
+      if (error) {
+        this.log.error('Failed to fetch realtor_id', error as Error);
+        throw error;
+      }
+      const realtorId = (lead as { realtor_id: string } | null)?.realtor_id;
+      if (!realtorId) throw new Error('Invalid phone number');
+      await this.client.from('scheduled_messages').insert({
+        phone: sanitized,
+        realtor_id: realtorId,
+        scheduled_time: time,
+        message_type: 'template',
+        message_text: JSON.stringify({ name, language, components }),
+      });
+      this.log.log(`Template scheduled for ${sanitized} at ${time}`);
+    } catch (err) {
+      this.log.error('scheduleTemplate failed', err as Error);
+      throw err;
+    }
+  }
+
   async scheduleFollowUps(phone: string, appointment: string): Promise<void> {
     const sanitized = normalizePhone(phone);
     const eventTime = new Date(appointment);
@@ -120,7 +155,17 @@ export class SchedulerService implements OnModuleInit, OnModuleDestroy {
         continue;
       }
       try {
-        await this.messenger.sendSms(raw.phone, raw.message_text ?? '');
+        if (raw.message_type === 'template' && raw.message_text) {
+          const t = JSON.parse(raw.message_text);
+          await this.messenger.sendTemplate(
+            raw.phone,
+            t.name,
+            t.language,
+            t.components,
+          );
+        } else {
+          await this.messenger.sendSms(raw.phone, raw.message_text ?? '');
+        }
         await this.client
           .from('scheduled_messages')
           .update({ message_status: 'sent' })

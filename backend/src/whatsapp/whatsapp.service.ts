@@ -81,4 +81,61 @@ export class WhatsAppService {
       throw new Error(`WhatsApp API error ${res.status}`);
     }
   }
+
+  async sendTemplate(
+    to: string,
+    name: string,
+    language: string,
+    components?: unknown[],
+  ): Promise<void> {
+    if (!this.phoneNumberId || !this.token) {
+      this.log.warn('WhatsApp disabled: missing WA_PHONE_NUMBER_ID or WA_TOKEN');
+      return;
+    }
+    const url = `https://graph.facebook.com/v23.0/${this.phoneNumberId}/messages`;
+    const payload: Record<string, unknown> = {
+      messaging_product: 'whatsapp',
+      to,
+      type: 'template',
+      template: {
+        name,
+        language: { code: language },
+      },
+    };
+    if (components) {
+      (payload.template as Record<string, unknown>).components = components;
+    }
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      this.log.error(`Failed to send template: ${text}`);
+      let notRegistered = false;
+      try {
+        const data = JSON.parse(text);
+        const err = data?.error;
+        if (err?.code === 133010 || err?.error_subcode === 2593006) {
+          notRegistered = true;
+        }
+      } catch {
+        // ignore JSON parse failures
+      }
+      if (notRegistered) {
+        const firstAttempt = !this.registrationAttempted;
+        this.log.warn('WhatsApp account not registered. Attempting registration.');
+        await this.registerPhoneIfNeeded();
+        if (firstAttempt) {
+          return this.sendTemplate(to, name, language, components);
+        }
+        return;
+      }
+      throw new Error(`WhatsApp API error ${res.status}`);
+    }
+  }
 }
