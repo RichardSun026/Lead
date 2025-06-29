@@ -16,6 +16,19 @@ export class SchedulerController {
     return { status: 'scheduled' };
   }
 
+  @Post('template')
+  @HttpCode(201)
+  async scheduleTemplate(
+    @Body('time') time: string,
+    @Body('phone') phone: string,
+    @Body('name') name: string,
+    @Body('language') language: string,
+    @Body('components') components?: unknown[],
+  ) {
+    await this.scheduler.scheduleTemplate(phone, time, name, language, components);
+    return { status: 'scheduled' };
+  }
+
   @Post('cancel/:phone')
   @HttpCode(200)
   async cancel(@Param('phone') phone: string) {

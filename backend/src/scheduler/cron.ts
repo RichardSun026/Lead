@@ -13,7 +13,12 @@ const LIST = (phone: string) => `phone:${phone}:json`;
 
 function isRow(
   row: unknown,
-): row is { id: number; phone: string; message_text?: string | null } {
+): row is {
+  id: number;
+  phone: string;
+  message_text?: string | null;
+  message_type?: string | null;
+} {
   return (
     typeof row === 'object' && row !== null && 'id' in row && 'phone' in row
   );
@@ -41,7 +46,12 @@ export async function handler(): Promise<void> {
       continue;
     }
     try {
-      await whatsapp.sendMessage(raw.phone, raw.message_text ?? '');
+      if (raw.message_type === 'template' && raw.message_text) {
+        const t = JSON.parse(raw.message_text);
+        await whatsapp.sendTemplate(raw.phone, t.name, t.language, t.components);
+      } else {
+        await whatsapp.sendMessage(raw.phone, raw.message_text ?? '');
+      }
       console.log(`Sent message ${raw.id} to ${raw.phone}`);
       await supabase
         .from('scheduled_messages')
@@ -49,7 +59,13 @@ export async function handler(): Promise<void> {
         .eq('id', raw.id);
       await redis.rpush(
         LIST(raw.phone),
-        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
+        JSON.stringify({
+          role: 'assistant',
+          content:
+            raw.message_type === 'template'
+              ? `[template:${JSON.parse(raw.message_text ?? '{}').name}]`
+              : raw.message_text ?? '',
+        }),
       );
     } catch (err) {
       console.error(`Send failed for ${raw.id}`, err);
@@ -59,7 +75,13 @@ export async function handler(): Promise<void> {
         .eq('id', raw.id);
       await redis.rpush(
         LIST(raw.phone),
-        JSON.stringify({ role: 'assistant', content: raw.message_text ?? '' }),
+        JSON.stringify({
+          role: 'assistant',
+          content:
+            raw.message_type === 'template'
+              ? `[template:${JSON.parse(raw.message_text ?? '{}').name}]`
+              : raw.message_text ?? '',
+        }),
       );
     }
   }

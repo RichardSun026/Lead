@@ -300,17 +300,22 @@ export default function App() {
       }
       document.getElementById('successMessage').style.display = 'block';
 
-      await fetch('/api/schedule', {
+      await fetch('/api/schedule/template', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           time: new Date(Date.now() + 1 * 60 * 1000).toISOString(),
           phone,
-          content:
-            `Olá ${name}, obrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.
-
-Você poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.
-`,
+          name: 'opt_in_pt',
+          language: 'pt_BR',
+          components: [
+            {
+              type: 'HEADER',
+              parameters: [
+                { type: 'TEXT', parameter_name: 'name', text: name },
+              ],
+            },
+          ],
         }),
       });
       // await fetch('/api/message', {

@@ -79,4 +79,42 @@ export class MessengerService {
       }
     }
   }
+
+  async sendTemplate(
+    phone: string,
+    name: string,
+    language: string,
+    components?: unknown[],
+    storeMessage = true,
+  ): Promise<void> {
+    try {
+      await this.whatsapp.sendTemplate(phone, name, language, components);
+      await this.supabase.from('message_logs').insert({
+        phone,
+        message_type: 'template',
+        message_text: JSON.stringify({ name, language, components }),
+        status: 'sent',
+      });
+      if (storeMessage) {
+        await this.conversation.store(phone, {
+          role: 'assistant',
+          content: `[template:${name}]`,
+        });
+      }
+    } catch (err) {
+      this.log.error('Failed to send template', err as Error);
+      await this.supabase.from('message_logs').insert({
+        phone,
+        message_type: 'template',
+        message_text: JSON.stringify({ name, language, components }),
+        status: 'failed',
+      });
+      if (storeMessage) {
+        await this.conversation.store(phone, {
+          role: 'assistant',
+          content: `[template:${name}]`,
+        });
+      }
+    }
+  }
 }
