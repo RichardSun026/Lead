@@ -3,8 +3,8 @@
 Before publishing the Lead Management System, verify that the following features work as expected:
 
 ## Backend
-- [ ] API endpoints accept and return the correct data (leads, scheduling, WhatsApp messaging).
 - [ ] Database migrations run successfully and data persists across restarts.
+_Redis dose not persits._
 - [ ] Background jobs and queues (BullMQ) process tasks correctly.
 - [ ] Environment variables are loaded and validated.
 - [ ] Make this github is private.
