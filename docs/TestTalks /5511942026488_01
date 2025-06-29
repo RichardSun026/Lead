@@ -1,0 +1,152 @@
+[
+  {
+    "role": "assistant",
+    "content": "Olá Celianne marques ,\nobrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.\n\nVocê poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor."
+  },
+  {
+    "role": "user",
+    "content": "Recentemente reformei telhado de todo o imóvel"
+  },
+  {
+    "role": "assistant",
+    "content": "Ótimo saber dessa reforma, Celianne. Telhados novos fazem bastante diferença na avaliação, principalmente em imóveis construídos depois de 2010 como o seu.\n\nGostaria de saber também sobre as áreas externas: há espaço de lazer, jardim, piscina ou garagem? Essas características podem valorizar ainda mais a casa.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Tem garagem"
+  },
+  {
+    "role": "assistant",
+    "content": "Perfeito, uma garagem sempre agrega valor, especialmente para imóveis familiares.\n\nVocê se importaria de compartilhar como está o estado geral dos acabamentos internos (pisos, pintura, banheiros, cozinha)? O imóvel se apresenta mais moderno ou precisa de pequenas atualizações internas? Isso também pode influenciar o valor de mercado.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "O imóvel está em perfeito estado!"
+  },
+  {
+    "role": "assistant",
+    "content": "Muito bom saber, Celianne. Imóveis bem conservados costumam atrair bastante interesse, tanto de compradores quanto de investidores.\n\nE pensando no futuro, você tem algum plano específico para o imóvel? Está considerando uma possível venda, renovar o contrato de aluguel ou até pensar em outras opções? Isso pode me ajudar a entender melhor como posso ajudar você.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Renovar contrato de aluguel"
+  },
+  {
+    "role": "assistant",
+    "content": "Entendi, Celianne. Renovar o contrato de aluguel pode ser realmente vantajoso, principalmente quando o imóvel está em ótimo estado e reformado, como você descreveu.\n\nVocê tem interesse em saber se o valor atual de mercado do seu imóvel está compatível com o que você vem praticando no aluguel? Ou gostaria de uma noção do potencial de valorização caso considerasse vender no futuro? Assim, consigo direcionar melhor a estimativa para você.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Sim claro"
+  },
+  {
+    "role": "assistant",
+    "content": "Perfeito, obrigada pelo retorno, Celianne. Considerando o imóvel recém reformado, com garagem e excelente estado de conservação, além de estar alugado, tudo isso dá um perfil bem interessante.\n\nVocê poderia me informar se o imóvel está localizado em um condomínio fechado ou é uma casa independente? Também gostaria de saber se há algum diferencial que você acha que pode destacar a casa de outras na mesma região—por exemplo, vista, localização, facilidades próximas, etc. Esses detalhes ajudam a estimar o valor de mercado com mais precisão.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Casa independente.. próximo \n farmácia, mercado hospital etc"
+  },
+  {
+    "role": "assistant",
+    "content": "Ótimo, Celianne. A proximidade com farmácia, mercado e hospital certamente torna o imóvel mais atrativo e pode elevar o potencial de aluguel e de venda.\n\nE pensando no perfil dos seus inquilinos, costuma ser fácil encontrar interessados para alugar o imóvel? Tem tido demandas frequentes, ou acha o mercado de locação na região mais devagar nos últimos tempos? Esse tipo de informação pode mostrar também como está a valorização do imóvel.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Gostaria de falar com alguém para avaliar meu imóvel"
+  },
+  {
+    "role": "assistant",
+    "content": "Que bom saber do seu interesse, Celianne. O corretor Sun Richard pode ajudar você com uma avaliação detalhada e conversar sobre o valor de mercado mais atualizado para o seu imóvel, considerando todos esses diferenciais que você mencionou.\n\nQual o melhor dia e horário para você conversar com ele? Posso verificar as opções disponíveis para o agendamento conforme sua preferência.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Amanhã se possível qualquer horário"
+  },
+  {
+    "role": "assistant",
+    "content": null,
+    "tool_calls": [
+      {
+        "id": "call_b2WKb8SFwQsGDR4cyyujP8PQ",
+        "type": "function",
+        "function": {
+          "name": "list_available_times",
+          "arguments": "{\"realtor_id\":1,\"date\":\"2025-06-30\"}"
+        }
+      }
+    ],
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_b2WKb8SFwQsGDR4cyyujP8PQ",
+    "content": "{\"open\":[\"09:00\",\"09:30\",\"10:00\",\"10:30\",\"11:00\",\"11:30\",\"12:00\",\"12:30\",\"13:00\",\"13:30\",\"14:00\",\"14:30\",\"15:00\",\"15:30\",\"16:00\",\"16:30\"]}"
+  },
+  {
+    "role": "assistant",
+    "content": "Celianne, amanhã temos disponibilidade em praticamente todos os horários, entre 9h e 16h30. Existe algum período do dia que seja mais conveniente para você, como manhã ou tarde? Se preferir, posso sugerir um horário específico também.",
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "user",
+    "content": "Tarde"
+  },
+  {
+    "role": "assistant",
+    "content": null,
+    "tool_calls": [
+      {
+        "id": "call_0OcZtKTDHioDwNYbOZBUynzb",
+        "type": "function",
+        "function": {
+          "name": "book_time",
+          "arguments": "{\"booked_date\":\"2025-06-30\",\"booked_time\":\"14:00\"}"
+        }
+      }
+    ],
+    "refusal": null,
+    "annotations": []
+  },
+  {
+    "role": "assistant",
+    "content": "Thanks Celianne marques, your appointment is confirmed for 2025-06-30T14:00:00.000-03:00."
+  },
+  {
+    "role": "tool",
+    "tool_call_id": "call_0OcZtKTDHioDwNYbOZBUynzb",
+    "content": "{\"status\":\"booked\"}"
+  },
+  {
+    "role": "user",
+    "content": "Tarde"
+  },
+  {
+    "role": "user",
+    "content": "Tarde"
+  },
+  {
+    "role": "user",
+    "content": "Tarde"
+  },
+  {
+    "role": "user",
+    "content": "Tarde"
+  }
+]
