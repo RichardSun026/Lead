@@ -23,3 +23,13 @@ The server replies with the assistant's message in JSON:
 ```
 
 A record is stored in the `message_logs` table and the conversation history is updated in Redis.
+
+To simply verify that WhatsApp messages can be sent without triggering the AI assistant, POST to `/whatsapp/test`:
+
+```bash
+curl -X POST http://134.199.198.237:3000/api/whatsapp/test \
+  -H "Content-Type: application/json" \
+  -d '{"phone": "5511999999999", "message": "hello world"}'
+```
+
+If the request succeeds, the server responds with `{"status":"attempted"}`.
