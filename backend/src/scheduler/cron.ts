@@ -11,6 +11,10 @@ const whatsapp = new WhatsAppService();
 const redis = new Redis(process.env.REDIS_URL ?? '');
 const LIST = (phone: string) => `phone:${phone}:json`;
 
+function optInPtText(name: string): string {
+  return `Olá ${name},\nobrigado por dedicar seu tempo para preencher a pesquisa de avaliação de imóvel. Para ajudar a refinar sua estimativa, gostaria de fazer algumas perguntas rápidas.\n\nVocê poderia me contar um pouco sobre quaisquer atualizações ou melhorias recentes que tenha feito na propriedade? Coisas como reforma da cozinha, telhado novo ou piso atualizado podem influenciar bastante o valor.`;
+}
+
 function isRow(
   row: unknown,
 ): row is {
@@ -63,7 +67,24 @@ export async function handler(): Promise<void> {
           role: 'assistant',
           content:
             raw.message_type === 'template'
-              ? `[template:${JSON.parse(raw.message_text ?? '{}').name}]`
+              ? (() => {
+                  const t = JSON.parse(raw.message_text ?? '{}');
+                  if (t.name === 'opt_in_pt') {
+                    const comps = t.components ?? [];
+                    let userName = '{{name}}';
+                    const header = Array.isArray(comps)
+                      ? comps.find((c: any) => c && c.type === 'HEADER')
+                      : undefined;
+                    if (header && Array.isArray((header as any).parameters)) {
+                      const param = (header as any).parameters.find(
+                        (p: any) => p && p.type === 'TEXT' && typeof p.text === 'string',
+                      );
+                      if (param) userName = param.text;
+                    }
+                    return optInPtText(userName);
+                  }
+                  return `[template:${t.name}]`;
+                })()
               : raw.message_text ?? '',
         }),
       );
@@ -79,7 +100,24 @@ export async function handler(): Promise<void> {
           role: 'assistant',
           content:
             raw.message_type === 'template'
-              ? `[template:${JSON.parse(raw.message_text ?? '{}').name}]`
+              ? (() => {
+                  const t = JSON.parse(raw.message_text ?? '{}');
+                  if (t.name === 'opt_in_pt') {
+                    const comps = t.components ?? [];
+                    let userName = '{{name}}';
+                    const header = Array.isArray(comps)
+                      ? comps.find((c: any) => c && c.type === 'HEADER')
+                      : undefined;
+                    if (header && Array.isArray((header as any).parameters)) {
+                      const param = (header as any).parameters.find(
+                        (p: any) => p && p.type === 'TEXT' && typeof p.text === 'string',
+                      );
+                      if (param) userName = param.text;
+                    }
+                    return optInPtText(userName);
+                  }
+                  return `[template:${t.name}]`;
+                })()
               : raw.message_text ?? '',
         }),
       );
