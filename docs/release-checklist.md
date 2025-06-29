@@ -7,6 +7,7 @@ Before publishing the Lead Management System, verify that the following features
 - [ ] Database migrations run successfully and data persists across restarts.
 - [ ] Background jobs and queues (BullMQ) process tasks correctly.
 - [ ] Environment variables are loaded and validated.
+- [ ] Make this github is private.
 
 ## Frontend
 - [ ] Landing page loads with booking calendar and submits appointments.
