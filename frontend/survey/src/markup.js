@@ -278,7 +278,7 @@ export const surveyMarkup = `
                             required
                             placeholder="(11) 99999-9999"
                             inputmode="tel"
-                            maxlength="14"
+                            maxlength="15"
                         >
                     </div>
                     <div class="contact-field">
